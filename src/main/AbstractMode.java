@@ -11,6 +11,8 @@ public abstract class AbstractMode {
 	}
 	
 	public abstract List<String> getPaintData();
+	public abstract void handleDoubleClick(int elementNumber);
+	public abstract void handleEscape();
 
 	public TablrManager getMgr() {
 		return mgr;

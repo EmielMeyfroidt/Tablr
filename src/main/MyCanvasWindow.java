@@ -10,6 +10,7 @@ import canvaswindow.CanvasWindow;
 
 public class MyCanvasWindow extends CanvasWindow {
 	
+	private final int STEPSIZE = 20;
 	private final TablrManagerListener listener = 
 			() -> {repaint();};
 	private static Timer clickTimer = new Timer(); // Shared timer
@@ -27,10 +28,10 @@ public class MyCanvasWindow extends CanvasWindow {
     @Override
     protected void paint(Graphics g) {
     	List<String> paintData = mgr.getPaintData();
-    	int i = 20;
+    	int i = STEPSIZE;
     	for (String s : paintData) {
-    		g.drawString(s, 20, i);
-    		i += 20;
+    		g.drawString(s, STEPSIZE, i);
+    		i += STEPSIZE;
     	}
     }
 
@@ -45,7 +46,8 @@ public class MyCanvasWindow extends CanvasWindow {
 
 					@Override
 					public void run() {
-						mgr.handleDoubleClick(x, y);
+						int elementNumber = (int) Math.floor(y/STEPSIZE);
+						mgr.handleDoubleClick(elementNumber);
 					}
     				
     			};

@@ -2,6 +2,8 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 //Manage tables and their contents
 public class TablrManager {
@@ -37,7 +39,9 @@ public class TablrManager {
 		return tables;
 	}
 	
-	public void addTable(Table table) {
+	public void addTable() {
+		String newName = generateUniqueName("Table");
+		Table table = new Table(newName);
 		tables.add(table);
 		fireContentsChanged();
 	}
@@ -49,12 +53,12 @@ public class TablrManager {
 	
 	public void handleEscape() {
 		System.out.println("ESCAPE");
-		//TODO		
+		mode.handleEscape();
+		fireContentsChanged();	
 	}
 	
 	public void handleBackSpace() {
 		System.out.println("BACKSPACE");
-
 		//TODO
 	}
 	
@@ -80,10 +84,10 @@ public class TablrManager {
 		//TODO
 	}
 	
-	public void handleDoubleClick(int x, int y) {
+	public void handleDoubleClick(int elementNumber) {
 		System.out.println("DOUBLE CLICK");
-
-		//TODO
+		mode.handleDoubleClick(elementNumber);
+		fireContentsChanged();
 	}
 	
 	public void handleSingleClick(int x, int y) {
@@ -94,6 +98,20 @@ public class TablrManager {
 	
 	public List<String> getPaintData(){
 		return mode.getPaintData();
+	}
+	
+	private String generateUniqueName(String s) {
+		Set<String> existingNames = tables.stream()
+                .map(Table::getName)
+                .collect(Collectors.toSet());
+		
+		int i = 0;
+		String newName = s + i;
+		while (existingNames.contains(newName)) {
+			i++;
+			newName = s + i;
+		}
+		return newName;
 	}
 	
 }

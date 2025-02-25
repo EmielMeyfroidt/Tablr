@@ -15,5 +15,16 @@ public class RowsMode extends AbstractMode {
 		return null;
 	}
 
+	@Override
+	public void handleDoubleClick(int elementNumber) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void handleEscape() {
+		TablesMode newMode = new TablesMode(this.getMgr());
+		this.getMgr().setMode(newMode);
+	}
+
 
 }

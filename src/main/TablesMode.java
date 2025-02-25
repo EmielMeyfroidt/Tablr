@@ -15,4 +15,21 @@ public class TablesMode extends AbstractMode {
 		return getMgr().getTables().stream().map(t -> t.getName()).toList();
 	}
 
+	@Override
+	public void handleDoubleClick(int elementNumber) {
+		if (elementNumber >= this.getMgr().getTables().size()) {
+			this.getMgr().addTable();
+		}
+		else {
+			DesignMode newMode = new DesignMode(this.getMgr(), this.getMgr().getTables().get(elementNumber));
+			this.getMgr().setMode(newMode);
+			System.out.println("NOW IN DESIGN MODE FOR TABLE: " + elementNumber);
+		}
+	}
+
+	@Override
+	public void handleEscape() {
+		// nothing should happen
+	}
+
 }
