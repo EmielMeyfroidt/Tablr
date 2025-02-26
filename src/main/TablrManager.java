@@ -11,6 +11,16 @@ public class TablrManager {
 	private List<TablrManagerListener> listeners;
 	private AbstractMode mode;
 	
+	public void startEditNameMode(int elementNumber) {
+		EditNameMode editNameMode = new EditNameMode(this, mode, elementNumber);
+		this.mode = editNameMode;
+		System.out.println("EDIT NAME MODE");
+	}
+	
+	public void exitEditNameMode() {
+		this.mode = ((EditNameMode) this.mode).getUnderlyingMode();
+	}
+	
 	public TablrManager() {
 		tables = new ArrayList<Table>();
 		listeners = new ArrayList<TablrManagerListener>();
@@ -59,7 +69,8 @@ public class TablrManager {
 	
 	public void handleBackSpace() {
 		System.out.println("BACKSPACE");
-		//TODO
+		mode.handleBackSpace();
+		fireContentsChanged();
 	}
 	
 	public void handleCharTyped(char keyChar) {
@@ -90,10 +101,10 @@ public class TablrManager {
 		fireContentsChanged();
 	}
 	
-	public void handleSingleClick(int x, int y) {
+	public void handleSingleClick(int elementNumber) {
 		System.out.println("SINGLE CLICK");
-
-		//TODO
+		mode.handleSingleClick(elementNumber);
+		fireContentsChanged();
 	}
 	
 	public List<String> getPaintData(){

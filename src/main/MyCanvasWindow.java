@@ -37,6 +37,7 @@ public class MyCanvasWindow extends CanvasWindow {
 
     @Override
     protected void handleMouseEvent(int id, int x, int y, int clickCount) {
+    	int elementNumber = (int) Math.floor(y/STEPSIZE);
     	if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
     		clickTimer.cancel();
     		clickTimer = new Timer();
@@ -46,7 +47,7 @@ public class MyCanvasWindow extends CanvasWindow {
 
 					@Override
 					public void run() {
-						int elementNumber = (int) Math.floor(y/STEPSIZE);
+						
 						mgr.handleDoubleClick(elementNumber);
 					}
     				
@@ -61,7 +62,7 @@ public class MyCanvasWindow extends CanvasWindow {
 
 							@Override
 							public void run() {
-								mgr.handleSingleClick(x, y);
+								mgr.handleSingleClick(elementNumber);
 							}
 							
 						};

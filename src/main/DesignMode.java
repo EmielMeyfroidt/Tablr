@@ -30,4 +30,16 @@ public class DesignMode extends AbstractMode {
 		this.getMgr().setMode(newMode);
 	}
 
+	@Override
+	public void handleSingleClick(int elementNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleBackSpace() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

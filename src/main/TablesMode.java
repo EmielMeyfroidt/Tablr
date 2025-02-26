@@ -11,7 +11,6 @@ public class TablesMode extends AbstractMode {
 
 	@Override
 	public List<String> getPaintData() {
-		// TODO Auto-generated method stub
 		return getMgr().getTables().stream().map(t -> t.getName()).toList();
 	}
 
@@ -30,6 +29,23 @@ public class TablesMode extends AbstractMode {
 	@Override
 	public void handleEscape() {
 		// nothing should happen
+	}
+
+	@Override
+	public void handleSingleClick(int elementNumber) {
+		if (elementNumber >= this.getMgr().getTables().size()) {
+			//nothing
+		}
+		else {
+			this.getMgr().startEditNameMode(elementNumber);
+		}
+		
+	}
+
+	@Override
+	public void handleBackSpace() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
