@@ -2,16 +2,11 @@ package main;
 
 public class Cell {
 	private Object value;
-	
-	public Cell(Object value) {
+	private Column column;
+
+	public Cell(Object value, Column column) {
 		this.value = value;
+		this.column = column;
 	}
-	
-	public Object getValue() {
-		return value;
-	}
-	
-	public void setValue(Object value) {
-		this.value = value;
-	}
+
 }

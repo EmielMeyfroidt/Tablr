@@ -9,52 +9,55 @@ import java.util.TimerTask;
 import canvaswindow.CanvasWindow;
 
 public class MyCanvasWindow extends CanvasWindow {
-	
+
+	private PaintStrategy paintStrategy;
 	private final int STEPSIZE = 20;
-	private final TablrManagerListener listener = 
-			() -> {repaint();};
+	private final TablrManagerListener tablrManagerListener = () -> {
+		repaint();
+	};
+	private final ChangeModeListener changeModeListener = () -> {
+		changeMode();
+	};
 	private static Timer clickTimer = new Timer(); // Shared timer
-    private static final int DOUBLE_CLICK_DELAY = 200; // Delay in milliseconds
+	private static final int DOUBLE_CLICK_DELAY = 200; // Delay in milliseconds
 
-	
-    private TablrManager mgr;
-	
-	public MyCanvasWindow(String title, TablrManager mgr) {
-        super(title);
-        this.mgr = mgr;
-        mgr.addListener(listener);
-    }
-	
-    @Override
-    protected void paint(Graphics g) {
-    	List<String> paintData = mgr.getPaintData();
-    	int i = STEPSIZE;
-    	for (String s : paintData) {
-    		g.drawString(s, STEPSIZE, i);
-    		i += STEPSIZE;
-    	}
-    }
+	private AbstractView view;
 
-    @Override
-    protected void handleMouseEvent(int id, int x, int y, int clickCount) {
-    	int elementNumber = (int) Math.floor(y/STEPSIZE);
-    	if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
-    		clickTimer.cancel();
-    		clickTimer = new Timer();
-    		
-    		if (clickCount == 2) {
-    			Runnable doubleClickListener = new Runnable() {
+	public MyCanvasWindow(String title, AbstractView view) {
+		super(title);
+		this.view = view;
+		view.addListener(changeModeListener);
+	}
+
+	private void changeMode() {
+		// TODO
+	}
+
+	@Override
+	protected void paint(Graphics g) {
+		paintStrategy.paint(g, view.getPaintData());
+	}
+
+	@Override
+	protected void handleMouseEvent(int id, int x, int y, int clickCount) {
+		int elementNumber = (int) Math.floor(y / STEPSIZE);
+		if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
+			clickTimer.cancel();
+			clickTimer = new Timer();
+
+			if (clickCount == 2) {
+				Runnable doubleClickListener = new Runnable() {
 
 					@Override
 					public void run() {
-						
-						mgr.handleDoubleClick(elementNumber);
+
+						view.handleDoubleClick(elementNumber);
 					}
-    				
-    			};
-    			doubleClickListener.run();
-    		}else {
-    			clickTimer.schedule(new TimerTask() {
+
+				};
+				doubleClickListener.run();
+			} else {
+				clickTimer.schedule(new TimerTask() {
 
 					@Override
 					public void run() {
@@ -62,61 +65,61 @@ public class MyCanvasWindow extends CanvasWindow {
 
 							@Override
 							public void run() {
-								mgr.handleSingleClick(elementNumber);
+								view.handleSingleClick(elementNumber);
 							}
-							
+
 						};
 						singleClickListener.run();
 					}
-    				
-    			}, DOUBLE_CLICK_DELAY);
-    		}
-    	}
-    }
 
-    @Override
-    protected void handleKeyEvent(int id, int keyCode, char keyChar, int modifiers) {
-    	if (id != KeyEvent.KEY_PRESSED) {
-            return;  // Only handle key press events
-        }
+				}, DOUBLE_CLICK_DELAY);
+			}
+		}
+	}
 
-        Runnable action = null;
-        
-        switch (keyCode) {
-            case KeyEvent.VK_ESCAPE:
-                action = () -> mgr.handleEscape();
-                break;
+	@Override
+	protected void handleKeyEvent(int id, int keyCode, char keyChar, int modifiers) {
+		if (id != KeyEvent.KEY_PRESSED) {
+			return; // Only handle key press events
+		}
 
-            case KeyEvent.VK_ENTER:
-                if (modifiers == KeyEvent.CTRL_DOWN_MASK) {
-                    // Ctrl + Enter detected
-                    action = () -> mgr.handleCtrlEnter();
-                } else {
-                    // Normal Enter detected
-                    action = () -> mgr.handleEnter();
-                }
-                break;
+		Runnable action = null;
 
-            case KeyEvent.VK_BACK_SPACE:
-                action = () -> mgr.handleBackSpace();
-                break;
+		switch (keyCode) {
+		case KeyEvent.VK_ESCAPE:
+			action = () -> view.handleEscape();
+			break;
 
-            case KeyEvent.VK_DELETE:
-                action = () -> mgr.handleDelete();
-                break;
+		case KeyEvent.VK_ENTER:
+			if (modifiers == KeyEvent.CTRL_DOWN_MASK) {
+				// Ctrl + Enter detected
+				action = () -> view.handleCtrlEnter();
+			} else {
+				// Normal Enter detected
+				action = () -> view.handleEnter();
+			}
+			break;
 
-            default:
-                if (Character.isDefined(keyChar)) {
-                    // Handle character input
-                    action = () -> mgr.handleCharTyped(keyChar);
-                }
-                break;
-        }
+		case KeyEvent.VK_BACK_SPACE:
+			action = () -> view.handleBackSpace();
+			break;
 
-        // Execute the corresponding action if one was set
-        if (action != null) {
-            action.run();
-        }
-    }
+		case KeyEvent.VK_DELETE:
+			action = () -> view.handleDelete();
+			break;
+
+		default:
+			if (Character.isDefined(keyChar)) {
+				// Handle character input
+				action = () -> view.handleCharTyped(keyChar);
+			}
+			break;
+		}
+
+		// Execute the corresponding action if one was set
+		if (action != null) {
+			action.run();
+		}
+	}
 
 }
