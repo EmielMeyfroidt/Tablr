@@ -11,7 +11,6 @@ import canvaswindow.CanvasWindow;
 public class MyCanvasWindow extends CanvasWindow {
 
 	private PaintStrategy paintStrategy;
-	private final int STEPSIZE = 20;
 	private final TablrManagerListener tablrManagerListener = () -> {
 		repaint();
 	};
@@ -40,7 +39,6 @@ public class MyCanvasWindow extends CanvasWindow {
 
 	@Override
 	protected void handleMouseEvent(int id, int x, int y, int clickCount) {
-		int elementNumber = (int) Math.floor(y / STEPSIZE);
 		if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
 			clickTimer.cancel();
 			clickTimer = new Timer();
@@ -51,7 +49,7 @@ public class MyCanvasWindow extends CanvasWindow {
 					@Override
 					public void run() {
 
-						view.handleDoubleClick(elementNumber);
+						view.handleDoubleClick(x, y);
 					}
 
 				};
@@ -65,7 +63,7 @@ public class MyCanvasWindow extends CanvasWindow {
 
 							@Override
 							public void run() {
-								view.handleSingleClick(elementNumber);
+								view.handleSingleClick(x, y);
 							}
 
 						};

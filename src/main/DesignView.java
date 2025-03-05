@@ -18,13 +18,13 @@ public class DesignView extends AbstractView {
 	}
 
 	@Override
-	public void handleDoubleClick(int elementNumber) {
+	public void handleDoubleClick(int x, int y) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void handleSingleClick(int elementNumber) {
+	public void handleSingleClick(int x, int y) {
 		// TODO Auto-generated method stub
 
 	}

@@ -14,9 +14,9 @@ public abstract class AbstractView {
 
 	public abstract List<String> getPaintData();
 
-	public abstract void handleDoubleClick(int elementNumber);
+	public abstract void handleDoubleClick(int x, int y);
 
-	public abstract void handleSingleClick(int elementNumber);
+	public abstract void handleSingleClick(int x, int y);
 
 	public abstract void handleEscape();
 
