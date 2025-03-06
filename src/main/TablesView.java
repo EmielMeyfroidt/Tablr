@@ -1,6 +1,8 @@
 package main;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TablesView extends AbstractView {
 
@@ -9,34 +11,37 @@ public class TablesView extends AbstractView {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * @return a list of the names of the tables in the system
+	 * 
+	 */
 	@Override
 	public List<String> getPaintData() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getMgr().getTableNames();
 	}
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleSingleClick(int x, int y) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleEscape() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleBackSpace() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -62,7 +67,5 @@ public class TablesView extends AbstractView {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 }

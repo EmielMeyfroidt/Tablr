@@ -9,7 +9,7 @@ public abstract class AbstractView {
 	private List<ChangeModeListener> changeModeListeners = new ArrayList<ChangeModeListener>();
 	
 	public AbstractView(TablrManager mgr) {
-		this.mgr = mgr;
+		this.setMgr(mgr);
 	}
 
 	public abstract List<String> getPaintData();
@@ -38,6 +38,14 @@ public abstract class AbstractView {
 		for (ChangeModeListener listener : changeModeListeners) {
 			listener.modeChanged();
 		}
+	}
+
+	public TablrManager getMgr() {
+		return mgr;
+	}
+
+	public void setMgr(TablrManager mgr) {
+		this.mgr = mgr;
 	}
 
 }

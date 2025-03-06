@@ -11,7 +11,7 @@ public class Table {
 	private List<Column> columns;
 
 	public Table(String name) {
-		this.name = name;
+		this.setName(name);
 		columns = new ArrayList<Column>();
 	}
 
@@ -29,6 +29,14 @@ public class Table {
 
 	public void deleteRow() {
 		// TODO
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

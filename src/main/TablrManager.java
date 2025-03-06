@@ -11,7 +11,7 @@ public class TablrManager {
 	private List<TablrManagerListener> listeners;
 
 	public TablrManager() {
-		tables = new ArrayList<Table>();
+		setTables(new ArrayList<Table>());
 		listeners = new ArrayList<TablrManagerListener>();
 		this.fireContentsChanged();
 	}
@@ -31,11 +31,33 @@ public class TablrManager {
 	}
 
 	public void addTable() {
-		// TODO
+		String uniqueName = generateUniqueName();
+		Table newTable = new Table(uniqueName);
+		tables.add(newTable);
 	}
 
 	public void removeTable(Table table) {
 		// TODO
+	}
+
+	public List<Table> getTables() {
+		return tables;
+	}
+	
+	public List<String> getTableNames(){
+		return tables.stream().map(t -> t.getName()).collect(Collectors.toList());
+	}
+
+	public void setTables(List<Table> tables) {
+		this.tables = tables;
+	}
+	
+	public String generateUniqueName() {
+		int n = 0;
+		while (getTableNames().contains("Table" + n)) {
+			n++;
+		}
+		return "Table" + n;
 	}
 
 }
