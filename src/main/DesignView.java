@@ -1,20 +1,24 @@
 package main;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DesignView extends AbstractView {
 
-	public DesignView(TablrManager mgr) {
+	private Table table;
+
+	public DesignView(TablrManager mgr, Table table) {
 		super(mgr);
-		// TODO Auto-generated constructor stub
+		this.table = table;
 	}
 
+	/**
+	 * In Table Design mode, the application window shows the list of the columns of
+	 * a particular table, in a tabular view. For each column, the name, the type,
+	 * whether blanks are allowed, and the default value are shown.
+	 */
 	@Override
 	public List<String> getPaintData() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.table.getColumnsInfo();
 	}
 
 	@Override

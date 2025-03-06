@@ -1,17 +1,25 @@
 package main;
 
-public class Column {
+public class Column<T> {
 
 	private String name;
-	private Object type;
+	private Class<T> typeClass;
 	private boolean allowsBlanks;
-	private Object defaultValue;
+	private T defaultValue;
 
-	public Column(String name, Object type, boolean allowsBlanks, Object defaultValue) throws Exception {
+	public Column(String name, Class<T> typeClass, boolean allowsBlanks, T defaultValue) throws Exception {
 		this.name = name;
-		this.type = type;
+		this.typeClass = typeClass;
 		this.allowsBlanks = allowsBlanks;
 		this.defaultValue = defaultValue;
 	}
 
+	public String getInfo() {
+		String typeName = (typeClass != null) ? typeClass.getSimpleName() : "Unknown Type"; 
+		return name + " " + typeName + " " + allowsBlanks + " " + defaultValue.toString();
+	}
+	
+	public String getName() {
+		return name;
+	}
 }
