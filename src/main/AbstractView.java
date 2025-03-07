@@ -25,13 +25,13 @@ public abstract class AbstractView {
 
 	public abstract void handleBackSpace();
 
-	public abstract Object handleCtrlEnter();
+	public abstract void handleCtrlEnter();
 
-	public abstract Object handleEnter();
+	public abstract void handleEnter();
 
-	public abstract Object handleDelete();
+	public abstract void handleDelete();
 
-	public abstract Object handleCharTyped(char keyChar);
+	public abstract void handleCharTyped(char keyChar);
 
 	public TablrManager getMgr() {
 		return mgr;
