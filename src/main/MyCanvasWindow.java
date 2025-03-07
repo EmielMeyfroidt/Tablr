@@ -14,8 +14,8 @@ public class MyCanvasWindow extends CanvasWindow {
 	private final TablrManagerListener tablrManagerListener = () -> {
 		repaint();
 	};
-	private final ChangeModeListener changeModeListener = () -> {
-		changeMode();
+	private final ChangeModeListener changeModeListener = (AbstractView view) -> {
+		changeMode(view);
 	};
 	private static Timer clickTimer = new Timer(); // Shared timer
 	private static final int DOUBLE_CLICK_DELAY = 200; // Delay in milliseconds
@@ -26,15 +26,20 @@ public class MyCanvasWindow extends CanvasWindow {
 		super(title);
 		this.view = view;
 		view.addListener(changeModeListener);
+		
 	}
 
-	private void changeMode() {
+	private void changeMode(AbstractView view) {
 		// TODO
 	}
 
+	public void setPaintStrategy(PaintStrategy strategy) {
+		this.paintStrategy = strategy;
+	}
 	@Override
 	protected void paint(Graphics g) {
-		paintStrategy.paint(g, view.getPaintData());
+		super.setTitle(paintStrategy.getTitle());
+		paintStrategy.paint(g, view.getPaintData(), view.getStepX(), view.getStepY());
 	}
 
 	@Override
@@ -118,6 +123,10 @@ public class MyCanvasWindow extends CanvasWindow {
 		if (action != null) {
 			action.run();
 		}
+	}
+
+	public TablrManagerListener getTablrManagerListener() {
+		return tablrManagerListener;
 	}
 
 }

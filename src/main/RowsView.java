@@ -8,7 +8,11 @@ public class RowsView extends AbstractView {
 		super(mgr);
 		// TODO Auto-generated constructor stub
 	}
-
+	/**
+	 * For each row, the value of that
+	 * row for each of the table’s columns is shown.
+	 */
+	
 	@Override
 	public List<String> getPaintData() {
 		// TODO Auto-generated method stub

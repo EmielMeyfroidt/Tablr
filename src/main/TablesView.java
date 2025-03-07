@@ -1,8 +1,6 @@
 package main;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TablesView extends AbstractView {
 
@@ -22,7 +20,15 @@ public class TablesView extends AbstractView {
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		// TODO Auto-generated method stub
+		int elementNumber = (int) Math.floor(y/this.getStepY());
+		System.out.println(elementNumber);
+		try {
+			Table tableClicked = getMgr().getTables().get(elementNumber);
+			getMgr().openTable(tableClicked);
+			fireModeChanged(new DesignView(getMgr(), tableClicked));
+		}catch(Exception e){
+			getMgr().addTable();
+		}
 
 	}
 
@@ -67,5 +73,7 @@ public class TablesView extends AbstractView {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 
 }

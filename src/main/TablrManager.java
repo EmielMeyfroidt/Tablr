@@ -34,6 +34,7 @@ public class TablrManager {
 		String uniqueName = generateUniqueName();
 		Table newTable = new Table(uniqueName);
 		tables.add(newTable);
+		fireContentsChanged();
 	}
 
 	public void removeTable(Table table) {
@@ -51,7 +52,10 @@ public class TablrManager {
 	public void setTables(List<Table> tables) {
 		this.tables = tables;
 	}
-	
+
+	public void openTable(Table table) {
+		
+	}
 	public String generateUniqueName() {
 		int n = 0;
 		while (getTableNames().contains("Table" + n)) {

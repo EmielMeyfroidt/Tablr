@@ -5,6 +5,8 @@ import java.util.List;
 
 public abstract class AbstractView {
 
+	private final int stepX = 20;
+	private final int stepY = 20;
 	private TablrManager mgr;
 	private List<ChangeModeListener> changeModeListeners = new ArrayList<ChangeModeListener>();
 	
@@ -34,9 +36,9 @@ public abstract class AbstractView {
 		changeModeListeners.add(c);
 	}
 
-	public void fireModeChanged() {
+	public void fireModeChanged(AbstractView view) {
 		for (ChangeModeListener listener : changeModeListeners) {
-			listener.modeChanged();
+			listener.modeChanged(view);
 		}
 	}
 
@@ -46,6 +48,13 @@ public abstract class AbstractView {
 
 	public void setMgr(TablrManager mgr) {
 		this.mgr = mgr;
+	}
+	
+	public int getStepX() {
+		return stepX;
+	}
+	public int getStepY() {
+		return stepY;
 	}
 
 }
