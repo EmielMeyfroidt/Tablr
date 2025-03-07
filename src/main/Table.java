@@ -12,6 +12,7 @@ public class Table {
 	public Table(String name) {
 		this.setName(name);
 		columns = new ArrayList<Column<?>>();
+		this.addColumn();
 	}
 
 	public void addColumn() {

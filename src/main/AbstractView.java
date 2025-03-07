@@ -36,9 +36,9 @@ public abstract class AbstractView {
 		changeModeListeners.add(c);
 	}
 
-	public void fireModeChanged(AbstractView view) {
+	public void fireModeChanged(AbstractView view, PaintStrategy strategy) {
 		for (ChangeModeListener listener : changeModeListeners) {
-			listener.modeChanged(view);
+			listener.modeChanged(view, strategy);
 		}
 	}
 

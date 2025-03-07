@@ -25,7 +25,7 @@ public class TablesView extends AbstractView {
 		try {
 			Table tableClicked = getMgr().getTables().get(elementNumber);
 			getMgr().openTable(tableClicked);
-			fireModeChanged(new DesignView(getMgr(), tableClicked));
+			fireModeChanged(new DesignView(getMgr(), tableClicked), new PaintDesignMode());
 		}catch(Exception e){
 			getMgr().addTable();
 		}

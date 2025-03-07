@@ -2,7 +2,6 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,8 +13,8 @@ public class MyCanvasWindow extends CanvasWindow {
 	private final TablrManagerListener tablrManagerListener = () -> {
 		repaint();
 	};
-	private final ChangeModeListener changeModeListener = (AbstractView view) -> {
-		changeMode(view);
+	private final ChangeModeListener changeModeListener = (AbstractView view, PaintStrategy strategy) -> {
+		changeMode(view, strategy);
 	};
 	private static Timer clickTimer = new Timer(); // Shared timer
 	private static final int DOUBLE_CLICK_DELAY = 200; // Delay in milliseconds
@@ -29,8 +28,10 @@ public class MyCanvasWindow extends CanvasWindow {
 		
 	}
 
-	private void changeMode(AbstractView view) {
-		// TODO
+	private void changeMode(AbstractView view, PaintStrategy strategy) {
+		setPaintStrategy(strategy);
+		this.view = view;
+		this.repaint();
 	}
 
 	public void setPaintStrategy(PaintStrategy strategy) {
