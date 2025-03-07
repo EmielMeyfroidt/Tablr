@@ -9,7 +9,6 @@ public class TablrApp {
 		java.awt.EventQueue.invokeLater(() -> {
 			MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", view);
 			tablrManager.addListener(window.getTablrManagerListener());
-			window.setPaintStrategy(new PaintTablesMode());
 			window.show();
 		});
 	}

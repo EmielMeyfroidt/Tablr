@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,12 +12,6 @@ public class EditNameView extends AbstractView {
 	}
 
 	private AbstractView underlyingMode;
-
-	@Override
-	public List<String> getPaintData() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
@@ -64,6 +59,18 @@ public class EditNameView extends AbstractView {
 	public Object handleCharTyped(char keyChar) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

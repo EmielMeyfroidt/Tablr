@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.Graphics;
 import java.util.List;
 
 public class RowsView extends AbstractView {
@@ -7,16 +8,6 @@ public class RowsView extends AbstractView {
 	public RowsView(TablrManager mgr) {
 		super(mgr);
 		// TODO Auto-generated constructor stub
-	}
-	/**
-	 * For each row, the value of that
-	 * row for each of the table’s columns is shown.
-	 */
-	
-	@Override
-	public List<String> getPaintData() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -65,6 +56,17 @@ public class RowsView extends AbstractView {
 	public Object handleCharTyped(char keyChar) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getTitle() {
+		return "Rows Mode";
+	}
+
+	@Override
+	public void paint(Graphics g) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

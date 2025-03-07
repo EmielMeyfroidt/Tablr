@@ -1,20 +1,21 @@
 package main;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractView {
 
-	private final int stepX = 20;
-	private final int stepY = 20;
 	private TablrManager mgr;
 	private List<ChangeModeListener> changeModeListeners = new ArrayList<ChangeModeListener>();
 	
 	public AbstractView(TablrManager mgr) {
 		this.setMgr(mgr);
 	}
-
-	public abstract List<String> getPaintData();
+	
+	public abstract String getTitle();
+	
+	public abstract void paint(Graphics g);
 
 	public abstract void handleDoubleClick(int x, int y);
 
@@ -32,16 +33,6 @@ public abstract class AbstractView {
 
 	public abstract Object handleCharTyped(char keyChar);
 
-	public void addListener(ChangeModeListener c) {
-		changeModeListeners.add(c);
-	}
-
-	public void fireModeChanged(AbstractView view, PaintStrategy strategy) {
-		for (ChangeModeListener listener : changeModeListeners) {
-			listener.modeChanged(view, strategy);
-		}
-	}
-
 	public TablrManager getMgr() {
 		return mgr;
 	}
@@ -50,11 +41,14 @@ public abstract class AbstractView {
 		this.mgr = mgr;
 	}
 	
-	public int getStepX() {
-		return stepX;
+	public void addListener(ChangeModeListener c) {
+		changeModeListeners.add(c);
 	}
-	public int getStepY() {
-		return stepY;
+
+	public void fireModeChanged(AbstractView view) {
+		for (ChangeModeListener listener : changeModeListeners) {
+			listener.modeChanged(view);
+		}
 	}
 
 }

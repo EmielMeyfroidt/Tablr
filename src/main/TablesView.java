@@ -1,35 +1,29 @@
 package main;
 
+import java.awt.Graphics;
 import java.util.List;
 
 public class TablesView extends AbstractView {
 
+	private final int stepX = 20;
+	private final int stepY = 20;
 	public TablesView(TablrManager mgr) {
 		super(mgr);
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @return a list of the names of the tables in the system
-	 * 
-	 */
-	@Override
-	public List<String> getPaintData() {
-		return this.getMgr().getTableNames();
-	}
-
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		int elementNumber = (int) Math.floor(y/this.getStepY());
+		int elementNumber = (int) Math.floor(y/this.stepY);
 		System.out.println(elementNumber);
 		try {
 			Table tableClicked = getMgr().getTables().get(elementNumber);
 			getMgr().openTable(tableClicked);
-			fireModeChanged(new DesignView(getMgr(), tableClicked), new PaintDesignMode());
+			this.fireModeChanged(new DesignView(getMgr(), tableClicked));
 		}catch(Exception e){
 			getMgr().addTable();
 		}
-
+		
 	}
 
 	@Override
@@ -74,6 +68,17 @@ public class TablesView extends AbstractView {
 		return null;
 	}
 	
-	
+	@Override
+	public void paint(Graphics g) {
+		int y = stepY;
+		for (String table : getMgr().getTableNames()) {
+			g.drawString(table, stepX, y);
+			y += stepY;
+		}
+	}
 
+	@Override
+	public String getTitle() {
+		return "Tables Mode";
+	}
 }

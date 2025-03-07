@@ -1,5 +1,8 @@
+/**
+ * 
+ */
 package main;
 
 public interface ChangeModeListener {
-	public void modeChanged(AbstractView view, PaintStrategy strategy);
+	public void modeChanged(AbstractView view);
 }
