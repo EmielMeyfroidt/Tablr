@@ -41,27 +41,23 @@ public class DesignView extends AbstractView {
 	}
 
 	@Override
-	public Object handleCtrlEnter() {
+	public void handleCtrlEnter() {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public Object handleEnter() {
+	public void handleEnter() {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public Object handleDelete() {
+	public void handleDelete() {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public Object handleCharTyped(char keyChar) {
+	public void handleCharTyped(char keyChar) {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

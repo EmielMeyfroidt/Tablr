@@ -1,15 +1,17 @@
 package main;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TablesView extends AbstractView {
 
 	private final int stepX = 20;
 	private final int stepY = 20;
+	private List<Table> selectedTables;
 	public TablesView(TablrManager mgr) {
 		super(mgr);
-		// TODO Auto-generated constructor stub
+		this.selectedTables = new ArrayList<Table>();
 	}
 
 	@Override
@@ -28,8 +30,14 @@ public class TablesView extends AbstractView {
 
 	@Override
 	public void handleSingleClick(int x, int y) {
-		// TODO Auto-generated method stub
-
+		int elementNumber = (int) Math.floor(y/this.stepY);
+		if (x < stepX) {
+			//Left margin of table, indicate that selected
+			selectedTables.add(getMgr().getTables().get(elementNumber));
+			fireModeChanged(this);
+		} else {
+			//Click on table, edit name
+		}
 	}
 
 	@Override
@@ -45,34 +53,37 @@ public class TablesView extends AbstractView {
 	}
 
 	@Override
-	public Object handleCtrlEnter() {
+	public void handleCtrlEnter() {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public Object handleEnter() {
+	public void handleEnter() {
 		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
-	public Object handleDelete() {
-		// TODO Auto-generated method stub
-		return null;
+	public void handleDelete() {
+		for (Table t : selectedTables) {
+			getMgr().getTables().remove(t);
+		}
+		fireModeChanged(this);
 	}
 
 	@Override
-	public Object handleCharTyped(char keyChar) {
+	public void handleCharTyped(char keyChar) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 	
 	@Override
 	public void paint(Graphics g) {
 		int y = stepY;
-		for (String table : getMgr().getTableNames()) {
-			g.drawString(table, stepX, y);
+		for (Table table : getMgr().getTables()) {
+			if (selectedTables.contains(table)) {
+				g.drawString("*", 0, y);
+			}
+			g.drawString(table.getName(), stepX, y);
 			y += stepY;
 		}
 	}
