@@ -21,11 +21,12 @@ public class TablesView extends AbstractView {
 		System.out.println(elementNumber);
 		try {
 			Table tableClicked = getMgr().getTables().get(elementNumber);
-			this.fireModeChanged(new DesignView(getMgr(), tableClicked));
+			DesignView newView = new DesignView(getMgr(), tableClicked);
+			newView.setChangeModeListeners(getChangeModeListeners());
+			this.fireModeChanged(newView);
 		}catch(Exception e){
 			getMgr().addTable();
 		}
-		
 	}
 
 	@Override

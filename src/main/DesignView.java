@@ -81,7 +81,6 @@ public class DesignView extends AbstractView {
 			}
 			y+= stepY;
 		}
-		
 	}
 
 }
