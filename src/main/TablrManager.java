@@ -53,10 +53,7 @@ public class TablrManager {
 		this.tables = tables;
 	}
 
-	public void openTable(Table table) {
-		
-	}
-	public String generateUniqueName() {
+	private String generateUniqueName() {
 		int n = 0;
 		while (getTableNames().contains("Table" + n)) {
 			n++;

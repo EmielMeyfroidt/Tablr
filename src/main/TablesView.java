@@ -9,6 +9,7 @@ public class TablesView extends AbstractView {
 	private final int stepX = 20;
 	private final int stepY = 20;
 	private List<Table> selectedTables;
+	
 	public TablesView(TablrManager mgr) {
 		super(mgr);
 		this.selectedTables = new ArrayList<Table>();
@@ -20,7 +21,6 @@ public class TablesView extends AbstractView {
 		System.out.println(elementNumber);
 		try {
 			Table tableClicked = getMgr().getTables().get(elementNumber);
-			getMgr().openTable(tableClicked);
 			this.fireModeChanged(new DesignView(getMgr(), tableClicked));
 		}catch(Exception e){
 			getMgr().addTable();
@@ -35,8 +35,9 @@ public class TablesView extends AbstractView {
 			//Left margin of table, indicate that selected
 			selectedTables.add(getMgr().getTables().get(elementNumber));
 			fireModeChanged(this);
-		} else {
+		} else if (elementNumber <= getMgr().getTables().size()) {
 			//Click on table, edit name
+			fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getTables().get(elementNumber)));
 		}
 	}
 

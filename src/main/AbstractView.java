@@ -9,6 +9,20 @@ public abstract class AbstractView {
 	private TablrManager mgr;
 	private List<ChangeModeListener> changeModeListeners = new ArrayList<ChangeModeListener>();
 	
+	/**
+	 * @return the changeModeListeners
+	 */
+	public List<ChangeModeListener> getChangeModeListeners() {
+		return changeModeListeners;
+	}
+
+	/**
+	 * @param changeModeListeners the changeModeListeners to set
+	 */
+	public void setChangeModeListeners(List<ChangeModeListener> changeModeListeners) {
+		this.changeModeListeners = changeModeListeners;
+	}
+
 	public AbstractView(TablrManager mgr) {
 		this.setMgr(mgr);
 	}

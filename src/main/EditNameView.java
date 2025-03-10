@@ -6,67 +6,79 @@ import java.util.List;
 
 public class EditNameView extends AbstractView {
 
-	public EditNameView(TablrManager mgr) {
+	private AbstractView underlyingMode;
+	private Nameable element;
+	final String originalName;
+	
+	public EditNameView(TablrManager mgr, AbstractView underlyingMode, Nameable element) {
 		super(mgr);
-		// TODO Auto-generated constructor stub
+		this.underlyingMode = underlyingMode;
+		this.element = element;
+		this.originalName = element.getName();
+		this.setChangeModeListeners(underlyingMode.getChangeModeListeners());
 	}
 
-	private AbstractView underlyingMode;
+	
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		// TODO Auto-generated method stub
+		// nothing should happen
 		
 	}
 
 	@Override
 	public void handleSingleClick(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		//TODO: check for validity
+		fireModeChanged(underlyingMode);
 	}
 
 	@Override
 	public void handleEscape() {
-		// TODO Auto-generated method stub
-		
+		element.setName(originalName);
+		fireModeChanged(underlyingMode);
 	}
 
 	@Override
 	public void handleBackSpace() {
-		// TODO Auto-generated method stub
+		try {
+			element.setName(element.getName().substring(0, element.getName().length() - 1));
+		} catch (Exception e) {
+			element.setName("");
+		}
 		
+		fireModeChanged(this);
 	}
 
 	@Override
 	public void handleCtrlEnter() {
-		// TODO Auto-generated method stub
+		// nothing should happen
 	}
 
 	@Override
 	public void handleEnter() {
-		// TODO Auto-generated method stub
+		//TODO: check for validity
+		fireModeChanged(underlyingMode);
 	}
 
 	@Override
 	public void handleDelete() {
-		// TODO Auto-generated method stub
+		// nothing should happen
 	}
 
 	@Override
 	public void handleCharTyped(char keyChar) {
-		// TODO Auto-generated method stub
+		element.setName(element.getName() + keyChar);
+		fireModeChanged(this);
 	}
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Editing name " + originalName + ".";
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		// TODO Auto-generated method stub
-		
+		underlyingMode.paint(g);
 	}
 
 
