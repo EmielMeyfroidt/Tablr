@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 //Holds columns and rows
-public class Table implements Nameable {
+public class Table {
 	private String name;
 	private List<Column<?>> columns;
 
