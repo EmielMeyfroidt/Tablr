@@ -18,8 +18,12 @@ public class DesignView extends AbstractView {
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		// TODO Auto-generated method stub
-
+		int elementNumber = (int) Math.floor(y/this.stepY);
+		if (elementNumber > getMgr().getColumnNames(table).size()) {
+			getMgr().addColumn(table);
+		} else {
+			//nothing
+		}
 	}
 
 	@Override
@@ -80,7 +84,7 @@ public class DesignView extends AbstractView {
 				x += 3*stepX;
 			}
 			y+= stepY;
+			x = stepX;
 		}
 	}
-
 }

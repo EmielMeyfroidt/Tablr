@@ -77,4 +77,23 @@ public class TablrManager {
 		}
 		fireContentsChanged();
 	}
+	
+	public void addColumn(String table) {
+		for (Table t : tables) {
+			if (t.getName().equals(table)) {
+				t.addColumn();
+				break;
+			}
+		}
+		fireContentsChanged();
+	}
+	
+	public List<String> getColumnNames(String table){
+		for (Table t : tables) {
+			if (t.getName().equals(table)) {
+				return t.getColumnNames();
+			}
+		}
+		return new ArrayList<String>();
+	}
 }
