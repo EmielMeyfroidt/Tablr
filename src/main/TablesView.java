@@ -18,7 +18,6 @@ public class TablesView extends AbstractView {
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		int elementNumber = (int) Math.floor(y/this.stepY);
-		System.out.println(elementNumber);
 		try {
 			String tableClicked = getMgr().getTableNames().get(elementNumber);
 			DesignView newView = new DesignView(getMgr(), tableClicked);

@@ -6,7 +6,7 @@ public class EditNameView extends AbstractView {
 
 	private AbstractView underlyingMode;
 	private String name;
-	final String originalName;
+	private final String originalName;
 	
 	public EditNameView(TablrManager mgr, AbstractView underlyingMode, String name) {
 		super(mgr);
