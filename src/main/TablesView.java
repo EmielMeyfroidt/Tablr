@@ -10,6 +10,10 @@ public class TablesView extends AbstractView {
 	private final int stepY = 20;
 	private List<String> selectedTables;
 	
+	/**
+	 * 
+	 * @param mgr The tablrManager.
+	 */
 	public TablesView(TablrManager mgr) {
 		super(mgr);
 		this.selectedTables = new ArrayList<String>();

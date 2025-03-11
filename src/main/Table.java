@@ -9,11 +9,18 @@ public class Table implements Nameable {
 	private String name;
 	private List<Column<?>> columns;
 
+	/**
+	 * 
+	 * @param name The name of the table.
+	 */
 	public Table(String name) {
 		this.setName(name);
 		columns = new ArrayList<Column<?>>();
 	}
 
+	/**
+	 * Adds a column, generates a unique name.
+	 */
 	public void addColumn() {
 		String name = generateUniqueName();
 		Column<String> column;
@@ -26,10 +33,16 @@ public class Table implements Nameable {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void addRow() {
 		// TODO
 	}
 
+	/**
+	 * 
+	 */
 	public void deleteRow() {
 		// TODO
 	}
@@ -42,6 +55,11 @@ public class Table implements Nameable {
 		this.name = name;
 	}
 
+	/**
+	 * 
+	 * @return A string of information for all columns.
+	 */
+	//TODO: split in different getters.
 	public List<String> getColumnsInfo() {
 		List<String> columnsInfo = new ArrayList<String>();
 		for (Column<?> i : columns) {
@@ -50,10 +68,18 @@ public class Table implements Nameable {
 		return columnsInfo;
 	}
 
+	/**
+	 * 
+	 * @return A list of all column names.
+	 */
 	public List<String> getColumnNames() {
 		return columns.stream().map(c -> c.getName()).collect(Collectors.toList());
 	}
 
+	/**
+	 * 
+	 * @param c The name of the column.
+	 */
 	public void removeColumn(String c) {
 		columns.removeIf(t -> t.getName().equals(c));
 	}
