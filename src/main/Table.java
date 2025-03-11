@@ -58,7 +58,7 @@ public class Table implements Nameable{
 		return columns.stream().map(c -> c.getName()).collect(Collectors.toList());
 	}
 	
-	public String generateUniqueName() {
+	private String generateUniqueName() {
 		int n = 0;
 		while (getColumnNames().contains("Column" + n)) {
 			n++;

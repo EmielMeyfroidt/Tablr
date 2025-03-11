@@ -1,10 +1,10 @@
 package main;
 
-public class Cell {
-	private Object value;
-	private Column column;
+public class Cell<T> {
+	private T value;
+	private Column<T> column;
 
-	public Cell(Object value, Column column) {
+	public Cell(T value, Column<T> column) {
 		this.value = value;
 		this.column = column;
 	}
