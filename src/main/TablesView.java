@@ -8,11 +8,11 @@ public class TablesView extends AbstractView {
 
 	private final int stepX = 20;
 	private final int stepY = 20;
-	private List<Table> selectedTables;
+	private List<String> selectedTables;
 	
 	public TablesView(TablrManager mgr) {
 		super(mgr);
-		this.selectedTables = new ArrayList<Table>();
+		this.selectedTables = new ArrayList<String>();
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class TablesView extends AbstractView {
 		int elementNumber = (int) Math.floor(y/this.stepY);
 		System.out.println(elementNumber);
 		try {
-			Table tableClicked = getMgr().getTables().get(elementNumber);
+			String tableClicked = getMgr().getTableNames().get(elementNumber);
 			DesignView newView = new DesignView(getMgr(), tableClicked);
 			newView.setChangeModeListeners(getChangeModeListeners());
 			this.fireModeChanged(newView);
@@ -34,11 +34,11 @@ public class TablesView extends AbstractView {
 		int elementNumber = (int) Math.floor(y/this.stepY);
 		if (x < stepX) {
 			//Left margin of table, indicate that selected
-			selectedTables.add(getMgr().getTables().get(elementNumber));
+			selectedTables.add(getMgr().getTableNames().get(elementNumber));
 			fireModeChanged(this);
-		} else if (elementNumber <= getMgr().getTables().size()) {
+		} else if (elementNumber <= getMgr().getTableNames().size()) {
 			//Click on table, edit name
-			fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getTables().get(elementNumber)));
+			fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getTableNames().get(elementNumber)));
 		}
 	}
 
@@ -66,9 +66,10 @@ public class TablesView extends AbstractView {
 
 	@Override
 	public void handleDelete() {
-		for (Table t : selectedTables) {
-			getMgr().getTables().remove(t);
+		for (String t : selectedTables) {
+			getMgr().removeTable(t);
 		}
+		selectedTables.clear();
 		fireModeChanged(this);
 	}
 
@@ -81,11 +82,11 @@ public class TablesView extends AbstractView {
 	@Override
 	public void paint(Graphics g) {
 		int y = stepY;
-		for (Table table : getMgr().getTables()) {
+		for (String table : getMgr().getTableNames()) {
 			if (selectedTables.contains(table)) {
 				g.drawString("*", 0, y);
 			}
-			g.drawString(table.getName(), stepX, y);
+			g.drawString(table, stepX, y);
 			y += stepY;
 		}
 	}

@@ -9,9 +9,9 @@ public class DesignView extends AbstractView {
 
 	private final int stepX = 20;
 	private final int stepY = 20;
-	private Table table;
+	private String table;
 
-	public DesignView(TablrManager mgr, Table table) {
+	public DesignView(TablrManager mgr, String table) {
 		super(mgr);
 		this.table = table;
 	}
@@ -68,7 +68,7 @@ public class DesignView extends AbstractView {
 	@Override
 	public void paint(Graphics g) {
 		List<List<String>> splitList = new ArrayList<>();
-		for (String s : table.getColumnsInfo()) {
+		for (String s : getMgr().getColumnsInfo(table)) {
 			List<String> columnData = Arrays.asList(s.split(" "));
 			splitList.add(columnData);
 		}

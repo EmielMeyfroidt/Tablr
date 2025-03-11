@@ -37,14 +37,10 @@ public class TablrManager {
 		fireContentsChanged();
 	}
 
-	public void removeTable(Table table) {
-		// TODO
+	public void removeTable(String table) {
+	    tables.removeIf(t -> t.getName().equals(table));
 	}
 
-	public List<Table> getTables() {
-		return tables;
-	}
-	
 	public List<String> getTableNames(){
 		return tables.stream().map(t -> t.getName()).collect(Collectors.toList());
 	}
@@ -59,6 +55,24 @@ public class TablrManager {
 			n++;
 		}
 		return "Table" + n;
+	}
+	
+	public List<String> getColumnsInfo(String tableName){
+		for (Table t : tables) {
+			if (t.getName().equals(tableName)) {
+				return t.getColumnsInfo();
+			}
+		}
+		return null;
+	}
+	
+	public void changeName(String element, String newName) {
+		for (Table t : tables) {
+			if (t.getName().equals(element)) {
+				t.setName(newName);
+			}
+		}
+		fireContentsChanged();
 	}
 
 }
