@@ -34,8 +34,9 @@ public class DesignView extends AbstractView {
 
 	@Override
 	public void handleEscape() {
-		// TODO Auto-generated method stub
-
+		TablesView newView = new TablesView(getMgr());
+		newView.setChangeModeListeners(getChangeModeListeners());
+		fireModeChanged(newView);
 	}
 
 	@Override

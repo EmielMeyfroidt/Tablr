@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Graphics;
-import java.util.List;
 
 public class RowsView extends AbstractView {
 
@@ -24,8 +23,9 @@ public class RowsView extends AbstractView {
 
 	@Override
 	public void handleEscape() {
-		// TODO Auto-generated method stub
-		
+		TablesView newView = new TablesView(getMgr());
+		newView.setChangeModeListeners(getChangeModeListeners());
+		fireModeChanged(newView);
 	}
 
 	@Override

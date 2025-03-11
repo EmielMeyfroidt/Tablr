@@ -43,8 +43,7 @@ public class TablesView extends AbstractView {
 
 	@Override
 	public void handleEscape() {
-		// TODO Auto-generated method stub
-
+		// nothing should happen
 	}
 
 	@Override
