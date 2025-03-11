@@ -70,7 +70,6 @@ public class TablesView extends AbstractView {
 			getMgr().removeTable(t);
 		}
 		selectedTables.clear();
-		fireModeChanged(this);
 	}
 
 	@Override

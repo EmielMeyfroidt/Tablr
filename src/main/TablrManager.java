@@ -39,6 +39,7 @@ public class TablrManager {
 
 	public void removeTable(String table) {
 	    tables.removeIf(t -> t.getName().equals(table));
+	    fireContentsChanged();
 	}
 
 	public List<String> getTableNames(){
@@ -61,18 +62,19 @@ public class TablrManager {
 		for (Table t : tables) {
 			if (t.getName().equals(tableName)) {
 				return t.getColumnsInfo();
+				
 			}
 		}
-		return null;
+		return new ArrayList<String>();
 	}
 	
 	public void changeName(String element, String newName) {
 		for (Table t : tables) {
 			if (t.getName().equals(element)) {
 				t.setName(newName);
+				break;
 			}
 		}
 		fireContentsChanged();
 	}
-
 }
