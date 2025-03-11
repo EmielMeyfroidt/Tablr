@@ -10,25 +10,35 @@ public class DesignView extends AbstractView {
 	private final int stepX = 20;
 	private final int stepY = 20;
 	private String table;
+	private List<String> selectedColumns;
 
 	public DesignView(TablrManager mgr, String table) {
 		super(mgr);
 		this.table = table;
+		this.selectedColumns = new ArrayList<String>();
 	}
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		int elementNumber = (int) Math.floor(y/this.stepY);
+		int elementNumber = (int) Math.floor(y / this.stepY);
 		if (elementNumber > getMgr().getColumnNames(table).size()) {
 			getMgr().addColumn(table);
 		} else {
-			//nothing
+			// nothing
 		}
 	}
 
 	@Override
 	public void handleSingleClick(int x, int y) {
-		// TODO Auto-generated method stub
+		int elementNumber = (int) Math.floor(y / this.stepY);
+		if (x < stepX) {
+			// Left margin of table, indicate that selected
+			selectedColumns.add(getMgr().getColumnNames(table).get(elementNumber));
+			fireModeChanged(this);
+		} else if (elementNumber <= getMgr().getTableNames().size()) {
+			// Click on table, edit name
+			fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getTableNames().get(elementNumber)));
+		}
 
 	}
 
@@ -57,7 +67,10 @@ public class DesignView extends AbstractView {
 
 	@Override
 	public void handleDelete() {
-		// TODO Auto-generated method stub
+		for (String c : selectedColumns) {
+			getMgr().removeColumn(table, c);
+		}
+		selectedColumns.clear();
 	}
 
 	@Override
@@ -80,11 +93,14 @@ public class DesignView extends AbstractView {
 		int y = stepY;
 		int x = stepX;
 		for (List<String> l : splitList) {
+			if (selectedColumns.contains(l.get(0))) {
+				g.drawString("*", 0, y);
+			}
 			for (String s : l) {
 				g.drawString(s, x, y);
-				x += 3*stepX;
+				x += 3 * stepX;
 			}
-			y+= stepY;
+			y += stepY;
 			x = stepX;
 		}
 	}

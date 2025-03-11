@@ -8,7 +8,7 @@ public abstract class AbstractView {
 
 	private TablrManager mgr;
 	private List<ChangeModeListener> changeModeListeners = new ArrayList<ChangeModeListener>();
-	
+
 	/**
 	 * @return the changeModeListeners
 	 */
@@ -26,9 +26,9 @@ public abstract class AbstractView {
 	public AbstractView(TablrManager mgr) {
 		this.setMgr(mgr);
 	}
-	
+
 	public abstract String getTitle();
-	
+
 	public abstract void paint(Graphics g);
 
 	public abstract void handleDoubleClick(int x, int y);
@@ -54,7 +54,7 @@ public abstract class AbstractView {
 	public void setMgr(TablrManager mgr) {
 		this.mgr = mgr;
 	}
-	
+
 	public void addListener(ChangeModeListener c) {
 		changeModeListeners.add(c);
 	}

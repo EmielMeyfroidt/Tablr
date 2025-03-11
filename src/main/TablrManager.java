@@ -37,11 +37,11 @@ public class TablrManager {
 	}
 
 	public void removeTable(String table) {
-	    tables.removeIf(t -> t.getName().equals(table));
-	    fireContentsChanged();
+		tables.removeIf(t -> t.getName().equals(table));
+		fireContentsChanged();
 	}
 
-	public List<String> getTableNames(){
+	public List<String> getTableNames() {
 		return tables.stream().map(t -> t.getName()).collect(Collectors.toList());
 	}
 
@@ -56,17 +56,17 @@ public class TablrManager {
 		}
 		return "Table" + n;
 	}
-	
-	public List<String> getColumnsInfo(String tableName){
+
+	public List<String> getColumnsInfo(String tableName) {
 		for (Table t : tables) {
 			if (t.getName().equals(tableName)) {
 				return t.getColumnsInfo();
-				
+
 			}
 		}
 		return new ArrayList<String>();
 	}
-	
+
 	public void changeName(String element, String newName) {
 		for (Table t : tables) {
 			if (t.getName().equals(element)) {
@@ -76,7 +76,7 @@ public class TablrManager {
 		}
 		fireContentsChanged();
 	}
-	
+
 	public void addColumn(String table) {
 		for (Table t : tables) {
 			if (t.getName().equals(table)) {
@@ -86,13 +86,26 @@ public class TablrManager {
 		}
 		fireContentsChanged();
 	}
-	
-	public List<String> getColumnNames(String table){
+
+	public List<String> getColumnNames(String table) {
 		for (Table t : tables) {
 			if (t.getName().equals(table)) {
 				return t.getColumnNames();
 			}
 		}
 		return new ArrayList<String>();
+	}
+
+	/**
+	 * @param table
+	 * @param c
+	 */
+	public void removeColumn(String table, String c) {
+		for (Table t : tables) {
+			t.removeColumn(c);
+			break;
+		}
+		fireContentsChanged();
+
 	}
 }

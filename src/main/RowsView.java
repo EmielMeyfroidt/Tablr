@@ -12,13 +12,13 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void handleSingleClick(int x, int y) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleBackSpace() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -62,8 +62,7 @@ public class RowsView extends AbstractView {
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 }

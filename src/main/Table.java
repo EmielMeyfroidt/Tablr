@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 //Holds columns and rows
-public class Table implements Nameable{
+public class Table implements Nameable {
 	private String name;
 	private List<Column<?>> columns;
 
@@ -18,7 +18,7 @@ public class Table implements Nameable{
 		String name = generateUniqueName();
 		Column<String> column;
 		try {
-			column = new Column<String>(name, String.class, true , "");
+			column = new Column<String>(name, String.class, true, "");
 			columns.add(column);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -27,10 +27,6 @@ public class Table implements Nameable{
 	}
 
 	public void addRow() {
-		// TODO
-	}
-
-	public void deleteColumn() {
 		// TODO
 	}
 
@@ -53,11 +49,15 @@ public class Table implements Nameable{
 		}
 		return columnsInfo;
 	}
-	
-	public List<String> getColumnNames(){
+
+	public List<String> getColumnNames() {
 		return columns.stream().map(c -> c.getName()).collect(Collectors.toList());
 	}
-	
+
+	public void removeColumn(String c) {
+		columns.removeIf(t -> t.getName().equals(c));
+	}
+
 	private String generateUniqueName() {
 		int n = 0;
 		while (getColumnNames().contains("Column" + n)) {

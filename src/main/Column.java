@@ -15,10 +15,10 @@ public class Column<T> {
 	}
 
 	public String getInfo() {
-		String typeName = (typeClass != null) ? typeClass.getSimpleName() : "Unknown Type"; 
+		String typeName = (typeClass != null) ? typeClass.getSimpleName() : "Unknown Type";
 		return name + " " + typeName + " " + allowsBlanks + " " + defaultValue.toString();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
