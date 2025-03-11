@@ -31,14 +31,15 @@ public class DesignView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		int elementNumber = (int) Math.floor(y / this.stepY);
-		if (x < stepX) {
-			// Left margin of table, indicate that selected
-			selectedColumns.add(getMgr().getColumnNames(table).get(elementNumber));
-			fireModeChanged(this);
-		} else if (elementNumber <= getMgr().getTableNames().size()) {
-			// Click on table, edit name
-			fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getTableNames().get(elementNumber)));
-		}
+		if ((elementNumber <= getMgr().getColumnNames(table).size())) {
+			if (x < stepX) {
+				// Left margin of table, indicate that selected
+				selectedColumns.add(getMgr().getColumnNames(table).get(elementNumber));
+				fireModeChanged(this);}
+			else {
+				// Click on table, edit name
+				fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getColumnNames(table).get(elementNumber)));
+		}}
 
 	}
 

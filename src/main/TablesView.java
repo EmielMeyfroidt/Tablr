@@ -32,18 +32,20 @@ public class TablesView extends AbstractView {
 		}
 	}
 
-	@Override
-	public void handleSingleClick(int x, int y) {
-		int elementNumber = (int) Math.floor(y/this.stepY);
-		if (x < stepX) {
-			//Left margin of table, indicate that selected
-			selectedTables.add(getMgr().getTableNames().get(elementNumber));
-			fireModeChanged(this);
-		} else if (elementNumber <= getMgr().getTableNames().size()) {
-			//Click on table, edit name
-			fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getTableNames().get(elementNumber)));
-		}
-	}
+    @Override
+    public void handleSingleClick(int x, int y) {
+        int elementNumber = (int) Math.floor(y / this.stepY);
+        if (elementNumber <= getMgr().getTableNames().size()) {
+            if (x < stepX) {
+                //Left margin of table, indicate that selected
+                selectedTables.add(getMgr().getTableNames().get(elementNumber));
+                fireModeChanged(this);
+            } else {
+                //Click on table, edit name
+                fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getTableNames().get(elementNumber)));
+            }
+        }
+    }
 
 	@Override
 	public void handleEscape() {
