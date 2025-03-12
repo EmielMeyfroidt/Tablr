@@ -35,11 +35,13 @@ public class DesignView extends AbstractView {
 			if (x < stepX) {
 				// Left margin of table, indicate that selected
 				selectedColumns.add(getMgr().getColumnNames(table).get(elementNumber));
-				fireModeChanged(this);}
-			else {
+				fireModeChanged(this);
+			} else {
 				// Click on table, edit name
-				fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getColumnNames(table).get(elementNumber)));
-		}}
+				fireModeChanged(
+						new EditNameView(this.getMgr(), this, this.getMgr().getColumnNames(table).get(elementNumber)));
+			}
+		}
 
 	}
 
