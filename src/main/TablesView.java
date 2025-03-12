@@ -42,7 +42,8 @@ public class TablesView extends AbstractView {
                 fireModeChanged(this);
             } else {
                 //Click on table, edit name
-                fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getTableNames().get(elementNumber)));
+				String tableName = this.getMgr().getTableNames().get(elementNumber);
+				fireModeChanged(new EditNameView(this.getMgr(), this, tableName, tableName));
             }
         }
     }

@@ -6,11 +6,13 @@ public class EditNameView extends AbstractView {
 
 	private AbstractView underlyingMode;
 	private String name;
+	private String nameTable;
 	private final String originalName;
 	
-	public EditNameView(TablrManager mgr, AbstractView underlyingMode, String name) {
+	public EditNameView(TablrManager mgr, AbstractView underlyingMode, String name, String nameTable) {
 		super(mgr);
 		this.underlyingMode = underlyingMode;
+		this.nameTable = nameTable;
 		this.name = name;
 		this.originalName = name;
 		this.setChangeModeListeners(underlyingMode.getChangeModeListeners());
@@ -32,19 +34,36 @@ public class EditNameView extends AbstractView {
 
 	@Override
 	public void handleEscape() {
-		getMgr().changeName(name, originalName);
-		fireModeChanged(underlyingMode);
+		if (underlyingMode instanceof TablesView) {
+			getMgr().changeName(name, originalName);
+			fireModeChanged(underlyingMode);
+		} else if (underlyingMode instanceof DesignView) {
+			getMgr().changeNameColumn(nameTable, name, originalName);
+			fireModeChanged(underlyingMode);
+		}
 	}
 
 	@Override
 	public void handleBackSpace() {
-		try {
-			getMgr().changeName(name, name.substring(0, name.length() - 1));
-			name = name.substring(0, name.length() - 1);
-		} catch (Exception e) {
-			getMgr().changeName(name, "");
-			name = "";
+		if (underlyingMode instanceof TablesView) {
+			try {
+				getMgr().changeName(name, name.substring(0, name.length() - 1));
+				name = name.substring(0, name.length() - 1);
+			} catch (Exception e) {
+				getMgr().changeName(name, "");
+				name = "";
+			}
+		} else if (underlyingMode instanceof DesignView) {
+			try {
+
+				getMgr().changeNameColumn(nameTable, name, name.substring(0, name.length() - 1));
+				name = name.substring(0, name.length() - 1);
+			} catch (Exception e) {
+				getMgr().changeNameColumn(nameTable,name , "");
+				name = "";
+			}
 		}
+
 	}
 
 	@Override
@@ -65,8 +84,12 @@ public class EditNameView extends AbstractView {
 
 	@Override
 	public void handleCharTyped(char keyChar) {
-		getMgr().changeName(name, name + keyChar);
-		name += keyChar;
+		if (underlyingMode instanceof TablesView) {
+			getMgr().changeName(name, name + keyChar);
+			name += keyChar;
+		} else if (underlyingMode instanceof DesignView) {
+			getMgr().changeNameColumn(nameTable, name, name + keyChar);
+		}
 	}
 
 	@Override

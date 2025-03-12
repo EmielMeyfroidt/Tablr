@@ -109,6 +109,21 @@ public class TablrManager {
 	}
 
 	/**
+	 *
+	 * @param table   The name of the table.
+	 * @param newName The new name of the table.
+	 */
+	public void changeNameColumn(String table, String column, String newName) {
+		for (Table t : tables) {
+			if (t.getName().equals(table)) {
+				t.renameColumn(column, newName);
+				break;
+			}
+		}
+		fireContentsChanged();
+	}
+
+	/**
 	 * 
 	 * @param table The name of the table.
 	 */

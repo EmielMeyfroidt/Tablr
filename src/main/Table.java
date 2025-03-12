@@ -33,6 +33,17 @@ public class Table {
 		}
 	}
 
+	public void renameColumn(String name, String newName) {
+		for (Column<?> col : columns) {
+			if (col.getName().equals(name)) {
+				if (newName != null && !this.getColumnNames().contains(newName)) {
+					col.setName( newName);
+					return;
+				}
+			}
+		}
+	}
+
 	/**
 	 * 
 	 */

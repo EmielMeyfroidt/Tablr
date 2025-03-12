@@ -33,4 +33,12 @@ public class Column<T> {
 	public String getName() {
 		return name;
 	}
+
+	/**
+	 *
+	 * @param name new column name validated by table
+	 */
+	public void setName(String name) {this.name = name;}
+
+
 }
