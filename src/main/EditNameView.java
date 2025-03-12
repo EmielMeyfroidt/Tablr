@@ -89,6 +89,7 @@ public class EditNameView extends AbstractView {
 			name += keyChar;
 		} else if (underlyingMode instanceof DesignView) {
 			getMgr().changeNameColumn(nameTable, name, name + keyChar);
+			name += keyChar;
 		}
 	}
 
