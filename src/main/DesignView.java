@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class DesignView extends AbstractView {
 
@@ -11,11 +12,13 @@ public class DesignView extends AbstractView {
 	private final int stepY = 20;
 	private String table;
 	private List<String> selectedColumns;
+	private List<Integer> margin;
 
 	public DesignView(TablrManager mgr, String table) {
 		super(mgr);
 		this.table = table;
 		this.selectedColumns = new ArrayList<String>();
+		this.margin = new ArrayList<>();
 	}
 
 	@Override
@@ -93,16 +96,33 @@ public class DesignView extends AbstractView {
 		}
 		int y = stepY;
 		int x = stepX;
-		for (List<String> l : splitList) {
-			if (selectedColumns.contains(l.get(0))) {
-				g.drawString("*", 0, y);
+		int i = 0;
+		try {
+			// calculate margins
+			margin = splitList.getFirst().stream().map(String::length).toList();
+			for (List<String> l : splitList) {
+				i = 0;
+				for (String s : l) {
+					if (s.length() > margin.get(i)) {
+						margin.set(i, s.length());
+					}
+					i++;
+				}
 			}
-			for (String s : l) {
-				g.drawString(s, x, y);
-				x += 3 * stepX;
+			for (List<String> l : splitList) {
+				if (selectedColumns.contains(l.get(0))) {
+					g.drawString("*", 0, y);
+				}
+				i=0;
+				for (String s : l) {
+					g.drawString(s, x, y);
+					x += margin.get(i)*10;
+					i++;
+				}
+				y += stepY;
+				x = stepX;
 			}
-			y += stepY;
-			x = stepX;
-		}
+		} catch (NoSuchElementException e) {}
+
 	}
 }
