@@ -127,7 +127,7 @@ public class DesignView extends AbstractView {
 		int i = 0;
 		try {
 			// calculate margins
-			margin = splitList.getFirst().stream().map(String::length).toList();
+			margin = new ArrayList<>(splitList.getFirst().stream().map(String::length).toList());
 			for (List<String> l : splitList) {
 				i = 0;
 				for (String s : l) {
