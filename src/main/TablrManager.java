@@ -84,13 +84,8 @@ public class TablrManager {
 	 * @return A list with the info of the columns.
 	 */
 	public List<String> getColumnsInfo(String tableName) {
-		for (Table t : tables) {
-			if (t.getName().equals(tableName)) {
-				return t.getColumnsInfo();
-
-			}
-		}
-		return new ArrayList<String>();
+		Table t = findTable(tableName);
+		return t.getColumnsInfo();
 	}
 
 	/**
@@ -99,12 +94,8 @@ public class TablrManager {
 	 * @param newName The new name of the table.
 	 */
 	public void changeName(String table, String newName) {
-		for (Table t : tables) {
-			if (t.getName().equals(table)) {
-				t.setName(newName);
-				break;
-			}
-		}
+		Table t = findTable(table);
+		t.setName(newName);
 		fireContentsChanged();
 	}
 
@@ -114,12 +105,8 @@ public class TablrManager {
 	 * @param newName The new name of the table.
 	 */
 	public void changeNameColumn(String table, String column, String newName) {
-		for (Table t : tables) {
-			if (t.getName().equals(table)) {
-				t.renameColumn(column, newName);
-				break;
-			}
-		}
+		Table t = findTable(table);
+		t.renameColumn(column, newName);
 		fireContentsChanged();
 	}
 
@@ -128,12 +115,8 @@ public class TablrManager {
 	 * @param table The name of the table.
 	 */
 	public void addColumn(String table) {
-		for (Table t : tables) {
-			if (t.getName().equals(table)) {
-				t.addColumn();
-				break;
-			}
-		}
+		Table t = findTable(table);
+		t.addColumn();
 		fireContentsChanged();
 	}
 
@@ -143,12 +126,8 @@ public class TablrManager {
 	 * @return A list of all the names of the columns.
 	 */
 	public List<String> getColumnNames(String table) {
-		for (Table t : tables) {
-			if (t.getName().equals(table)) {
-				return t.getColumnNames();
-			}
-		}
-		return new ArrayList<String>();
+		Table t = findTable(table);
+		return t.getColumnNames();
 	}
 
 	/**
@@ -156,58 +135,62 @@ public class TablrManager {
 	 * @param c     The name of the column to remove.
 	 */
 	public void removeColumn(String table, String c) {
-		for (Table t : tables) {
-			t.removeColumn(c);
-			break;
-		}
+		Table t = findTable(table);
+		t.removeColumn(c);
 		fireContentsChanged();
 	}
 
 	public List<List<String>> getColumns(String table) {
-		List<List<String>> columns = new ArrayList<>();
-		for (Table t : tables) {
-			if (t.getName().equals(table)) {
-				return t.getColumns();
-			}
-		}
-		return null;
+		Table t = findTable(table);
+		return t.getColumns();
 	}
 
 	public void addRow(String table) {
-		for (Table t : tables) {
-			if (t.getName().equals(table)) {
-				t.addRow();
-				break;
-			}
-		}
+		Table t = findTable(table);
+		t.addRow();
 		fireContentsChanged();
 	}
 
 	public void removeRow(String table, int row) {
-		for (Table t : tables) {
-			if (t.getName().equals(table)) {
-				t.removeRow(row);
-				break;
-			}
-		}
+		Table t = findTable(table);
+		t.removeRow(row);
 		fireContentsChanged();
 	}
 
 	public void updateCell(String nameTable, String nameColumn, Integer rowIndex, String value) {
-		for (Table t : tables) {
-			if (t.getName().equals(nameTable)) {
-				t.updateCell(nameColumn, rowIndex, value);
-			}
-		}
+		Table t = findTable(nameTable);
+		t.updateCell(nameColumn, rowIndex, value);
 		fireContentsChanged();
 	}
 
 	public String getCell(String nameTable, String nameColumn, Integer rowIndex) {
+		Table t = findTable(nameTable);
+		return t.getCell(nameColumn, rowIndex);
+
+	}
+
+	public void changeAllowBlanks(String tableName, String columnName) {
+		Table t = findTable(tableName);
+		t.changeAllowBlanks(columnName);
+		fireContentsChanged();
+	}
+
+	private Table findTable(String tableName) {
 		for (Table t : tables) {
-			if (t.getName().equals(nameTable)) {
-				return t.getCell(nameColumn, rowIndex);
+			if (t.getName().equals(tableName)) {
+				return t;
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * @param table
+	 * @param string
+	 */
+	public void changeType(String table, String column) {
+		Table t = findTable(table);
+		t.changeType(column);
+		fireContentsChanged();
 	}
 }

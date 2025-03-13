@@ -79,5 +79,4 @@ public class EditTableNameView extends AbstractView {
 	public void paint(Graphics g) {
 		underlyingMode.paint(g);
 	}
-
 }

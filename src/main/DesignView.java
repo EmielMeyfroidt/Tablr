@@ -36,15 +36,31 @@ public class DesignView extends AbstractView {
 	public void handleSingleClick(int x, int y) {
 		int elementNumber = (int) Math.floor(y / this.stepY);
 		if ((elementNumber <= getMgr().getColumnNames(table).size())) {
+			List<Integer> runningMargin = new ArrayList<>();
+			int sum = 0;
+			sum += stepX;
+			for (int i = 0; i < margin.size(); i++) {
+			    sum += margin.get(i) * 10;
+			    runningMargin.add(sum);
+			}
 			if (x < stepX) {
 				// Left margin of table, indicate that selected
 				selectedColumns.add(getMgr().getColumnNames(table).get(elementNumber));
-				fireModeChanged(this);}
-			else {
-				// Click on table, edit name
-				fireModeChanged(new EditColumnCharacteristicsView(this.getMgr(), this, this.getMgr().getColumnNames(table).get(elementNumber), table));
-		}}
-
+				fireModeChanged(this);
+			} else if (x < runningMargin.get(0)){
+				// Click on table name, edit name
+				fireModeChanged(new EditColumnCharacteristicsView(this.getMgr(), this,
+						this.getMgr().getColumnNames(table).get(elementNumber), table));
+			} else if (x < runningMargin.get(1)){
+				// Click on type
+				this.getMgr().changeType(table, this.getMgr().getColumnNames(table).get(elementNumber));
+			} else if (x < runningMargin.get(2)) {
+				// Click on allowBlanks
+				this.getMgr().changeAllowBlanks(table, this.getMgr().getColumnNames(table).get(elementNumber));
+			} else if (x < runningMargin.get(3)) {
+				// Click on defaultValue
+			}
+		}
 	}
 
 	@Override
@@ -56,7 +72,7 @@ public class DesignView extends AbstractView {
 
 	@Override
 	public void handleBackSpace() {
-		// TODO Auto-generated method stub
+		// nothing should happen
 
 	}
 
@@ -70,7 +86,7 @@ public class DesignView extends AbstractView {
 
 	@Override
 	public void handleEnter() {
-		// TODO Auto-generated method stub
+		// nothing should happen
 	}
 
 	@Override
@@ -83,7 +99,7 @@ public class DesignView extends AbstractView {
 
 	@Override
 	public void handleCharTyped(char keyChar) {
-		// TODO Auto-generated method stub
+		// nothing should happen
 	}
 
 	@Override
@@ -117,16 +133,17 @@ public class DesignView extends AbstractView {
 				if (selectedColumns.contains(l.get(0))) {
 					g.drawString("*", 0, y);
 				}
-				i=0;
+				i = 0;
 				for (String s : l) {
 					g.drawString(s, x, y);
-					x += margin.get(i)*10;
+					x += margin.get(i) * 10;
 					i++;
 				}
 				y += stepY;
 				x = stepX;
 			}
-		} catch (NoSuchElementException e) {}
+		} catch (NoSuchElementException e) {
+		}
 
 	}
 }

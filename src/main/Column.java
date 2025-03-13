@@ -39,9 +39,7 @@ public class Column<T> {
 	 * @return The contents of the column as string.
 	 */
 	public List<String> getColumn() {
-		return cells.stream()
-				.map(cell -> cell.getValue().toString())
-				.toList();
+		return cells.stream().map(cell -> cell.getValue().toString()).toList();
 	}
 
 	public String getName() {
@@ -52,8 +50,9 @@ public class Column<T> {
 	 *
 	 * @param name new column name validated by table
 	 */
-	public void setName(String name) {this.name = name;}
-
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public void addCell() {
 		cells.add(new Cell<>(defaultValue));
@@ -80,5 +79,16 @@ public class Column<T> {
 
 	public String getCell(Integer rowIndex) {
 		return cells.get(rowIndex).getValue().toString();
+	}
+
+	/**
+	 * 
+	 */
+	public void changeAllowBlanks() {
+		this.allowsBlanks = !this.allowsBlanks;
+	}
+	
+	public Class<T> getType(){
+		return typeClass;
 	}
 }

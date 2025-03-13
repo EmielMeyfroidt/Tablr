@@ -42,11 +42,17 @@ public class Table {
 		for (Column<?> col : columns) {
 			if (col.getName().equals(name)) {
 				if (newName != null && !this.getColumnNames().contains(newName)) {
-					col.setName( newName);
+					col.setName(newName);
 					return;
 				}
 			}
 		}
+	}
+	
+	public <T> void changeColumn(String name, Column<T> newColumn) {
+		Column<?> col = findColumn(name);
+		int index = columns.indexOf(col);
+		columns.set(index, newColumn);
 	}
 
 	/**
@@ -67,7 +73,6 @@ public class Table {
 		}
 	}
 
-
 	public String getName() {
 		return name;
 	}
@@ -80,7 +85,7 @@ public class Table {
 	 * 
 	 * @return A string of information for all columns.
 	 */
-	//TODO: split in different getters.
+	// TODO: split in different getters.
 	public List<String> getColumnsInfo() {
 		List<String> columnsInfo = new ArrayList<String>();
 		for (Column<?> i : columns) {
@@ -118,17 +123,41 @@ public class Table {
 	}
 
 	public void updateCell(String nameColumn, Integer rowIndex, String value) {
-		for (Column<?> col : columns){
-			if (col.getName().equals(nameColumn)) {
-				col.updateCell(rowIndex, value);
-			}
-		}
+		Column<?> col = findColumn(nameColumn);
+		col.updateCell(rowIndex, value);
 	}
 
 	public String getCell(String nameColumn, Integer rowIndex) {
-		for (Column<?> col : columns){
-			if (col.getName().equals(nameColumn)) {
-				return col.getCell(rowIndex);
+		Column<?> col = findColumn(nameColumn);
+		return col.getCell(rowIndex);
+	}
+
+	/**
+	 * 
+	 */
+	public void changeAllowBlanks(String columnName) {
+		Column<?> col = findColumn(columnName);
+		col.changeAllowBlanks();
+	}
+
+	public void changeType(String columnName) {
+		Column<?> col = findColumn(columnName);
+		if (col.getType() == String.class) {
+	        Column<Boolean> newCol = new Column<Boolean>(columnName, Boolean.class, true, true);
+	        changeColumn(columnName, newCol);
+	    }else if (col.getType() == Boolean.class) {
+	    	Column<Integer> newCol = new Column<Integer>(columnName, Integer.class, true, 0);
+	    	changeColumn(columnName, newCol);
+	    }else if (col.getType() == Integer.class) {
+	    	Column<String> newCol = new Column<String>(columnName, String.class, true, "");
+	    	changeColumn(columnName, newCol);
+	    }
+	}
+
+	private Column<?> findColumn(String columnName) {
+		for (Column<?> col : columns) {
+			if (col.getName().equals(columnName)) {
+				return col;
 			}
 		}
 		return null;
