@@ -2,7 +2,6 @@ package test;
 
 import static org.junit.Assert.*;
 
-import main.Cell;
 import main.Column;
 import org.junit.Test;
 
@@ -95,5 +94,37 @@ public class ColumnTest {
 
 		column.addCell();
 		assertEquals("DefaultValue", column.getCell(0));
+	}
+	
+	@Test
+	public void testUpdateCellForDifferentTypes() {
+		Column<String> string = new Column<>("String", String.class, true, "DefaultValue");
+		string.addCell();
+		string.updateCell(0, "UpdatedValue");
+		assertEquals(string.getCell(0), "UpdatedValue");
+		Column<Boolean> bool = new Column<>("Bool", Boolean.class, true, true);
+		bool.addCell();
+		bool.updateCell(0, "false");
+		assertEquals(bool.getCell(0), "false");
+		Column<Integer> integer = new Column<>("Integer", Integer.class, true, 0);
+		integer.addCell();
+		integer.updateCell(0, "1");
+		assertEquals(integer.getCell(0), "1");
+	}
+	
+	@Test
+	public void testSetDefaultValueForDifferentTypes() {
+		Column<String> string = new Column<>("String", String.class, true, "DefaultValue");
+		string.addCell();
+		string.setDefaultValue("UpdatedValue");
+		assertEquals(string.getDefaultValue(), "UpdatedValue");
+		Column<Boolean> bool = new Column<>("Bool", Boolean.class, true, true);
+		bool.addCell();
+		bool.setDefaultValue("false");
+		assertEquals(bool.getDefaultValue(), false);
+		Column<Integer> integerCol = new Column<>("Integer", Integer.class, true, 0);
+		integerCol.addCell();
+		integerCol.setDefaultValue("1");
+		assertEquals((Integer) 1, integerCol.getDefaultValue());
 	}
 }
