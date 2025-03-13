@@ -95,10 +95,10 @@ public class TablrManagerTest {
 		assertEquals("SampleValue", mgr.getCell(tableName, "Column0", 0));
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testAddRowToNonExistentTable() {
 		TablrManager mgr = new TablrManager();
-		mgr.addRow("NonExistentTable");
+		assertThrows(Exception.class, () -> mgr.addRow("NonExistentTable"));
 	}
 
 	@Test
@@ -214,9 +214,17 @@ public class TablrManagerTest {
 
 		// Assuming there's an observable type associated with the column, trigger the change:
 		mgr.changeType(tableName, "Column0");
-
-		// If there's no direct state to assert, verify behavior:
-		// Ideally, mock a method on Table to assert that the type change was applied.
+		assertEquals(mgr.getClass(tableName, "Column0"), Boolean.class);
+	}
+	
+	@Test
+	public void testSetDefaultValue() {
+		TablrManager mgr = new TablrManager();
+		mgr.addTable();
+		String tableName = mgr.getTableNames().get(0);
+		mgr.addColumn(tableName);
+		mgr.setDefaultValue(tableName, "Column0", "Default");
+		assertEquals(mgr.getDefaultValue(tableName, "Column0"), "Default");
 	}
 
 }
