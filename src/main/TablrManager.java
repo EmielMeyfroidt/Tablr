@@ -162,4 +162,34 @@ public class TablrManager {
 		}
 		fireContentsChanged();
 	}
+
+	public List<List<String>> getColumns(String table) {
+		List<List<String>> columns = new ArrayList<>();
+		for (Table t : tables) {
+			if (t.getName().equals(table)) {
+				return t.getColumns();
+			}
+		}
+		return null;
+	}
+
+	public void addRow(String table) {
+		for (Table t : tables) {
+			if (t.getName().equals(table)) {
+				t.addRow();
+				break;
+			}
+		}
+		fireContentsChanged();
+	}
+
+	public void removeRow(String table, int row) {
+		for (Table t : tables) {
+			if (t.getName().equals(table)) {
+				t.removeRow(row);
+				break;
+			}
+		}
+		fireContentsChanged();
+	}
 }

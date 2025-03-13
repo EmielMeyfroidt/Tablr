@@ -1,24 +1,46 @@
 package main;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RowsView extends AbstractView {
 
-	public RowsView(TablrManager mgr) {
+	private String table;
+	private final int leftMargin = 20;
+	private final int topMargin = 20;
+	private final int stepY = 20;
+	private List<Integer> selectedRows;
+	private List<Integer> margins;
+
+
+	public RowsView(TablrManager mgr, String table) {
 		super(mgr);
-		// TODO Auto-generated constructor stub
+		this.table = table;
+		this.selectedRows = new ArrayList<Integer>();
 	}
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		// TODO Auto-generated method stub
-
+		int elementNumber = (int) Math.floor(y / this.stepY) -1;
+		if (elementNumber > getMgr().getColumns(table).getFirst().size()) {
+			this.getMgr().addRow(table);
+		}
 	}
 
 	@Override
 	public void handleSingleClick(int x, int y) {
-		// TODO Auto-generated method stub
-
+		int elementNumber = (int) Math.floor((y - topMargin) / this.stepY);
+		if ((elementNumber <= getMgr().getColumnNames(table).size())) {
+			if (x < leftMargin) {
+				// Left margin of table, indicate that selected
+				selectedRows.add(elementNumber);
+				fireModeChanged(this);}
+			else {
+				// Click on table, edit name
+				fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getColumnNames(table).get(elementNumber), table));
+			}
+		}
 	}
 
 	@Override
@@ -36,7 +58,10 @@ public class RowsView extends AbstractView {
 
 	@Override
 	public void handleCtrlEnter() {
-		// TODO Auto-generated method stub
+		System.out.println("switch to design");
+		DesignView newView = new DesignView(getMgr(), table);
+		newView.setChangeModeListeners(getChangeModeListeners());
+		fireModeChanged(newView);
 	}
 
 	@Override
@@ -46,7 +71,9 @@ public class RowsView extends AbstractView {
 
 	@Override
 	public void handleDelete() {
-		// TODO Auto-generated method stub
+		for(int row : selectedRows) {
+			getMgr().removeRow(table, row);
+		}
 	}
 
 	@Override
@@ -61,8 +88,32 @@ public class RowsView extends AbstractView {
 
 	@Override
 	public void paint(Graphics g) {
-		// TODO Auto-generated method stub
+		int charSize = 10;
 
+		List<List<String>> columns = getMgr().getColumns(table);
+		int currentMargin = leftMargin;
+		this.margins = new ArrayList<>();
+		margins.add(currentMargin);
+		for (int col = 0; col < columns.size()-1; col++) {
+			int maxLength = getMgr().getColumnNames(table).get(col).length();
+			int maxLenOfCol = columns.get(col).stream().mapToInt(String::length).max().orElse(0);
+			if (maxLength < maxLenOfCol) {
+				maxLength = maxLenOfCol;
+			}
+			currentMargin += maxLength * charSize;
+			margins.add(currentMargin);
+		}
+
+		for (int col = 0 ; col< getMgr().getColumnNames(table).size(); col++) {
+			g.drawString(getMgr().getColumnNames(table).get(col), margins.get(col), topMargin);
+		}
+		for (int row = 0; row < columns.getFirst().size(); row++) {
+			if (selectedRows.contains(row)) {
+				g.drawString("*", 5, ((row +1) * stepY )+ topMargin);
+			}
+			for (int col = 0; col < columns.size(); col++) {
+				g.drawString(columns.get(col).get(row), margins.get(col), ((row +1) * stepY )+ topMargin);
+			}
+		}
 	}
-
 }

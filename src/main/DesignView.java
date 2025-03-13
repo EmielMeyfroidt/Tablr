@@ -23,6 +23,7 @@ public class DesignView extends AbstractView {
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
+		System.out.println("design view");
 		int elementNumber = (int) Math.floor(y / this.stepY);
 		if (elementNumber > getMgr().getColumnNames(table).size()) {
 			getMgr().addColumn(table);
@@ -61,7 +62,10 @@ public class DesignView extends AbstractView {
 
 	@Override
 	public void handleCtrlEnter() {
-		// TODO Auto-generated method stub
+		System.out.println("ctrl enter");
+		RowsView newView = new RowsView(getMgr(), table);
+		newView.setChangeModeListeners(getChangeModeListeners());
+		fireModeChanged(newView);
 	}
 
 	@Override

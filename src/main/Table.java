@@ -25,8 +25,13 @@ public class Table {
 		String name = generateUniqueName();
 		Column<String> column;
 		try {
-			column = new Column<String>(name, String.class, true, "");
+			column = new Column<String>(name, String.class, true, "x");
 			columns.add(column);
+			if (columns.getFirst().getSize() > 0) {
+				for (int i = 0; i < columns.getFirst().getSize(); i++) {
+					column.addCell();
+				}
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -48,15 +53,20 @@ public class Table {
 	 * 
 	 */
 	public void addRow() {
-		// TODO
+		for (Column<?> col : columns) {
+			col.addCell();
+		}
 	}
 
 	/**
 	 * 
 	 */
-	public void deleteRow() {
-		// TODO
+	public void removeRow(int rowIndx) {
+		for (Column<?> col : columns) {
+			col.removeRow(rowIndx);
+		}
 	}
+
 
 	public String getName() {
 		return name;
@@ -103,4 +113,7 @@ public class Table {
 		return "Column" + n;
 	}
 
+	public List<List<String>> getColumns() {
+		return columns.stream().map(Column::getColumn).toList();
+	}
 }

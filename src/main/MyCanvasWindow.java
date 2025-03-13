@@ -29,6 +29,7 @@ public class MyCanvasWindow extends CanvasWindow {
 
 	private void changeMode(AbstractView view) {
 		this.view = view;
+		System.out.println("painting" + view.getTitle());
 		this.repaint();
 	}
 

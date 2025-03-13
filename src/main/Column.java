@@ -1,11 +1,14 @@
 package main;
 
+import java.util.List;
+
 public class Column<T> {
 
 	private String name;
 	private Class<T> typeClass;
 	private boolean allowsBlanks;
 	private T defaultValue;
+	private List<Cell<T>> cells;
 
 	/**
 	 * 
@@ -19,6 +22,7 @@ public class Column<T> {
 		this.typeClass = typeClass;
 		this.allowsBlanks = allowsBlanks;
 		this.defaultValue = defaultValue;
+		this.cells = new java.util.ArrayList<Cell<T>>();
 	}
 
 	/**
@@ -28,6 +32,16 @@ public class Column<T> {
 	public String getInfo() {
 		String typeName = (typeClass != null) ? typeClass.getSimpleName() : "Unknown Type";
 		return name + " " + typeName + " " + allowsBlanks + " " + defaultValue.toString();
+	}
+
+	/**
+	 *
+	 * @return The contents of the column as string.
+	 */
+	public List<String> getColumn() {
+		return cells.stream()
+				.map(cell -> cell.getValue().toString())
+				.toList();
 	}
 
 	public String getName() {
@@ -41,4 +55,15 @@ public class Column<T> {
 	public void setName(String name) {this.name = name;}
 
 
+	public void addCell() {
+		cells.add(new Cell<>(defaultValue));
+	}
+
+	public int getSize() {
+		return cells.size();
+	}
+
+	public void removeRow(int rowIndx) {
+		cells.remove(rowIndx);
+	}
 }

@@ -5,13 +5,13 @@ public class Cell<T> {
 	private Column<T> column;
 
 	/**
-	 * 
-	 * @param value  The value of the cell.
-	 * @param column The column of the cell.
+	 * @param value The value of the cell.
 	 */
-	public Cell(T value, Column<T> column) {
+	public Cell(T value) {
 		this.value = value;
-		this.column = column;
+	}
+	public T getValue() {
+		return value;
 	}
 
 }
