@@ -66,4 +66,19 @@ public class Column<T> {
 	public void removeRow(int rowIndx) {
 		cells.remove(rowIndx);
 	}
+
+	public void updateCell(Integer rowIndex, String value) {
+		if (typeClass == String.class) {
+			cells.get(rowIndex).setValue((T) typeClass.cast(value));
+			return;
+		} else if (typeClass == Boolean.class) {
+			boolean b = Boolean.parseBoolean(value);
+			cells.get(rowIndex).setValue((T) typeClass.cast(value));
+			return;
+		}
+	}
+
+	public String getCell(Integer rowIndex) {
+		return cells.get(rowIndex).getValue().toString();
+	}
 }

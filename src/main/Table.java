@@ -116,4 +116,21 @@ public class Table {
 	public List<List<String>> getColumns() {
 		return columns.stream().map(Column::getColumn).toList();
 	}
+
+	public void updateCell(String nameColumn, Integer rowIndex, String value) {
+		for (Column<?> col : columns){
+			if (col.getName().equals(nameColumn)) {
+				col.updateCell(rowIndex, value);
+			}
+		}
+	}
+
+	public String getCell(String nameColumn, Integer rowIndex) {
+		for (Column<?> col : columns){
+			if (col.getName().equals(nameColumn)) {
+				return col.getCell(rowIndex);
+			}
+		}
+		return null;
+	}
 }

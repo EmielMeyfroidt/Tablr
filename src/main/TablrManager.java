@@ -192,4 +192,22 @@ public class TablrManager {
 		}
 		fireContentsChanged();
 	}
+
+	public void updateCell(String nameTable, String nameColumn, Integer rowIndex, String value) {
+		for (Table t : tables) {
+			if (t.getName().equals(nameTable)) {
+				t.updateCell(nameColumn, rowIndex, value);
+			}
+		}
+		fireContentsChanged();
+	}
+
+	public String getCell(String nameTable, String nameColumn, Integer rowIndex) {
+		for (Table t : tables) {
+			if (t.getName().equals(nameTable)) {
+				return t.getCell(nameColumn, rowIndex);
+			}
+		}
+		return null;
+	}
 }

@@ -13,5 +13,8 @@ public class Cell<T> {
 	public T getValue() {
 		return value;
 	}
+	public void setValue(T value) {
+		this.value = value;
+	}
 
 }

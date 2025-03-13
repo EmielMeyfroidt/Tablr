@@ -37,10 +37,19 @@ public class RowsView extends AbstractView {
 				selectedRows.add(elementNumber);
 				fireModeChanged(this);}
 			else {
-				// Click on table, edit name
-				fireModeChanged(new EditRowView(this.getMgr(), this, this.getMgr().getColumnNames(table).get(elementNumber), table, elementNumber));
+				// Click on table, edit row
+				fireModeChanged(new EditRowView(this.getMgr(), this, table, this.getMgr().getColumnNames(table).get(locateColumn(x)), elementNumber));
 			}
 		}
+	}
+	private int locateColumn(int x) {
+		int columnIndex = 0;
+		for (int i = 0; i < margins.size(); i++) {
+			if (x > margins.get(i)) {
+				columnIndex = i;
+			}
+		}
+		return columnIndex;
 	}
 
 	@Override
