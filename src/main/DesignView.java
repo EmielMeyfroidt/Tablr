@@ -47,18 +47,26 @@ public class DesignView extends AbstractView {
 				// Left margin of table, indicate that selected
 				selectedColumns.add(getMgr().getColumnNames(table).get(elementNumber));
 				fireModeChanged(this);
-			} else if (x < runningMargin.get(0)){
-				// Click on table name, edit name
-				fireModeChanged(new EditColumnCharacteristicsView(this.getMgr(), this,
-						this.getMgr().getColumnNames(table).get(elementNumber), table));
-			} else if (x < runningMargin.get(1)){
-				// Click on type
-				this.getMgr().changeType(table, this.getMgr().getColumnNames(table).get(elementNumber));
-			} else if (x < runningMargin.get(2)) {
-				// Click on allowBlanks
-				this.getMgr().changeAllowBlanks(table, this.getMgr().getColumnNames(table).get(elementNumber));
-			} else if (x < runningMargin.get(3)) {
-				// Click on defaultValue
+			} else {
+				String column = this.getMgr().getColumnNames(table).get(elementNumber);
+				if (x < runningMargin.get(0)){
+					// Click on table name, edit name
+					fireModeChanged(new EditColumnCharacteristicsView(this.getMgr(), this,
+							column, table));
+				} else if (x < runningMargin.get(1)){
+					// Click on type
+					this.getMgr().changeType(table, column);
+				} else if (x < runningMargin.get(2)) {
+					// Click on allowBlanks
+					this.getMgr().changeAllowBlanks(table, column);
+				} else if (x < runningMargin.get(3)) {
+					// Click on defaultValue
+					if (getMgr().getClass(table, column) == Boolean.class) {
+						getMgr().setDefaultValue(table, column, String.valueOf(!(boolean) getMgr().getDefaultValue(table, column)));
+					} else {
+						fireModeChanged(new EditDefaultValueView(this.getMgr(), this, column, table));
+					}
+				}
 			}
 		}
 	}

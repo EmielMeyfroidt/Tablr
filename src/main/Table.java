@@ -25,7 +25,7 @@ public class Table {
 		String name = generateUniqueName();
 		Column<String> column;
 		try {
-			column = new Column<String>(name, String.class, true, "x");
+			column = new Column<String>(name, String.class, true, "x"); 
 			columns.add(column);
 			if (columns.getFirst().getSize() > 0) {
 				for (int i = 0; i < columns.getFirst().getSize(); i++) {
@@ -153,6 +153,11 @@ public class Table {
 	    	changeColumn(columnName, newCol);
 	    }
 	}
+	
+	public Object getDefaultValue(String column) {
+		Column<?> col = findColumn(column);
+		return col.getDefaultValue();
+	}
 
 	private Column<?> findColumn(String columnName) {
 		for (Column<?> col : columns) {
@@ -161,5 +166,23 @@ public class Table {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * @param column
+	 * @return
+	 */
+	public Class<?> getClass(String column) {
+		Column<?> col = findColumn(column);
+		return col.getType();
+	}
+
+	/**
+	 * @param column
+	 * @param value
+	 */
+	public void setDefaultValue(String column, String value) {
+		Column<?> col = findColumn(column);
+		col.setDefaultValue(value);
 	}
 }

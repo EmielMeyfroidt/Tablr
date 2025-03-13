@@ -193,4 +193,32 @@ public class TablrManager {
 		t.changeType(column);
 		fireContentsChanged();
 	}
+	
+	public Object getDefaultValue(String table, String column) {
+		Table t = findTable(table);
+		return t.getDefaultValue(column);
+	}
+
+	/**
+	 * @param table
+	 * @param column
+	 * @return
+	 */
+	public Class<?> getClass(String table, String column) {
+		Table t = findTable(table);
+		return t.getClass(column);
+	}
+
+	/**
+	 * @param table
+	 * @param column
+	 * @param value
+	 */
+	public void setDefaultValue(String table, String column, String value) {
+		Table t = findTable(table);
+		t.setDefaultValue(column, value);
+		fireContentsChanged();
+	}
+	
+	
 }

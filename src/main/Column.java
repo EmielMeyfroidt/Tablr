@@ -91,4 +91,30 @@ public class Column<T> {
 	public Class<T> getType(){
 		return typeClass;
 	}
+	
+	public T getDefaultValue() {
+		return this.defaultValue;
+	}
+
+	/**
+	 * @param value
+	 */
+	public void setDefaultValue(String value) {
+		this.defaultValue = toT(value);
+	}
+
+	/**
+	 * @param value
+	 * @return
+	 */
+	private T toT(String value) {
+		if (typeClass == String.class) {
+			return (T) value;
+		} else if (typeClass == Boolean.class) {
+			return (T) Boolean.valueOf(value);
+		} else if (typeClass == Integer.class) {
+			return (T) Integer.valueOf(value);
+		} 
+		return null;
+	}
 }

@@ -46,16 +46,13 @@ public class EditColumnCharacteristicsView extends AbstractView {
 
 	@Override
 	public void handleSingleClick(int x, int y) {
-		// TODO Auto-generated method stub
-		
+		fireModeChanged(underlyingView);		
 	}
 
 	@Override
 	public void handleEscape() {
-		// TODO Auto-generated method stub
 		getMgr().changeNameColumn(nameTable, name, originalName);
 		fireModeChanged(underlyingView);
-		
 	}
 
 	@Override
@@ -78,8 +75,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 
 	@Override
 	public void handleEnter() {
-		// TODO Auto-generated method stub
-		
+		fireModeChanged(underlyingView);
 	}
 
 	@Override
@@ -93,5 +89,4 @@ public class EditColumnCharacteristicsView extends AbstractView {
 		getMgr().changeNameColumn(nameTable, name, name + keyChar);
 		name += keyChar;
 	}
-
 }
