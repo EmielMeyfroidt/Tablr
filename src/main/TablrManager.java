@@ -219,6 +219,4 @@ public class TablrManager {
 		t.setDefaultValue(column, value);
 		fireContentsChanged();
 	}
-	
-	
 }

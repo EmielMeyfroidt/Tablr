@@ -71,9 +71,10 @@ public class Column<T> {
 			cells.get(rowIndex).setValue((T) typeClass.cast(value));
 			return;
 		} else if (typeClass == Boolean.class) {
-			boolean b = Boolean.parseBoolean(value);
-			cells.get(rowIndex).setValue((T) typeClass.cast(value));
+			cells.get(rowIndex).setValue((T) Boolean.valueOf(value));
 			return;
+		} else if (typeClass == Integer.class) {
+			cells.get(rowIndex).setValue((T) Integer.valueOf(value));
 		}
 	}
 

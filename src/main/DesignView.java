@@ -143,7 +143,11 @@ public class DesignView extends AbstractView {
 				}
 				i = 0;
 				for (String s : l) {
-					g.drawString(s, x, y);
+					try {
+						g.drawString(s, x, y);
+					}catch(Exception e) {
+						g.drawString("", x, y);
+					}
 					x += margin.get(i) * 10;
 					i++;
 				}

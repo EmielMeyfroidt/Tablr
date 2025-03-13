@@ -13,7 +13,6 @@ public class RowsView extends AbstractView {
 	private List<Integer> selectedRows;
 	private List<Integer> margins;
 
-
 	public RowsView(TablrManager mgr, String table) {
 		super(mgr);
 		this.table = table;
@@ -22,7 +21,7 @@ public class RowsView extends AbstractView {
 
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		int elementNumber = (int) Math.floor(y / this.stepY) -1;
+		int elementNumber = (int) Math.floor(y / this.stepY) - 1;
 		if (elementNumber > getMgr().getColumns(table).getFirst().size()) {
 			this.getMgr().addRow(table);
 		}
@@ -30,18 +29,27 @@ public class RowsView extends AbstractView {
 
 	@Override
 	public void handleSingleClick(int x, int y) {
-		int elementNumber = (int) Math.floor((y - topMargin) / this.stepY);
-		if ((elementNumber <= getMgr().getColumnNames(table).size())) {
+		int rowIndex = (int) Math.floor((y - topMargin) / this.stepY);
+		if ((rowIndex <= getMgr().getColumnNames(table).size())) {
 			if (x < leftMargin) {
 				// Left margin of table, indicate that selected
-				selectedRows.add(elementNumber);
-				fireModeChanged(this);}
-			else {
-				// Click on table, edit row
-				fireModeChanged(new EditRowView(this.getMgr(), this, table, this.getMgr().getColumnNames(table).get(locateColumn(x)), elementNumber));
+				selectedRows.add(rowIndex);
+				fireModeChanged(this);
+			} else {
+				// Click on table, edit cell
+				String column = this.getMgr().getColumnNames(table).get(locateColumn(x));
+				if (getMgr().getClass(table, column) == Boolean.class) {
+					// edit boolean value
+					getMgr().updateCell(table, column, rowIndex,
+							String.valueOf(!Boolean.valueOf( getMgr().getCell(table, column, rowIndex))));
+				} else {
+					// edit string or integer value
+					fireModeChanged(new EditRowView(this.getMgr(), this, table, column, rowIndex));
+				}
 			}
 		}
 	}
+
 	private int locateColumn(int x) {
 		int columnIndex = 0;
 		for (int i = 0; i < margins.size(); i++) {
@@ -80,7 +88,7 @@ public class RowsView extends AbstractView {
 
 	@Override
 	public void handleDelete() {
-		for(int row : selectedRows) {
+		for (int row : selectedRows) {
 			getMgr().removeRow(table, row);
 		}
 	}
@@ -103,7 +111,7 @@ public class RowsView extends AbstractView {
 		int currentMargin = leftMargin;
 		this.margins = new ArrayList<>();
 		margins.add(currentMargin);
-		for (int col = 0; col < columns.size()-1; col++) {
+		for (int col = 0; col < columns.size() - 1; col++) {
 			int maxLength = getMgr().getColumnNames(table).get(col).length();
 			int maxLenOfCol = columns.get(col).stream().mapToInt(String::length).max().orElse(0);
 			if (maxLength < maxLenOfCol) {
@@ -113,15 +121,15 @@ public class RowsView extends AbstractView {
 			margins.add(currentMargin);
 		}
 
-		for (int col = 0 ; col< getMgr().getColumnNames(table).size(); col++) {
+		for (int col = 0; col < getMgr().getColumnNames(table).size(); col++) {
 			g.drawString(getMgr().getColumnNames(table).get(col), margins.get(col), topMargin);
 		}
 		for (int row = 0; row < columns.getFirst().size(); row++) {
 			if (selectedRows.contains(row)) {
-				g.drawString("*", 5, ((row +1) * stepY )+ topMargin);
+				g.drawString("*", 5, ((row + 1) * stepY) + topMargin);
 			}
 			for (int col = 0; col < columns.size(); col++) {
-				g.drawString(columns.get(col).get(row), margins.get(col), ((row +1) * stepY )+ topMargin);
+				g.drawString(columns.get(col).get(row), margins.get(col), ((row + 1) * stepY) + topMargin);
 			}
 		}
 	}
