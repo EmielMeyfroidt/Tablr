@@ -38,7 +38,7 @@ public class RowsView extends AbstractView {
 				fireModeChanged(this);}
 			else {
 				// Click on table, edit name
-				fireModeChanged(new EditNameView(this.getMgr(), this, this.getMgr().getColumnNames(table).get(elementNumber), table));
+				fireModeChanged(new EditRowView(this.getMgr(), this, this.getMgr().getColumnNames(table).get(elementNumber), table, elementNumber));
 			}
 		}
 	}
