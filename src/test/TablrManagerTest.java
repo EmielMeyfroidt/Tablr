@@ -6,7 +6,6 @@ package test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import main.TablrManager;
 import main.TablrManagerListener;
