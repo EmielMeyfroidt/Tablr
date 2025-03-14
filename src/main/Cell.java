@@ -1,5 +1,11 @@
 package main;
 
+/**
+ * Represents a single cell in a table structure that holds a value of a
+ * generic type.
+ *
+ * @param <T> The type of the value this cell holds.
+ */
 public class Cell<T> {
 	private T value;
 

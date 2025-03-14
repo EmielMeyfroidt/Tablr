@@ -6,7 +6,7 @@ package main;
 import java.awt.Graphics;
 
 /**
- * 
+ * A view class for editing the default value of a specific column in a table.
  */
 public class EditDefaultValueView extends AbstractView {
 
@@ -15,12 +15,14 @@ public class EditDefaultValueView extends AbstractView {
 	private String column;
 	private final String originalValue;
 	private String newValue;
-	
+
 	/**
-	 * @param mgr
-	 * @param table 
-	 * @param string 
-	 * @param designView 
+	 * Constructs an EditDefaultValueView object.
+	 *
+	 * @param mgr The TablrManager used to manage and manipulate table data.
+	 * @param underlyingView The underlying DesignView associated with this EditDefaultValueView.
+	 * @param column The name of the column whose default value is being edited.
+	 * @param table The name of the table containing the specified column.
 	 */
 	public EditDefaultValueView(TablrManager mgr, DesignView underlyingView, String column, String table) {
 		super(mgr);
@@ -32,34 +34,64 @@ public class EditDefaultValueView extends AbstractView {
 		this.setChangeModeListeners(underlyingView.getChangeModeListeners());
 	}
 
+	/**
+	 * Retrieves the title of this view.
+	 *
+	 * @return A string representing the title of the view, which includes the column whose default value is being edited.
+	 */
 	@Override
 	public String getTitle() {
 		return "Editing default value of " + column + ".";
 	}
 
+	/**
+	 * Renders this view by delegating the painting operation to the underlying view.
+	 *
+	 * @param g The Graphics object used to render the content on the component.
+	 */
 	@Override
 	public void paint(Graphics g) {
 		underlyingView.paint(g);
 
 	}
 
+	/**
+	 * Handles a double-click event at a specific location.
+	 *
+	 * @param x The x-coordinate of the double-click location.
+	 * @param y The y-coordinate of the double-click location.
+	 */
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Handles a single mouse click event at the specified coordinates.
+	 * exits back to underlying view
+	 *
+	 * @param x The x-coordinate of the mouse click location.
+	 * @param y The y-coordinate of the mouse click location.
+	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
 		fireModeChanged(underlyingView);
 	}
 
+	/**
+	 * Handles the action of canceling edits to a default value, following by a return to underlying view
+	 */
 	@Override
 	public void handleEscape() {
 		getMgr().setDefaultValue(table, column, originalValue);
 		fireModeChanged(underlyingView);
 	}
 
+	/**
+	 * Removes the last character from the currently edited
+	 * default value of a column.
+	 */
 	@Override
 	public void handleBackSpace() {
 		try {
@@ -72,23 +104,40 @@ public class EditDefaultValueView extends AbstractView {
 
 	}
 
+	/**
+	 * Handles the control + enter (Ctrl + Enter) key combination event.
+	 * Does nothing
+	 */
 	@Override
 	public void handleCtrlEnter() {
-		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Handles the "Enter" key event.
+	 * This method triggers a mode change event for the associated underlying view.
+	 */
 	@Override
 	public void handleEnter() {
 		fireModeChanged(underlyingView);
 	}
 
+	/**
+	 * Handles the action of delete key event. Does nothing.
+	 */
 	@Override
 	public void handleDelete() {
 		// TODO Auto-generated method stub
 
 	}
 
+	/**
+	 * Handles the event of typing a character. This method appends the provided
+	 * character to the current value of the default value being edited and updates
+	 * the default value for the specified table and column.
+	 *
+	 * @param keyChar The character that was typed.
+	 */
 	@Override
 	public void handleCharTyped(char keyChar) {
 		getMgr().setDefaultValue(table, column, newValue.toString() + keyChar);

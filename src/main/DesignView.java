@@ -14,6 +14,12 @@ public class DesignView extends AbstractView {
 	private List<String> selectedColumns;
 	private List<Integer> margin;
 
+	/**
+	 * Constructs a new DesignView instance with the specified manager and table name.
+	 *
+	 * @param mgr The TablrManager instance managing this view.
+	 * @param table The name of the table associated with this design view.
+	 */
 	public DesignView(TablrManager mgr, String table) {
 		super(mgr);
 		this.table = table;
@@ -21,6 +27,14 @@ public class DesignView extends AbstractView {
 		this.margin = new ArrayList<>();
 	}
 
+	/**
+	 * Handles a double-click event in the design view.
+	 * If below the tables, triggers an action to add a new column
+	 * to the associated table otherwise performs no operation.
+	 *
+	 * @param x The x-coordinate of the double-click.
+	 * @param y The y-coordinate of the double-click.
+	 */
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		System.out.println("design view");
@@ -32,6 +46,12 @@ public class DesignView extends AbstractView {
 		}
 	}
 
+	/**
+	 * Handles a single-click event within the design view.
+	 *
+	 * @param x The x-coordinate of the single click.
+	 * @param y The y-coordinate of the single click.
+	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
 		int elementNumber = (int) Math.floor(y / this.stepY);
@@ -71,6 +91,12 @@ public class DesignView extends AbstractView {
 		}
 	}
 
+	/**
+	 * Handles the escape key event in the design view.
+	 *
+	 * This method transitions the current view from the DesignView to a
+	 * TablesView.
+	 */
 	@Override
 	public void handleEscape() {
 		TablesView newView = new TablesView(getMgr());
@@ -78,12 +104,22 @@ public class DesignView extends AbstractView {
 		fireModeChanged(newView);
 	}
 
+	/**
+	 * Handles the 'Backspace' key event in the design view.
+	 *
+	 * This method is intentionally left as no-op.
+	 */
 	@Override
 	public void handleBackSpace() {
 		// nothing should happen
 
 	}
 
+	/**
+	 * Handles the "Ctrl+Enter" key press event in the context of the DesignView.
+	 *
+	 * This method transitions the current view from the DesignView to a RowsView.
+	 */
 	@Override
 	public void handleCtrlEnter() {
 		System.out.println("ctrl enter");
@@ -92,11 +128,19 @@ public class DesignView extends AbstractView {
 		fireModeChanged(newView);
 	}
 
+	/**
+	 * Handles the 'Enter' key event in the design view.
+	 *
+	 * This method is intentionally left as a no-op.
+	 */
 	@Override
 	public void handleEnter() {
 		// nothing should happen
 	}
 
+	/**
+	 * Handles the deletion of selected columns in the design view.
+	 */
 	@Override
 	public void handleDelete() {
 		for (String c : selectedColumns) {
@@ -105,16 +149,33 @@ public class DesignView extends AbstractView {
 		selectedColumns.clear();
 	}
 
+	/**
+	 * Handles the event when a character is typed in the design view.
+	 *
+	 * This method is intentionally left as a no-op.
+	 *
+	 * @param keyChar The character that was typed by the user.
+	 */
 	@Override
 	public void handleCharTyped(char keyChar) {
 		// nothing should happen
 	}
 
+	/**
+	 * Retrieves the title of the design view.
+	 *
+	 * @return A string representing the title of the design view.
+	 */
 	@Override
 	public String getTitle() {
 		return "Design Mode";
 	}
 
+	/**
+	 * Paints the DesignView.
+	 *
+	 * @param g The Graphics object used to render the content on the component.
+	 */
 	@Override
 	public void paint(Graphics g) {
 		List<List<String>> splitList = new ArrayList<>();

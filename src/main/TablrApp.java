@@ -1,8 +1,15 @@
 package main;
 
-//Initialize the app
+/**
+ * TablrApp is the main entry point for the Tablr application.
+ * It initializes the application components and sets up the main window for the user interface.
+ */
 public class TablrApp {
-
+	/**
+	 * The main method serves as the entry point for the Tablr application.
+	 *
+	 * @param args execution arguments. not used.
+	 */
 	public static void main(String[] args) {
 		TablrManager tablrManager = new TablrManager();
 		AbstractView view = new TablesView(tablrManager);
