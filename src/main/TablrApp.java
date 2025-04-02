@@ -13,9 +13,10 @@ public class TablrApp {
 	public static void main(String[] args) {
 		TablrManager tablrManager = new TablrManager();
 		AbstractView view = new TablesView(tablrManager);
+		WindowManager windowManager = new WindowManager(view);
 		java.awt.EventQueue.invokeLater(() -> {
-			MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", view);
-			tablrManager.addListener(window.getTablrManagerListener());
+			MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", windowManager);
+			windowManager.addListener(window.getTablrManagerListener());
 			window.show();
 		});
 	}
