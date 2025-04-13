@@ -14,16 +14,15 @@ public class EditTableNameView extends AbstractView {
 	/**
 	 * Constructs a view for editing the name of a table.
 	 *
-	 * @param mgr The manager responsible for handling application operations.
+	 * @param mgr            The manager responsible for handling application operations.
 	 * @param underlyingMode The underlying view mode associated with this table.
-	 * @param name The initial name of the table being edited.
+	 * @param name           The initial name of the table being edited.
 	 */
-	public EditTableNameView(TablrManager mgr, TablesView underlyingMode, String name) {
-		super(mgr);
+	public EditTableNameView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, TablesView underlyingMode, String name) {
+		super(mgr, layoutInfo, viewList);
 		this.underlyingMode = underlyingMode;
 		this.name = name;
 		this.originalName = name;
-		this.setChangeModeListeners(underlyingMode.getChangeModeListeners());
 	}
 
 	/**
@@ -47,7 +46,8 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		// TODO: check for validity
-		fireModeChanged(underlyingMode);
+//		fireModeChanged(underlyingMode);
+		getViewList().substituteView(this, underlyingMode);
 	}
 
 	/**
@@ -57,7 +57,8 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		getMgr().changeName(name, originalName);
-		fireModeChanged(underlyingMode);
+//		fireModeChanged(underlyingMode);
+		getViewList().substituteView(this, underlyingMode);
 
 	}
 
@@ -92,7 +93,9 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleEnter() {
 		// TODO: check for validity
-		fireModeChanged(underlyingMode);
+//		fireModeChanged(underlyingMode);
+		getViewList().substituteView(this, underlyingMode);
+
 	}
 
 	/**

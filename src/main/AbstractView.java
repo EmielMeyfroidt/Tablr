@@ -12,47 +12,34 @@ import java.util.List;
 public abstract class AbstractView {
 
 	private TablrManager mgr;
-	private List<ChangeModeListener> changeModeListeners = new ArrayList<ChangeModeListener>();
+	private LayoutInfo layoutInfo;
+	private ViewList viewList;
 
 	/**
-	 * @return The changeModeListeners.
-	 */
-	public List<ChangeModeListener> getChangeModeListeners() {
-		return changeModeListeners;
-	}
-
-	/**
-	 * @param changeModeListeners The changeModeListeners to set.
-	 */
-	public void setChangeModeListeners(List<ChangeModeListener> changeModeListeners) {
-		this.changeModeListeners = changeModeListeners;
-	}
-
-	/**
-	 * 
 	 * @param mgr The tablrManager.
 	 */
-	public AbstractView(TablrManager mgr) {
+	public AbstractView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList) {
 		this.setMgr(mgr);
+		this.layoutInfo = layoutInfo;
+		this.viewList = viewList;
 	}
 
 	public abstract String getTitle();
 
 	/**
-	 * 
 	 * @param g The Graphics object.
 	 */
-	public abstract void paint(Graphics g);
+	public void paint(Graphics g) {
+		//TODO paint empty Window
+	}
 
 	/**
-	 * 
 	 * @param x The x-coordinate for the mouse click.
 	 * @param y The y-coordinate for the mouse click.
 	 */
 	public abstract void handleDoubleClick(int x, int y);
 
 	/**
-	 * 
 	 * @param x The x-coordinate for the mouse click.
 	 * @param y The y-coordinate for the mouse click.
 	 */
@@ -95,7 +82,7 @@ public abstract class AbstractView {
 	 *
 	 * @return The TablrManager instance managed by this view.
 	 */
-	public TablrManager getMgr() {
+	protected TablrManager getMgr() {
 		return mgr;
 	}
 
@@ -104,30 +91,25 @@ public abstract class AbstractView {
 	 *
 	 * @param mgr The TablrManager instance to set.
 	 */
-	public void setMgr(TablrManager mgr) {
+	protected void setMgr(TablrManager mgr) {
 		this.mgr = mgr;
 	}
 
-	/**
-	 * Adds a ChangeModeListener to the list of listeners for mode change events.
-	 *
-	 * @param c The ChangeModeListener to be added. It will be notified
-	 *          when there is a mode change in the implementing view.
-	 */
-	public void addListener(ChangeModeListener c) {
-		changeModeListeners.add(c);
+	protected LayoutInfo getLayoutInfo() {
+		return layoutInfo;
 	}
 
-	/**
-	 * Notifies all registered ChangeModeListeners about a mode change event
-	 * in the specified AbstractView instance.
-	 *
-	 * @param view The AbstractView instance that triggered the mode change event.
-	 */
-	public void fireModeChanged(AbstractView view) {
-		for (ChangeModeListener listener : changeModeListeners) {
-			listener.modeChanged(view);
-		}
+	protected ViewList getViewList() {
+		return viewList;
 	}
 
+	protected void setViewList(ViewList viewList) {
+		this.viewList = viewList;
+	}
+
+	public void handleDoubleClickOutside() {
+	}
+
+	public void handleSingleClickOutside() {
+	}
 }

@@ -17,19 +17,18 @@ public class EditRowView extends AbstractView {
 	/**
 	 * Constructs an EditRowView object.
 	 *
-	 * @param mgr the TablrManager instance responsible for managing the table data
+	 * @param mgr            the TablrManager instance responsible for managing the table data
 	 * @param underlyingMode the underlying RowsView used to provide the basis of this view
-	 * @param nameTable the name of the table containing the cell being edited
-	 * @param nameColumn the name of the column containing the cell being edited
-	 * @param rowIndex the index of the row containing the cell being edited
+	 * @param nameTable      the name of the table containing the cell being edited
+	 * @param nameColumn     the name of the column containing the cell being edited
+	 * @param rowIndex       the index of the row containing the cell being edited
 	 */
-	public EditRowView(TablrManager mgr, RowsView underlyingMode, String nameTable, String nameColumn, Integer rowIndex) {
-		super(mgr);
+	public EditRowView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, RowsView underlyingMode, String nameTable, String nameColumn, Integer rowIndex) {
+		super(mgr, layoutInfo, viewList);
 		this.underlyingMode = underlyingMode;
 		this.nameTable = nameTable;
 		this.nameColumn = nameColumn;
 		this.rowIndex = rowIndex;
-		this.setChangeModeListeners(underlyingMode.getChangeModeListeners());
 		value = getMgr().getCell(nameTable, nameColumn, rowIndex);
 	}
 
@@ -43,7 +42,7 @@ public class EditRowView extends AbstractView {
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		// nothing should happen
-		
+
 	}
 
 	/**
@@ -55,7 +54,8 @@ public class EditRowView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		//TODO: check for validity
-		fireModeChanged(underlyingMode);
+//		fireModeChanged(underlyingMode);
+		//TODO
 	}
 
 	/**
@@ -63,7 +63,8 @@ public class EditRowView extends AbstractView {
 	 */
 	@Override
 	public void handleEscape() {
-		fireModeChanged(underlyingMode);
+//		fireModeChanged(underlyingMode);
+		//TODO
 	}
 
 	/**
@@ -88,13 +89,14 @@ public class EditRowView extends AbstractView {
 
 	/**
 	 * Handles the "Enter" key action.
-	 *
+	 * <p>
 	 * reverts to rowsView.
 	 */
 	@Override
 	public void handleEnter() {
 		//TODO: check for validity
-		fireModeChanged(underlyingMode);
+//		fireModeChanged(underlyingMode);
+		//TODO
 	}
 
 	/**

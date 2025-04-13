@@ -1,8 +1,10 @@
 package main;
 
+//import javax.swing.*;
+
 /**
  * TablrApp is the main entry point for the Tablr application.
- * It initializes the application components and sets up the main window for the user interface.
+ * It initializes the application components.
  */
 public class TablrApp {
 	/**
@@ -11,12 +13,11 @@ public class TablrApp {
 	 * @param args execution arguments. not used.
 	 */
 	public static void main(String[] args) {
-		TablrManager tablrManager = new TablrManager();
-		AbstractView view = new TablesView(tablrManager);
-		WindowManager windowManager = new WindowManager(view);
+		ViewManager viewManager = new ViewManager();
+
 		java.awt.EventQueue.invokeLater(() -> {
-			MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", windowManager);
-			windowManager.addListener(window.getTablrManagerListener());
+			MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", viewManager);
+			viewManager.addListener(window.getTablrManagerListener());
 			window.show();
 		});
 	}

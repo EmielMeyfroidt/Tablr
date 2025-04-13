@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package main;
 
@@ -18,18 +18,17 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	/**
 	 * Constructs a view for editing the characteristics of a column.
 	 *
-	 * @param mgr the TablrManager instance responsible for managing the application's data and views
+	 * @param mgr            the TablrManager instance responsible for managing the application's data and views
 	 * @param underlyingMode the underlying DesignView providing the base visual representation and functionality
-	 * @param name the initial name of the column being edited
-	 * @param nameTable the name of the table containing the column
+	 * @param name           the initial name of the column being edited
+	 * @param nameTable      the name of the table containing the column
 	 */
-	public EditColumnCharacteristicsView(TablrManager mgr, DesignView underlyingMode, String name, String nameTable) {
-		super(mgr);
+	public EditColumnCharacteristicsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, DesignView underlyingMode, String name, String nameTable) {
+		super(mgr, layoutInfo, viewList);
 		this.underlyingView = underlyingMode;
 		this.nameTable = nameTable;
 		this.name = name;
 		this.originalName = name;
-		this.setChangeModeListeners(underlyingMode.getChangeModeListeners());
 	}
 
 	/**
@@ -50,7 +49,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	@Override
 	public void paint(Graphics g) {
 		underlyingView.paint(g);
-		
+
 	}
 
 	/**
@@ -63,7 +62,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -74,7 +73,8 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
-		fireModeChanged(underlyingView);		
+//		fireModeChanged(underlyingView);
+//		TODO
 	}
 
 	/**
@@ -84,7 +84,8 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		getMgr().changeNameColumn(nameTable, name, originalName);
-		fireModeChanged(underlyingView);
+//		fireModeChanged(underlyingView);
+//		TODO
 	}
 
 	/**
@@ -100,39 +101,40 @@ public class EditColumnCharacteristicsView extends AbstractView {
 			getMgr().changeNameColumn(nameTable, name, "");
 			name = "";
 		}
-		
+
 	}
 
 	/**
 	 * Handles the Ctrl+Enter keypress event.
-	 *
+	 * <p>
 	 * does nothing.
 	 */
 	@Override
 	public void handleCtrlEnter() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
 	 * Handles the 'Enter' key event in the view.
-	 *
+	 * <p>
 	 * exits back to underlying view
 	 */
 	@Override
 	public void handleEnter() {
-		fireModeChanged(underlyingView);
+//		TODO
+//		fireModeChanged(underlyingView);
 	}
 
 	/**
 	 * Handles the delete key event within the view.
-	 *
+	 * <p>
 	 * Does nothing.
 	 */
 	@Override
 	public void handleDelete() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**

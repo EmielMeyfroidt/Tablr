@@ -18,8 +18,8 @@ public class TablesView extends AbstractView {
 	 *
 	 * @param mgr the TablrManager instance used to manage table data and actions
 	 */
-	public TablesView(TablrManager mgr) {
-		super(mgr);
+	public TablesView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList) {
+		super(mgr, layoutInfo, viewList);
 		this.selectedTables = new ArrayList<String>();
 	}
 
@@ -34,13 +34,14 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		int elementNumber = (int) Math.floor(y/this.stepY);
+		int elementNumber = (int) Math.floor(y / this.stepY);
 		try {
 			String tableClicked = getMgr().getTableNames().get(elementNumber);
-			DesignView newView = new DesignView(getMgr(), tableClicked);
-			newView.setChangeModeListeners(getChangeModeListeners());
-			this.fireModeChanged(newView);
-		}catch(Exception e){
+			DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), tableClicked);
+//			newView.setChangeModeListeners(getChangeModeListeners());
+//			this.fireModeChanged(newView);
+			//TODO
+		} catch (Exception e) {
 			getMgr().addTable();
 		}
 	}
@@ -54,21 +55,23 @@ public class TablesView extends AbstractView {
 	 * @param x The x-coordinate of the single-click event.
 	 * @param y The y-coordinate of the single-click event.
 	 */
-    @Override
-    public void handleSingleClick(int x, int y) {
-        int elementNumber = (int) Math.floor(y / this.stepY);
-        if (elementNumber <= getMgr().getTableNames().size()) {
-            if (x < stepX) {
-                //Left margin of table, indicate that selected
-                selectedTables.add(getMgr().getTableNames().get(elementNumber));
-                fireModeChanged(this);
-            } else {
-                //Click on table, edit name
+	@Override
+	public void handleSingleClick(int x, int y) {
+		int elementNumber = (int) Math.floor(y / this.stepY);
+		if (elementNumber <= getMgr().getTableNames().size()) {
+			if (x < stepX) {
+				//Left margin of table, indicate that selected
+				selectedTables.add(getMgr().getTableNames().get(elementNumber));
+//				fireModeChanged(this);
+//				TODO
+			} else {
+				//Click on table, edit name
 				String tableName = this.getMgr().getTableNames().get(elementNumber);
-				fireModeChanged(new EditTableNameView(this.getMgr(), this, tableName));
-            }
-        }
-    }
+//				fireModeChanged(new EditTableNameView(this.getMgr(), this, tableName));
+//				TODO
+			}
+		}
+	}
 
 	/**
 	 * Handles the escape event within the view.
@@ -88,6 +91,7 @@ public class TablesView extends AbstractView {
 		// TODO Auto-generated method stub
 
 	}
+
 	/**
 	 * Handles the ctrl+enter key event within the view.
 	 * does nothing.
@@ -96,6 +100,7 @@ public class TablesView extends AbstractView {
 	public void handleCtrlEnter() {
 		// TODO Auto-generated method stub
 	}
+
 	/**
 	 * Handles the enter key event within the view.
 	 * does nothing.
@@ -125,7 +130,7 @@ public class TablesView extends AbstractView {
 	@Override
 	public void handleCharTyped(char keyChar) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**

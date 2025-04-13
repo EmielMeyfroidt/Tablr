@@ -17,11 +17,11 @@ public class DesignView extends AbstractView {
 	/**
 	 * Constructs a new DesignView instance with the specified manager and table name.
 	 *
-	 * @param mgr The TablrManager instance managing this view.
+	 * @param mgr   The TablrManager instance managing this view.
 	 * @param table The name of the table associated with this design view.
 	 */
-	public DesignView(TablrManager mgr, String table) {
-		super(mgr);
+	public DesignView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, String table) {
+		super(mgr, layoutInfo, viewList);
 		this.table = table;
 		this.selectedColumns = new ArrayList<String>();
 		this.margin = new ArrayList<>();
@@ -60,20 +60,22 @@ public class DesignView extends AbstractView {
 			int sum = 0;
 			sum += stepX;
 			for (int i = 0; i < margin.size(); i++) {
-			    sum += margin.get(i) * 10;
-			    runningMargin.add(sum);
+				sum += margin.get(i) * 10;
+				runningMargin.add(sum);
 			}
 			if (x < stepX) {
 				// Left margin of table, indicate that selected
 				selectedColumns.add(getMgr().getColumnNames(table).get(elementNumber));
-				fireModeChanged(this);
+//				fireModeChanged(this);
+//				TODO
 			} else {
 				String column = this.getMgr().getColumnNames(table).get(elementNumber);
-				if (x < runningMargin.get(0)){
+				if (x < runningMargin.get(0)) {
 					// Click on table name, edit name
-					fireModeChanged(new EditColumnCharacteristicsView(this.getMgr(), this,
-							column, table));
-				} else if (x < runningMargin.get(1)){
+//					fireModeChanged(new EditColumnCharacteristicsView(this.getMgr(), this,
+//							column, table));
+//					TODO
+				} else if (x < runningMargin.get(1)) {
 					// Click on type
 					this.getMgr().changeType(table, column);
 				} else if (x < runningMargin.get(2)) {
@@ -84,7 +86,8 @@ public class DesignView extends AbstractView {
 					if (getMgr().getClass(table, column) == Boolean.class) {
 						getMgr().setDefaultValue(table, column, String.valueOf(!(boolean) getMgr().getDefaultValue(table, column)));
 					} else {
-						fireModeChanged(new EditDefaultValueView(this.getMgr(), this, column, table));
+//						fireModeChanged(new EditDefaultValueView(this.getMgr(), this, column, table));
+//						TODO
 					}
 				}
 			}
@@ -93,20 +96,21 @@ public class DesignView extends AbstractView {
 
 	/**
 	 * Handles the escape key event in the design view.
-	 *
+	 * <p>
 	 * This method transitions the current view from the DesignView to a
 	 * TablesView.
 	 */
 	@Override
 	public void handleEscape() {
-		TablesView newView = new TablesView(getMgr());
-		newView.setChangeModeListeners(getChangeModeListeners());
-		fireModeChanged(newView);
+		TablesView newView = new TablesView(getMgr(), getLayoutInfo(), getViewList());
+//		newView.setChangeModeListeners(getChangeModeListeners());
+//		fireModeChanged(newView);
+//		TODO
 	}
 
 	/**
 	 * Handles the 'Backspace' key event in the design view.
-	 *
+	 * <p>
 	 * This method is intentionally left as no-op.
 	 */
 	@Override
@@ -117,20 +121,21 @@ public class DesignView extends AbstractView {
 
 	/**
 	 * Handles the "Ctrl+Enter" key press event in the context of the DesignView.
-	 *
+	 * <p>
 	 * This method transitions the current view from the DesignView to a RowsView.
 	 */
 	@Override
 	public void handleCtrlEnter() {
 		System.out.println("ctrl enter");
-		RowsView newView = new RowsView(getMgr(), table);
-		newView.setChangeModeListeners(getChangeModeListeners());
-		fireModeChanged(newView);
+		RowsView newView = new RowsView(getMgr(), getLayoutInfo(), getViewList(), table);
+//		newView.setChangeModeListeners(getChangeModeListeners());
+//		fireModeChanged(newView);
+//		TODO
 	}
 
 	/**
 	 * Handles the 'Enter' key event in the design view.
-	 *
+	 * <p>
 	 * This method is intentionally left as a no-op.
 	 */
 	@Override
@@ -151,7 +156,7 @@ public class DesignView extends AbstractView {
 
 	/**
 	 * Handles the event when a character is typed in the design view.
-	 *
+	 * <p>
 	 * This method is intentionally left as a no-op.
 	 *
 	 * @param keyChar The character that was typed by the user.
@@ -206,7 +211,7 @@ public class DesignView extends AbstractView {
 				for (String s : l) {
 					try {
 						g.drawString(s, x, y);
-					}catch(Exception e) {
+					} catch (Exception e) {
 						g.drawString("", x, y);
 					}
 					x += margin.get(i) * 10;

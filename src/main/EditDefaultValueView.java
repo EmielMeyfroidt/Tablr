@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package main;
 
@@ -19,19 +19,18 @@ public class EditDefaultValueView extends AbstractView {
 	/**
 	 * Constructs an EditDefaultValueView object.
 	 *
-	 * @param mgr The TablrManager used to manage and manipulate table data.
+	 * @param mgr            The TablrManager used to manage and manipulate table data.
 	 * @param underlyingView The underlying DesignView associated with this EditDefaultValueView.
-	 * @param column The name of the column whose default value is being edited.
-	 * @param table The name of the table containing the specified column.
+	 * @param column         The name of the column whose default value is being edited.
+	 * @param table          The name of the table containing the specified column.
 	 */
-	public EditDefaultValueView(TablrManager mgr, DesignView underlyingView, String column, String table) {
-		super(mgr);
+	public EditDefaultValueView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, DesignView underlyingView, String column, String table) {
+		super(mgr, layoutInfo, viewList);
 		this.underlyingView = underlyingView;
 		this.table = table;
 		this.column = column;
 		this.originalValue = mgr.getDefaultValue(table, column).toString();
 		this.newValue = mgr.getDefaultValue(table, column).toString();
-		this.setChangeModeListeners(underlyingView.getChangeModeListeners());
 	}
 
 	/**
@@ -76,7 +75,8 @@ public class EditDefaultValueView extends AbstractView {
 	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
-		fireModeChanged(underlyingView);
+//		fireModeChanged(underlyingView);
+		getViewList().substituteView(this, underlyingView);
 	}
 
 	/**
@@ -85,7 +85,8 @@ public class EditDefaultValueView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		getMgr().setDefaultValue(table, column, originalValue);
-		fireModeChanged(underlyingView);
+//		fireModeChanged(underlyingView);
+		getViewList().substituteView(this, underlyingView);
 	}
 
 	/**
@@ -95,7 +96,8 @@ public class EditDefaultValueView extends AbstractView {
 	@Override
 	public void handleBackSpace() {
 		try {
-			getMgr().setDefaultValue(table, column, newValue.substring(0, newValue.length() - 1));;
+			getMgr().setDefaultValue(table, column, newValue.substring(0, newValue.length() - 1));
+			;
 			newValue = newValue.substring(0, newValue.length() - 1);
 		} catch (Exception e) {
 			getMgr().setDefaultValue(table, column, "");
@@ -119,7 +121,8 @@ public class EditDefaultValueView extends AbstractView {
 	 */
 	@Override
 	public void handleEnter() {
-		fireModeChanged(underlyingView);
+		getViewList().substituteView(this, underlyingView);
+//		fireModeChanged(underlyingView);
 	}
 
 	/**

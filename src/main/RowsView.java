@@ -20,11 +20,11 @@ public class RowsView extends AbstractView {
 	/**
 	 * Constructs a RowsView instance for managing the view of rows in a specific table.
 	 *
-	 * @param mgr the TablrManager instance responsible for managing views and data models
+	 * @param mgr   the TablrManager instance responsible for managing views and data models
 	 * @param table the name of the table whose rows are to be displayed and managed
 	 */
-	public RowsView(TablrManager mgr, String table) {
-		super(mgr);
+	public RowsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, String table) {
+		super(mgr, layoutInfo, viewList);
 		this.table = table;
 		this.selectedRows = new ArrayList<Integer>();
 	}
@@ -46,7 +46,7 @@ public class RowsView extends AbstractView {
 	/**
 	 * Handles a single-click event in the view. if click lands on a cell of a row, the contents of the cell will be changed.
 	 * If the cell is a boolean value is toggled, else a new EditRowView is opened to handle the entry of a new value.
-	 *
+	 * <p>
 	 * it the click lands left of the leftMargin, the column is selected.
 	 *
 	 * @param x The x-coordinate of the click position.
@@ -59,17 +59,19 @@ public class RowsView extends AbstractView {
 			if (x < leftMargin) {
 				// Left margin of table, indicate that selected
 				selectedRows.add(rowIndex);
-				fireModeChanged(this);
+//				fireModeChanged(this);
+				//TODO
 			} else {
 				// Click on table, edit cell
 				String column = this.getMgr().getColumnNames(table).get(locateColumn(x));
 				if (getMgr().getClass(table, column) == Boolean.class) {
 					// edit boolean value
 					getMgr().updateCell(table, column, rowIndex,
-							String.valueOf(!Boolean.valueOf( getMgr().getCell(table, column, rowIndex))));
+							String.valueOf(!Boolean.valueOf(getMgr().getCell(table, column, rowIndex))));
 				} else {
 					// edit string or integer value
-					fireModeChanged(new EditRowView(this.getMgr(), this, table, column, rowIndex));
+//					fireModeChanged(new EditRowView(this.getMgr(), this, table, column, rowIndex));
+					//TODO
 				}
 			}
 		}
@@ -79,7 +81,6 @@ public class RowsView extends AbstractView {
 	 * Determines the column index corresponding to the provided x-coordinate.
 	 *
 	 * @param x The x-coordinate for which the column index needs to be identified.
-	 *
 	 * @return The index of the column that the x-coordinate falls into.
 	 */
 	private int locateColumn(int x) {
@@ -99,9 +100,10 @@ public class RowsView extends AbstractView {
 	 */
 	@Override
 	public void handleEscape() {
-		TablesView newView = new TablesView(getMgr());
-		newView.setChangeModeListeners(getChangeModeListeners());
-		fireModeChanged(newView);
+		TablesView newView = new TablesView(getMgr(), getLayoutInfo(), getViewList());
+//		newView.setChangeModeListeners(getChangeModeListeners());
+//		fireModeChanged(newView);
+		//TODO
 	}
 
 	/**
@@ -119,9 +121,10 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleCtrlEnter() {
 		System.out.println("switch to design");
-		DesignView newView = new DesignView(getMgr(), table);
-		newView.setChangeModeListeners(getChangeModeListeners());
-		fireModeChanged(newView);
+		DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), table);
+//		newView.setChangeModeListeners(getChangeModeListeners());
+//		fireModeChanged(newView);
+		//TODO
 	}
 
 	/**
