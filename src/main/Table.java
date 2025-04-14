@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  */
 public class Table {
 	private String name;
-	private List<Column<?>> columns;
+	private List<Column> columns;
 
 	/**
 	 * Constructs a new Table with the specified name.
@@ -18,7 +18,7 @@ public class Table {
 	 */
 	public Table(String name) {
 		this.setName(name);
-		columns = new ArrayList<Column<?>>();
+		columns = new ArrayList<Column>();
 	}
 
 	/**
@@ -32,9 +32,9 @@ public class Table {
 	 */
 	public void addColumn() {
 		String name = generateUniqueName();
-		Column<String> column;
+		Column column;
 		try {
-			column = new Column<String>(name, String.class, true, "x"); 
+			column = new Column(name, "string", true, "x"); 
 			columns.add(column);
 			if (columns.getFirst().getSize() > 0) {
 				for (int i = 0; i < columns.getFirst().getSize(); i++) {
@@ -55,7 +55,7 @@ public class Table {
 	 *                and unique among all column names in the table.
 	 */
 	public void renameColumn(String name, String newName) {
-		for (Column<?> col : columns) {
+		for (Column col : columns) {
 			if (col.getName().equals(name)) {
 				if (newName != null && !this.getColumnNames().contains(newName)) {
 					col.setName(newName);
@@ -74,8 +74,8 @@ public class Table {
 	 *
 	 * @throws IllegalArgumentException if no column with the specified name is found.
 	 */
-	public <T> void changeColumn(String name, Column<T> newColumn) {
-		Column<?> col = findColumn(name);
+	public void changeColumn(String name, Column newColumn) {
+		Column col = findColumn(name);
 		int index = columns.indexOf(col);
 		columns.set(index, newColumn);
 	}
@@ -84,7 +84,7 @@ public class Table {
 	 * Adds a new row to the table by appending a new cell with the default value to each column.
 	 */
 	public void addRow() {
-		for (Column<?> col : columns) {
+		for (Column col : columns) {
 			col.addCell();
 		}
 	}
@@ -96,7 +96,7 @@ public class Table {
 	 *                of the row indices in the table.
 	 */
 	public void removeRow(int rowIndx) {
-		for (Column<?> col : columns) {
+		for (Column col : columns) {
 			col.removeRow(rowIndx);
 		}
 	}
@@ -128,7 +128,7 @@ public class Table {
 	// TODO: split in different getters.
 	public List<String> getColumnsInfo() {
 		List<String> columnsInfo = new ArrayList<String>();
-		for (Column<?> i : columns) {
+		for (Column i : columns) {
 			columnsInfo.add(i.getInfo());
 		}
 		return columnsInfo;
@@ -184,7 +184,7 @@ public class Table {
 	 * @param value The new value to set in the specified cell. Must be compatible with the column's data type.
 	 */
 	public void updateCell(String nameColumn, Integer rowIndex, String value) {
-		Column<?> col = findColumn(nameColumn);
+		Column col = findColumn(nameColumn);
 		col.updateCell(rowIndex, value);
 	}
 
@@ -198,7 +198,7 @@ public class Table {
 	 * @return The value of the specified cell as a string.
 	 */
 	public String getCell(String nameColumn, Integer rowIndex) {
-		Column<?> col = findColumn(nameColumn);
+		Column col = findColumn(nameColumn);
 		return col.getCell(rowIndex);
 	}
 
@@ -209,7 +209,7 @@ public class Table {
 	 *                   Must correspond to an existing column in the table.
 	 */
 	public void changeAllowBlanks(String columnName) {
-		Column<?> col = findColumn(columnName);
+		Column col = findColumn(columnName);
 		col.changeAllowBlanks();
 	}
 
@@ -222,15 +222,15 @@ public class Table {
 	 * @param columnName The name of the column whose type is to be changed. The column must exist in the table.
 	 */
 	public void changeType(String columnName) {
-		Column<?> col = findColumn(columnName);
-		if (col.getType() == String.class) {
-	        Column<Boolean> newCol = new Column<Boolean>(columnName, Boolean.class, true, true);
+		Column col = findColumn(columnName);
+		if (col.getType() == "string") {
+	        Column newCol = new Column(columnName, "boolean", true, "true");
 	        changeColumn(columnName, newCol);
-	    }else if (col.getType() == Boolean.class) {
-	    	Column<Integer> newCol = new Column<Integer>(columnName, Integer.class, true, 0);
+	    }else if (col.getType() == "boolean") {
+	    	Column newCol = new Column(columnName, "int", true, "0");
 	    	changeColumn(columnName, newCol);
-	    }else if (col.getType() == Integer.class) {
-	    	Column<String> newCol = new Column<String>(columnName, String.class, true, "");
+	    }else if (col.getType() == "int") {
+	    	Column newCol = new Column(columnName, "string", true, "");
 	    	changeColumn(columnName, newCol);
 	    }
 	}
@@ -243,7 +243,7 @@ public class Table {
 	 * @return The default value of the specified column as an Object.
 	 */
 	public Object getDefaultValue(String column) {
-		Column<?> col = findColumn(column);
+		Column col = findColumn(column);
 		return col.getDefaultValue();
 	}
 
@@ -253,8 +253,8 @@ public class Table {
 	 * @param columnName The name of the column to find. Must correspond to an existing column in the table.
 	 * @return The column with the specified name, or null if no column with the given name exists.
 	 */
-	private Column<?> findColumn(String columnName) {
-		for (Column<?> col : columns) {
+	private Column findColumn(String columnName) {
+		for (Column col : columns) {
 			if (col.getName().equals(columnName)) {
 				return col;
 			}
@@ -269,8 +269,8 @@ public class Table {
 	 *               Must correspond to an existing column in the table.
 	 * @return The Class object representing the data type of the specified column.
 	 */
-	public Class<?> getClass(String column) {
-		Column<?> col = findColumn(column);
+	public String getClass(String column) {
+		Column col = findColumn(column);
 		return col.getType();
 	}
 
@@ -285,7 +285,7 @@ public class Table {
 	 *               It must match the column's data type.
 	 */
 	public void setDefaultValue(String column, String value) {
-		Column<?> col = findColumn(column);
+		Column col = findColumn(column);
 		col.setDefaultValue(value);
 	}
 }

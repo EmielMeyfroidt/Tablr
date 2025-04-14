@@ -6,20 +6,24 @@ package main;
  *
  * @param <T> The type of the value this cell holds.
  */
-public class Cell<T> {
-	private T value;
+public class Cell {
+	private CellValue value;
 
 	/**
 	 * @param value The value of the cell.
 	 */
-	public Cell(T value) {
+	public Cell(CellValue value) {
 		this.value = value;
 	}
-	public T getValue() {
-		return value;
+	public String getValue() {
+		if (value == null) {
+			return null;
+		}
+		return value.toString();
 	}
-	public void setValue(T value) {
-		this.value = value;
+	
+	public void setValue(CellValue cellValue) {
+		this.value = cellValue;
 	}
 
 }

@@ -61,7 +61,7 @@ public class TableTest {
 	public void changeColumnTest() {
 		Table t = new Table("name");
 		t.addColumn();
-		Column<String> col = new Column<String>("newCol", String.class, false, "default");
+		Column col = new Column("newCol", "string", false, "default");
 		assertEquals(t.getColumnNames().get(0), "Column0");
 		t.changeColumn("Column0", col);
 		assertEquals(t.getColumnNames().get(0), "newCol");
@@ -122,13 +122,13 @@ public class TableTest {
 	public void changeTypeTest() {
 		Table t = new Table("name");
 		t.addColumn();
-		assertEquals(t.getClass("Column0"), String.class);
+		assertEquals(t.getClass("Column0"), "string");
 		t.changeType("Column0");
-		assertEquals(t.getClass("Column0"), Boolean.class);
+		assertEquals(t.getClass("Column0"), "boolean");
 		t.changeType("Column0");
-		assertEquals(t.getClass("Column0"), Integer.class);
+		assertEquals(t.getClass("Column0"), "int");
 		t.changeType("Column0");
-		assertEquals(t.getClass("Column0"), String.class);
+		assertEquals(t.getClass("Column0"), "string");
 	}
 
 	@Test

@@ -83,7 +83,7 @@ public class DesignView extends AbstractView {
 					this.getMgr().changeAllowBlanks(table, column);
 				} else if (x < runningMargin.get(3)) {
 					// Click on defaultValue
-					if (getMgr().getClass(table, column) == Boolean.class) {
+					if (getMgr().getClass(table, column) == "boolean") {
 						getMgr().setDefaultValue(table, column, String.valueOf(!(boolean) getMgr().getDefaultValue(table, column)));
 					} else {
 //						fireModeChanged(new EditDefaultValueView(this.getMgr(), this, column, table));

@@ -11,16 +11,16 @@ public class ColumnTest {
 
 	@Test
 	public void testConstructorAndGetInfo() {
-		Column<String> column = new Column<>("TestColumn", String.class, true, "Default");
+		Column column = new Column("TestColumn", "string", true, "Default");
 
 		assertEquals("TestColumn", column.getName());
-		assertEquals(String.class, column.getType());
-		assertTrue(column.getInfo().contains("TestColumn String true Default"));
+		assertEquals("string", column.getType());
+		assertEquals(column.getInfo(),("TestColumn string true Default"));
 	}
 
 	@Test
 	public void testAddCellAndSize() {
-		Column<Integer> column = new Column<>("NumberColumn", Integer.class, false, 42);
+		Column column = new Column("NumberColumn", "int", false, "42");
 
 		assertEquals(0, column.getSize());
 
@@ -33,7 +33,7 @@ public class ColumnTest {
 
 	@Test
 	public void testRemoveCell() {
-		Column<String> column = new Column<>("StringColumn", String.class, true, "Default");
+		Column column = new Column("StringColumn", "string", true, "Default");
 
 		column.addCell();
 		column.addCell();
@@ -45,7 +45,7 @@ public class ColumnTest {
 
 	@Test
 	public void testGetAndSetCell() {
-		Column<String> column = new Column<>("StringColumn", String.class, false, "");
+		Column column = new Column("StringColumn", "string", false, "");
 
 		column.addCell();
 		column.updateCell(0, "stringValue");
@@ -54,7 +54,7 @@ public class ColumnTest {
 
 	@Test
 	public void testChangeAllowsBlanks() {
-		Column<String> column = new Column<>("BlankColumn", String.class, false, "Default");
+		Column column = new Column("BlankColumn", "string", false, "Default");
 
 		assertFalse(column.getInfo().contains("true"));
 
@@ -67,7 +67,7 @@ public class ColumnTest {
 
 	@Test
 	public void testSetName() {
-		Column<String> column = new Column<>("OriginalName", String.class, true, "Default");
+		Column column = new Column("OriginalName", "string", true, "Default");
 
 		column.setName("NewName");
 		assertEquals("NewName", column.getName());
@@ -75,7 +75,7 @@ public class ColumnTest {
 
 	@Test
 	public void testGetColumnContent() {
-		Column<Boolean> column = new Column<>("BooleanColumn", Boolean.class, false, false);
+		Column column = new Column("BooleanColumn", "bool", false, "false");
 
 		column.addCell();
 		column.addCell();
@@ -90,7 +90,7 @@ public class ColumnTest {
 
 	@Test
 	public void testDefaultCellContent() {
-		Column<String> column = new Column<>("DefaultTest", String.class, true, "DefaultValue");
+		Column column = new Column("DefaultTest", "string", true, "DefaultValue");
 
 		column.addCell();
 		assertEquals("DefaultValue", column.getCell(0));
@@ -98,15 +98,15 @@ public class ColumnTest {
 	
 	@Test
 	public void testUpdateCellForDifferentTypes() {
-		Column<String> string = new Column<>("String", String.class, true, "DefaultValue");
+		Column string = new Column("String", "string", true, "DefaultValue");
 		string.addCell();
 		string.updateCell(0, "UpdatedValue");
 		assertEquals(string.getCell(0), "UpdatedValue");
-		Column<Boolean> bool = new Column<>("Bool", Boolean.class, true, true);
+		Column bool = new Column("Bool", "bool", true, "true");
 		bool.addCell();
 		bool.updateCell(0, "false");
 		assertEquals(bool.getCell(0), "false");
-		Column<Integer> integer = new Column<>("Integer", Integer.class, true, 0);
+		Column integer = new Column("Integer", "int", true, "0");
 		integer.addCell();
 		integer.updateCell(0, "1");
 		assertEquals(integer.getCell(0), "1");
@@ -114,17 +114,17 @@ public class ColumnTest {
 	
 	@Test
 	public void testSetDefaultValueForDifferentTypes() {
-		Column<String> string = new Column<>("String", String.class, true, "DefaultValue");
+		Column string = new Column("String", "string", true, "DefaultValue");
 		string.addCell();
 		string.setDefaultValue("UpdatedValue");
 		assertEquals(string.getDefaultValue(), "UpdatedValue");
-		Column<Boolean> bool = new Column<>("Bool", Boolean.class, true, true);
+		Column bool = new Column("Bool", "bool", true, "true");
 		bool.addCell();
 		bool.setDefaultValue("false");
-		assertEquals(bool.getDefaultValue(), false);
-		Column<Integer> integerCol = new Column<>("Integer", Integer.class, true, 0);
+		assertEquals(bool.getDefaultValue(), "false");
+		Column integerCol = new Column("Integer", "int", true, "0");
 		integerCol.addCell();
 		integerCol.setDefaultValue("1");
-		assertEquals((Integer) 1, integerCol.getDefaultValue());
+		assertEquals("1", integerCol.getDefaultValue());
 	}
 }

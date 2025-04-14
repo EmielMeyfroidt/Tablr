@@ -2,7 +2,11 @@ package test;
 
 import static org.junit.Assert.*;
 
+import main.BoolValue;
 import main.Cell;
+import main.IntValue;
+import main.StringValue;
+
 import org.junit.Test;
 
 /**
@@ -12,39 +16,46 @@ public class CellTest {
 
     @Test
     public void cellConstructor_SetsValueCorrectly() {
-        Cell<String> cell = new Cell<>("test");
+    	StringValue s = new StringValue("test");
+        Cell cell = new Cell(s);
         assertEquals("test", cell.getValue());
     }
 
     @Test
     public void setValue_ChangesCellValueSuccessfully() {
-        Cell<String> cell = new Cell<>("testValue");
+    	StringValue s = new StringValue("testValue");
+        Cell cell = new Cell(s);
         assertEquals("testValue", cell.getValue());
-        cell.setValue("changedValue");
+        StringValue s2 = new StringValue("changedValue");
+        cell.setValue(s2);
         assertEquals("changedValue", cell.getValue());
     }
 
     @Test
     public void cell_HandlesDifferentDataTypes() {
         // Integer type
-        Cell<Integer> intCell = new Cell<>(42);
-        assertEquals(Integer.valueOf(42), intCell.getValue());
+    	IntValue i = new IntValue("42");
+        Cell intCell = new Cell(i);
+        assertEquals("42", intCell.getValue());
 
-        // Double type
-        Cell<Double> doubleCell = new Cell<>(3.14);
-        assertEquals(Double.valueOf(3.14), doubleCell.getValue());
+//        // Double type
+//        Cell<Double> doubleCell = new Cell<>(3.14);
+//        assertEquals(Double.valueOf(3.14), doubleCell.getValue());
 
         // Boolean type
-        Cell<Boolean> booleanCell = new Cell<>(true);
-        assertEquals(Boolean.TRUE, booleanCell.getValue());
+        BoolValue b = new BoolValue("true");
+        Cell booleanCell = new Cell(b);
+        assertEquals("true", booleanCell.getValue());
     }
 
     @Test
     public void cell_AllowsNullValues() {
-        Cell<String> cell = new Cell<>(null);
+    	StringValue s = new StringValue(null);
+        Cell cell = new Cell(s);
         assertNull(cell.getValue()); // Check initial null value
 
-        cell.setValue("notNull");
+        StringValue s2 = new StringValue("notNull");
+        cell.setValue(s2);
         assertEquals("notNull", cell.getValue()); // Check updated value
 
         cell.setValue(null);

@@ -64,7 +64,7 @@ public class RowsView extends AbstractView {
 			} else {
 				// Click on table, edit cell
 				String column = this.getMgr().getColumnNames(table).get(locateColumn(x));
-				if (getMgr().getClass(table, column) == Boolean.class) {
+				if (getMgr().getClass(table, column) == "boolean") {
 					// edit boolean value
 					getMgr().updateCell(table, column, rowIndex,
 							String.valueOf(!Boolean.valueOf(getMgr().getCell(table, column, rowIndex))));

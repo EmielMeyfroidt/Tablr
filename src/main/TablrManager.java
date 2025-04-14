@@ -286,7 +286,7 @@ public class TablrManager {
 	 * @param column The name of the column whose class type is to be retrieved.
 	 * @return The Class object representing the type of the specified column in the table.
 	 */
-	public Class<?> getClass(String table, String column) {
+	public String getClass(String table, String column) {
 		Table t = findTable(table);
 		return t.getClass(column);
 	}
