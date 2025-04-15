@@ -4,6 +4,7 @@
 package main;
 
 import java.awt.Graphics;
+import java.util.UUID;
 
 /**
  * Represents a view for editing the characteristics of a column.
@@ -11,7 +12,7 @@ import java.awt.Graphics;
 public class EditColumnCharacteristicsView extends AbstractView {
 
 	private DesignView underlyingView;
-	private String nameTable;
+	private UUID tableId;
 	private String name;
 	private String originalName;
 
@@ -23,10 +24,10 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 * @param name           the initial name of the column being edited
 	 * @param nameTable      the name of the table containing the column
 	 */
-	public EditColumnCharacteristicsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, DesignView underlyingMode, String name, String nameTable) {
+	public EditColumnCharacteristicsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, DesignView underlyingMode, String name, UUID tableId) {
 		super(mgr, layoutInfo, viewList);
 		this.underlyingView = underlyingMode;
-		this.nameTable = nameTable;
+		this.tableId = tableId;
 		this.name = name;
 		this.originalName = name;
 	}
@@ -83,7 +84,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 */
 	@Override
 	public void handleEscape() {
-		getMgr().changeNameColumn(nameTable, name, originalName);
+		getMgr().changeNameColumn(tableId, name, originalName);
 //		fireModeChanged(underlyingView);
 //		TODO
 	}
@@ -95,10 +96,10 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	@Override
 	public void handleBackSpace() {
 		try {
-			getMgr().changeNameColumn(nameTable, name, name.substring(0, name.length() - 1));
+			getMgr().changeNameColumn(tableId, name, name.substring(0, name.length() - 1));
 			name = name.substring(0, name.length() - 1);
 		} catch (Exception e) {
-			getMgr().changeNameColumn(nameTable, name, "");
+			getMgr().changeNameColumn(tableId, name, "");
 			name = "";
 		}
 
@@ -145,7 +146,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 */
 	@Override
 	public void handleCharTyped(char keyChar) {
-		getMgr().changeNameColumn(nameTable, name, name + keyChar);
+		getMgr().changeNameColumn(tableId, name, name + keyChar);
 		name += keyChar;
 	}
 }

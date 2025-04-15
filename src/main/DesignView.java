@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 public class DesignView extends AbstractView {
 
 	private final int stepX = 20;
 	private final int stepY = 20;
-	private String table;
+	private UUID tableId;
 	private List<String> selectedColumns;
 	private List<Integer> margin;
 
@@ -20,9 +21,9 @@ public class DesignView extends AbstractView {
 	 * @param mgr   The TablrManager instance managing this view.
 	 * @param table The name of the table associated with this design view.
 	 */
-	public DesignView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, String table) {
+	public DesignView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, UUID table) {
 		super(mgr, layoutInfo, viewList);
-		this.table = table;
+		this.tableId = table;
 		this.selectedColumns = new ArrayList<String>();
 		this.margin = new ArrayList<>();
 	}
@@ -39,8 +40,8 @@ public class DesignView extends AbstractView {
 	public void handleDoubleClick(int x, int y) {
 		System.out.println("design view");
 		int elementNumber = (int) Math.floor(y / this.stepY);
-		if (elementNumber > getMgr().getColumnNames(table).size()) {
-			getMgr().addColumn(table);
+		if (elementNumber > getMgr().getColumnNames(tableId).size()) {
+			getMgr().addColumn(tableId);
 		} else {
 			// nothing
 		}
@@ -55,7 +56,7 @@ public class DesignView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		int elementNumber = (int) Math.floor(y / this.stepY);
-		if ((elementNumber <= getMgr().getColumnNames(table).size())) {
+		if ((elementNumber <= getMgr().getColumnNames(tableId).size())) {
 			List<Integer> runningMargin = new ArrayList<>();
 			int sum = 0;
 			sum += stepX;
@@ -65,11 +66,11 @@ public class DesignView extends AbstractView {
 			}
 			if (x < stepX) {
 				// Left margin of table, indicate that selected
-				selectedColumns.add(getMgr().getColumnNames(table).get(elementNumber));
+				selectedColumns.add(getMgr().getColumnNames(tableId).get(elementNumber));
 //				fireModeChanged(this);
 //				TODO
 			} else {
-				String column = this.getMgr().getColumnNames(table).get(elementNumber);
+				String column = this.getMgr().getColumnNames(tableId).get(elementNumber);
 				if (x < runningMargin.get(0)) {
 					// Click on table name, edit name
 //					fireModeChanged(new EditColumnCharacteristicsView(this.getMgr(), this,
@@ -77,14 +78,14 @@ public class DesignView extends AbstractView {
 //					TODO
 				} else if (x < runningMargin.get(1)) {
 					// Click on type
-					this.getMgr().changeType(table, column);
+					this.getMgr().changeType(tableId, column);
 				} else if (x < runningMargin.get(2)) {
 					// Click on allowBlanks
-					this.getMgr().changeAllowBlanks(table, column);
+					this.getMgr().changeAllowBlanks(tableId, column);
 				} else if (x < runningMargin.get(3)) {
 					// Click on defaultValue
-					if (getMgr().getClass(table, column) == "boolean") {
-						getMgr().setDefaultValue(table, column, String.valueOf(!(boolean) getMgr().getDefaultValue(table, column)));
+					if (getMgr().getClass(tableId, column) == "boolean") {
+						getMgr().setDefaultValue(tableId, column, String.valueOf(!(boolean) getMgr().getDefaultValue(tableId, column)));
 					} else {
 //						fireModeChanged(new EditDefaultValueView(this.getMgr(), this, column, table));
 //						TODO
@@ -127,7 +128,7 @@ public class DesignView extends AbstractView {
 	@Override
 	public void handleCtrlEnter() {
 		System.out.println("ctrl enter");
-		RowsView newView = new RowsView(getMgr(), getLayoutInfo(), getViewList(), table);
+		RowsView newView = new RowsView(getMgr(), getLayoutInfo(), getViewList(), tableId);
 //		newView.setChangeModeListeners(getChangeModeListeners());
 //		fireModeChanged(newView);
 //		TODO
@@ -149,7 +150,7 @@ public class DesignView extends AbstractView {
 	@Override
 	public void handleDelete() {
 		for (String c : selectedColumns) {
-			getMgr().removeColumn(table, c);
+			getMgr().removeColumn(tableId, c);
 		}
 		selectedColumns.clear();
 	}
@@ -184,7 +185,7 @@ public class DesignView extends AbstractView {
 	@Override
 	public void paint(Graphics g) {
 		List<List<String>> splitList = new ArrayList<>();
-		for (String s : getMgr().getColumnsInfo(table)) {
+		for (String s : getMgr().getColumnsInfo(tableId)) {
 			List<String> columnData = Arrays.asList(s.split(" "));
 			splitList.add(columnData);
 		}

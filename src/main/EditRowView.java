@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.*;
+import java.util.UUID;
 
 /**
  * Represents a view for editing a specific cell value in a table. The EditRowView is
@@ -10,7 +11,7 @@ public class EditRowView extends AbstractView {
 
 	private RowsView underlyingMode;
 	private String nameColumn;
-	private String nameTable;
+	private UUID tableId;
 	private Integer rowIndex;
 	private String value;
 
@@ -23,13 +24,13 @@ public class EditRowView extends AbstractView {
 	 * @param nameColumn     the name of the column containing the cell being edited
 	 * @param rowIndex       the index of the row containing the cell being edited
 	 */
-	public EditRowView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, RowsView underlyingMode, String nameTable, String nameColumn, Integer rowIndex) {
+	public EditRowView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, RowsView underlyingMode, UUID tableId, String nameColumn, Integer rowIndex) {
 		super(mgr, layoutInfo, viewList);
 		this.underlyingMode = underlyingMode;
-		this.nameTable = nameTable;
+		this.tableId = tableId;
 		this.nameColumn = nameColumn;
 		this.rowIndex = rowIndex;
-		value = getMgr().getCell(nameTable, nameColumn, rowIndex);
+		value = getMgr().getCell(tableId, nameColumn, rowIndex);
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class EditRowView extends AbstractView {
 	@Override
 	public void handleBackSpace() {
 		if (!value.isEmpty()) {
-			getMgr().updateCell(nameTable, nameColumn, rowIndex, value.substring(0, value.length() - 1));
+			getMgr().updateCell(tableId, nameColumn, rowIndex, value.substring(0, value.length() - 1));
 			value = value.substring(0, value.length() - 1);
 		}
 	}
@@ -116,7 +117,7 @@ public class EditRowView extends AbstractView {
 	 */
 	@Override
 	public void handleCharTyped(char keyChar) {
-		getMgr().updateCell(nameTable, nameColumn, rowIndex, value += keyChar);
+		getMgr().updateCell(tableId, nameColumn, rowIndex, value += keyChar);
 	}
 
 	/**

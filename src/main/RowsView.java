@@ -3,6 +3,7 @@ package main;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * RowsView is a view
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class RowsView extends AbstractView {
 
-	private String table;
+	private UUID tableId;
 	private final int leftMargin = 20;
 	private final int topMargin = 20;
 	private final int stepY = 20;
@@ -23,9 +24,9 @@ public class RowsView extends AbstractView {
 	 * @param mgr   the TablrManager instance responsible for managing views and data models
 	 * @param table the name of the table whose rows are to be displayed and managed
 	 */
-	public RowsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, String table) {
+	public RowsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, UUID tableId) {
 		super(mgr, layoutInfo, viewList);
-		this.table = table;
+		this.tableId = tableId;
 		this.selectedRows = new ArrayList<Integer>();
 	}
 
@@ -38,8 +39,8 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		int elementNumber = (int) Math.floor(y / this.stepY) - 1;
-		if (elementNumber > getMgr().getColumns(table).getFirst().size()) {
-			this.getMgr().addRow(table);
+		if (elementNumber > getMgr().getColumns(tableId).getFirst().size()) {
+			this.getMgr().addRow(tableId);
 		}
 	}
 
@@ -55,7 +56,7 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		int rowIndex = (int) Math.floor((y - topMargin) / this.stepY);
-		if ((rowIndex <= getMgr().getColumnNames(table).size())) {
+		if ((rowIndex <= getMgr().getColumnNames(tableId).size())) {
 			if (x < leftMargin) {
 				// Left margin of table, indicate that selected
 				selectedRows.add(rowIndex);
@@ -63,11 +64,11 @@ public class RowsView extends AbstractView {
 				//TODO
 			} else {
 				// Click on table, edit cell
-				String column = this.getMgr().getColumnNames(table).get(locateColumn(x));
-				if (getMgr().getClass(table, column) == "boolean") {
+				String column = this.getMgr().getColumnNames(tableId).get(locateColumn(x));
+				if (getMgr().getClass(tableId, column) == "boolean") {
 					// edit boolean value
-					getMgr().updateCell(table, column, rowIndex,
-							String.valueOf(!Boolean.valueOf(getMgr().getCell(table, column, rowIndex))));
+					getMgr().updateCell(tableId, column, rowIndex,
+							String.valueOf(!Boolean.valueOf(getMgr().getCell(tableId, column, rowIndex))));
 				} else {
 					// edit string or integer value
 //					fireModeChanged(new EditRowView(this.getMgr(), this, table, column, rowIndex));
@@ -121,7 +122,7 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleCtrlEnter() {
 		System.out.println("switch to design");
-		DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), table);
+		DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), tableId);
 //		newView.setChangeModeListeners(getChangeModeListeners());
 //		fireModeChanged(newView);
 		//TODO
@@ -142,7 +143,7 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleDelete() {
 		for (int row : selectedRows) {
-			getMgr().removeRow(table, row);
+			getMgr().removeRow(tableId, row);
 		}
 	}
 
@@ -175,12 +176,12 @@ public class RowsView extends AbstractView {
 	public void paint(Graphics g) {
 		int charSize = 10;
 
-		List<List<String>> columns = getMgr().getColumns(table);
+		List<List<String>> columns = getMgr().getColumns(tableId);
 		int currentMargin = leftMargin;
 		this.margins = new ArrayList<>();
 		margins.add(currentMargin);
 		for (int col = 0; col < columns.size() - 1; col++) {
-			int maxLength = getMgr().getColumnNames(table).get(col).length();
+			int maxLength = getMgr().getColumnNames(tableId).get(col).length();
 			int maxLenOfCol = columns.get(col).stream().mapToInt(String::length).max().orElse(0);
 			if (maxLength < maxLenOfCol) {
 				maxLength = maxLenOfCol;
@@ -189,8 +190,8 @@ public class RowsView extends AbstractView {
 			margins.add(currentMargin);
 		}
 
-		for (int col = 0; col < getMgr().getColumnNames(table).size(); col++) {
-			g.drawString(getMgr().getColumnNames(table).get(col), margins.get(col), topMargin);
+		for (int col = 0; col < getMgr().getColumnNames(tableId).size(); col++) {
+			g.drawString(getMgr().getColumnNames(tableId).get(col), margins.get(col), topMargin);
 		}
 		for (int row = 0; row < columns.getFirst().size(); row++) {
 			if (selectedRows.contains(row)) {

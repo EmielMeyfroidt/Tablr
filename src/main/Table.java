@@ -2,12 +2,14 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
  * Represents a table object that contains a collection of columns.
  */
 public class Table {
+	private final UUID id;
 	private String name;
 	private List<Column> columns;
 
@@ -19,6 +21,7 @@ public class Table {
 	public Table(String name) {
 		this.setName(name);
 		columns = new ArrayList<Column>();
+		this.id = UUID.randomUUID();
 	}
 
 	/**
@@ -287,5 +290,9 @@ public class Table {
 	public void setDefaultValue(String column, String value) {
 		Column col = findColumn(column);
 		col.setDefaultValue(value);
+	}
+
+	public UUID getId() {
+		return id;
 	}
 }

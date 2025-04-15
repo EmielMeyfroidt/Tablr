@@ -3,6 +3,7 @@ package main;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents a view for displaying and interacting with a list of tables.
@@ -11,7 +12,7 @@ public class TablesView extends AbstractView {
 
 	private final int stepX = 20;
 	private final int stepY = 20;
-	private List<String> selectedTables;
+	private List<UUID> selectedTables;
 
 	/**
 	 * Constructs a new TablesView instance to manage and display a list of tables.
@@ -20,7 +21,7 @@ public class TablesView extends AbstractView {
 	 */
 	public TablesView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList) {
 		super(mgr, layoutInfo, viewList);
-		this.selectedTables = new ArrayList<String>();
+		this.selectedTables = new ArrayList<UUID>();
 	}
 
 	/**
@@ -36,7 +37,7 @@ public class TablesView extends AbstractView {
 	public void handleDoubleClick(int x, int y) {
 		int elementNumber = (int) Math.floor(y / this.stepY);
 		try {
-			String tableClicked = getMgr().getTableNames().get(elementNumber);
+			UUID tableClicked = getMgr().getTableIds().get(elementNumber);
 			DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), tableClicked);
 //			newView.setChangeModeListeners(getChangeModeListeners());
 //			this.fireModeChanged(newView);
@@ -61,12 +62,12 @@ public class TablesView extends AbstractView {
 		if (elementNumber <= getMgr().getTableNames().size()) {
 			if (x < stepX) {
 				//Left margin of table, indicate that selected
-				selectedTables.add(getMgr().getTableNames().get(elementNumber));
+				selectedTables.add(getMgr().getTableIds().get(elementNumber));
 //				fireModeChanged(this);
 //				TODO
 			} else {
 				//Click on table, edit name
-				String tableName = this.getMgr().getTableNames().get(elementNumber);
+				UUID tableId = this.getMgr().getTableIds().get(elementNumber);
 //				fireModeChanged(new EditTableNameView(this.getMgr(), this, tableName));
 //				TODO
 			}
@@ -88,7 +89,7 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleBackSpace() {
-		// TODO Auto-generated method stub
+		// nothing
 
 	}
 
@@ -98,7 +99,7 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleCtrlEnter() {
-		// TODO Auto-generated method stub
+		// nothing
 	}
 
 	/**
@@ -107,7 +108,7 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleEnter() {
-		// TODO Auto-generated method stub
+		// nothing
 	}
 
 	/**
@@ -115,7 +116,7 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleDelete() {
-		for (String t : selectedTables) {
+		for (UUID t : selectedTables) {
 			getMgr().removeTable(t);
 		}
 		selectedTables.clear();
@@ -129,7 +130,7 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleCharTyped(char keyChar) {
-		// TODO Auto-generated method stub
+		// nothing
 
 	}
 
@@ -142,11 +143,11 @@ public class TablesView extends AbstractView {
 	@Override
 	public void paint(Graphics g) {
 		int y = stepY;
-		for (String table : getMgr().getTableNames()) {
+		for (UUID table : getMgr().getTableIds()) {
 			if (selectedTables.contains(table)) {
 				g.drawString("*", 0, y);
 			}
-			g.drawString(table, stepX, y);
+			g.drawString(this.getMgr().getTableName(table), stepX, y);
 			y += stepY;
 		}
 	}

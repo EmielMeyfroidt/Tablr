@@ -2,6 +2,7 @@ package main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 //Manage tables and their contents
@@ -75,8 +76,8 @@ public class TablrManager {
 	 *
 	 * @param table The name of the table to be removed.
 	 */
-	public void removeTable(String table) {
-		tables.removeIf(t -> t.getName().equals(table));
+	public void removeTable(UUID table) {
+		tables.removeIf(t -> t.getId().equals(table));
 		fireContentsChanged();
 	}
 
@@ -87,6 +88,14 @@ public class TablrManager {
 	 */
 	public List<String> getTableNames() {
 		return tables.stream().map(t -> t.getName()).collect(Collectors.toList());
+	}
+	
+	public List<UUID> getTableIds(){
+		return tables.stream().map(t->t.getId()).collect(Collectors.toList());
+	}
+	
+	public String getTableName(UUID id) {
+		return findTable(id).getName();
 	}
 
 	/**
@@ -106,8 +115,8 @@ public class TablrManager {
 	 * @param tableName The name of the table.
 	 * @return A list with the info of the columns.
 	 */
-	public List<String> getColumnsInfo(String tableName) {
-		Table t = findTable(tableName);
+	public List<String> getColumnsInfo(UUID tableId) {
+		Table t = findTable(tableId);
 		return t.getColumnsInfo();
 	}
 
@@ -115,8 +124,8 @@ public class TablrManager {
 	 * @param table   The old name of the table.
 	 * @param newName The new name of the table.
 	 */
-	public void changeName(String table, String newName) {
-		Table t = findTable(table);
+	public void changeName(UUID tableId, String newName) {
+		Table t = findTable(tableId);
 		t.setName(newName);
 		fireContentsChanged();
 	}
@@ -125,7 +134,7 @@ public class TablrManager {
 	 * @param table   The name of the table.
 	 * @param newName The new name of the table.
 	 */
-	public void changeNameColumn(String table, String column, String newName) {
+	public void changeNameColumn(UUID table, String column, String newName) {
 		Table t = findTable(table);
 		t.renameColumn(column, newName);
 		fireContentsChanged();
@@ -134,7 +143,7 @@ public class TablrManager {
 	/**
 	 * @param table The name of the table.
 	 */
-	public void addColumn(String table) {
+	public void addColumn(UUID table) {
 		Table t = findTable(table);
 		t.addColumn();
 		fireContentsChanged();
@@ -144,7 +153,7 @@ public class TablrManager {
 	 * @param table The name of the table.
 	 * @return A list of all the names of the columns.
 	 */
-	public List<String> getColumnNames(String table) {
+	public List<String> getColumnNames(UUID table) {
 		Table t = findTable(table);
 		return t.getColumnNames();
 	}
@@ -153,7 +162,7 @@ public class TablrManager {
 	 * @param table The name of the table wherein the column is.
 	 * @param c     The name of the column to remove.
 	 */
-	public void removeColumn(String table, String c) {
+	public void removeColumn(UUID table, String c) {
 		Table t = findTable(table);
 		t.removeColumn(c);
 		fireContentsChanged();
@@ -165,7 +174,7 @@ public class TablrManager {
 	 * @param table The name of the table from which the columns are to be retrieved.
 	 * @return A list of lists where each inner list contains the values of a single column.
 	 */
-	public List<List<String>> getColumns(String table) {
+	public List<List<String>> getColumns(UUID table) {
 		Table t = findTable(table);
 		return t.getColumns();
 	}
@@ -176,7 +185,7 @@ public class TablrManager {
 	 *
 	 * @param table The name of the table where a new row will be added.
 	 */
-	public void addRow(String table) {
+	public void addRow(UUID table) {
 		Table t = findTable(table);
 		t.addRow();
 		fireContentsChanged();
@@ -188,7 +197,7 @@ public class TablrManager {
 	 * @param table The name of the table from which to remove the row.
 	 * @param row   The index of the row to be removed.
 	 */
-	public void removeRow(String table, int row) {
+	public void removeRow(UUID table, int row) {
 		Table t = findTable(table);
 		t.removeRow(row);
 		fireContentsChanged();
@@ -203,7 +212,7 @@ public class TablrManager {
 	 * @param rowIndex   The index of the row containing the cell to update.
 	 * @param value      The new value to set in the specified cell.
 	 */
-	public void updateCell(String nameTable, String nameColumn, Integer rowIndex, String value) {
+	public void updateCell(UUID nameTable, String nameColumn, Integer rowIndex, String value) {
 		Table t = findTable(nameTable);
 		t.updateCell(nameColumn, rowIndex, value);
 		fireContentsChanged();
@@ -217,7 +226,7 @@ public class TablrManager {
 	 * @param rowIndex   The index of the row containing the desired cell.
 	 * @return The value of the cell as a String.
 	 */
-	public String getCell(String nameTable, String nameColumn, Integer rowIndex) {
+	public String getCell(UUID nameTable, String nameColumn, Integer rowIndex) {
 		Table t = findTable(nameTable);
 		return t.getCell(nameColumn, rowIndex);
 
@@ -231,7 +240,7 @@ public class TablrManager {
 	 * @param tableName  The name of the table containing the column to update.
 	 * @param columnName The name of the column whose blank allowance setting will be changed.
 	 */
-	public void changeAllowBlanks(String tableName, String columnName) {
+	public void changeAllowBlanks(UUID tableName, String columnName) {
 		Table t = findTable(tableName);
 		t.changeAllowBlanks(columnName);
 		fireContentsChanged();
@@ -244,9 +253,9 @@ public class TablrManager {
 	 * @return The Table object that matches the specified name,
 	 * or null if no table with the given name is found.
 	 */
-	private Table findTable(String tableName) {
+	private Table findTable(UUID tableId) {
 		for (Table t : tables) {
-			if (t.getName().equals(tableName)) {
+			if (t.getId().equals(tableId)) {
 				return t;
 			}
 		}
@@ -261,7 +270,7 @@ public class TablrManager {
 	 * @param table  The name of the table containing the column whose type is to be changed.
 	 * @param column The name of the column whose type will be modified.
 	 */
-	public void changeType(String table, String column) {
+	public void changeType(UUID table, String column) {
 		Table t = findTable(table);
 		t.changeType(column);
 		fireContentsChanged();
@@ -274,7 +283,7 @@ public class TablrManager {
 	 * @param column The name of the column for which the default value is to be retrieved.
 	 * @return The default value of the specified column in the table, or null if no default value is set.
 	 */
-	public Object getDefaultValue(String table, String column) {
+	public Object getDefaultValue(UUID table, String column) {
 		Table t = findTable(table);
 		return t.getDefaultValue(column);
 	}
@@ -286,7 +295,7 @@ public class TablrManager {
 	 * @param column The name of the column whose class type is to be retrieved.
 	 * @return The Class object representing the type of the specified column in the table.
 	 */
-	public String getClass(String table, String column) {
+	public String getClass(UUID table, String column) {
 		Table t = findTable(table);
 		return t.getClass(column);
 	}
@@ -300,7 +309,7 @@ public class TablrManager {
 	 * @param column The name of the column for which the default value is to be set.
 	 * @param value  The default value to assign to the specified column.
 	 */
-	public void setDefaultValue(String table, String column, String value) {
+	public void setDefaultValue(UUID table, String column, String value) {
 		Table t = findTable(table);
 		t.setDefaultValue(column, value);
 		fireContentsChanged();

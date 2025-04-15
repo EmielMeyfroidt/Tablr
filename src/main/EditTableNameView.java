@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics;
+import java.util.UUID;
 
 /**
  * Represents a view for editing the name of a table in the application.
@@ -8,6 +9,7 @@ import java.awt.Graphics;
 public class EditTableNameView extends AbstractView {
 
 	private TablesView underlyingMode;
+	private UUID tableId;
 	private String name;
 	private final String originalName;
 
@@ -18,11 +20,12 @@ public class EditTableNameView extends AbstractView {
 	 * @param underlyingMode The underlying view mode associated with this table.
 	 * @param name           The initial name of the table being edited.
 	 */
-	public EditTableNameView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, TablesView underlyingMode, String name) {
+	public EditTableNameView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, TablesView underlyingMode, UUID tableId) {
 		super(mgr, layoutInfo, viewList);
 		this.underlyingMode = underlyingMode;
-		this.name = name;
-		this.originalName = name;
+		this.tableId = tableId;
+		this.originalName = mgr.getTableName(tableId);
+		this.name = mgr.getTableName(tableId);
 	}
 
 	/**
@@ -56,7 +59,7 @@ public class EditTableNameView extends AbstractView {
 	 */
 	@Override
 	public void handleEscape() {
-		getMgr().changeName(name, originalName);
+		getMgr().changeName(tableId, originalName);
 //		fireModeChanged(underlyingMode);
 		getViewList().substituteView(this, underlyingMode);
 
@@ -68,10 +71,10 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleBackSpace() {
 		try {
-			getMgr().changeName(name, name.substring(0, name.length() - 1));
+			getMgr().changeName(tableId, name.substring(0, name.length() - 1));
 			name = name.substring(0, name.length() - 1);
 		} catch (Exception e) {
-			getMgr().changeName(name, "");
+			getMgr().changeName(tableId, "");
 			name = "";
 		}
 
@@ -114,7 +117,7 @@ public class EditTableNameView extends AbstractView {
 	 */
 	@Override
 	public void handleCharTyped(char keyChar) {
-		getMgr().changeName(name, name + keyChar);
+		getMgr().changeName(tableId, name + keyChar);
 		name += keyChar;
 
 	}

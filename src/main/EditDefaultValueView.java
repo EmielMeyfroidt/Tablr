@@ -4,6 +4,7 @@
 package main;
 
 import java.awt.Graphics;
+import java.util.UUID;
 
 /**
  * A view class for editing the default value of a specific column in a table.
@@ -11,7 +12,7 @@ import java.awt.Graphics;
 public class EditDefaultValueView extends AbstractView {
 
 	private DesignView underlyingView;
-	private String table;
+	private UUID tableId;
 	private String column;
 	private final String originalValue;
 	private String newValue;
@@ -24,13 +25,13 @@ public class EditDefaultValueView extends AbstractView {
 	 * @param column         The name of the column whose default value is being edited.
 	 * @param table          The name of the table containing the specified column.
 	 */
-	public EditDefaultValueView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, DesignView underlyingView, String column, String table) {
+	public EditDefaultValueView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, DesignView underlyingView, String column, UUID tableId) {
 		super(mgr, layoutInfo, viewList);
 		this.underlyingView = underlyingView;
-		this.table = table;
+		this.tableId = tableId;
 		this.column = column;
-		this.originalValue = mgr.getDefaultValue(table, column).toString();
-		this.newValue = mgr.getDefaultValue(table, column).toString();
+		this.originalValue = mgr.getDefaultValue(tableId, column).toString();
+		this.newValue = mgr.getDefaultValue(tableId, column).toString();
 	}
 
 	/**
@@ -84,7 +85,7 @@ public class EditDefaultValueView extends AbstractView {
 	 */
 	@Override
 	public void handleEscape() {
-		getMgr().setDefaultValue(table, column, originalValue);
+		getMgr().setDefaultValue(tableId, column, originalValue);
 //		fireModeChanged(underlyingView);
 		getViewList().substituteView(this, underlyingView);
 	}
@@ -96,11 +97,11 @@ public class EditDefaultValueView extends AbstractView {
 	@Override
 	public void handleBackSpace() {
 		try {
-			getMgr().setDefaultValue(table, column, newValue.substring(0, newValue.length() - 1));
+			getMgr().setDefaultValue(tableId, column, newValue.substring(0, newValue.length() - 1));
 			;
 			newValue = newValue.substring(0, newValue.length() - 1);
 		} catch (Exception e) {
-			getMgr().setDefaultValue(table, column, "");
+			getMgr().setDefaultValue(tableId, column, "");
 			newValue = "";
 		}
 
@@ -143,7 +144,7 @@ public class EditDefaultValueView extends AbstractView {
 	 */
 	@Override
 	public void handleCharTyped(char keyChar) {
-		getMgr().setDefaultValue(table, column, newValue.toString() + keyChar);
+		getMgr().setDefaultValue(tableId, column, newValue.toString() + keyChar);
 		newValue += keyChar;
 	}
 
