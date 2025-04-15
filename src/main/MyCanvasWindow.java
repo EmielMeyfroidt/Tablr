@@ -21,9 +21,9 @@ public class MyCanvasWindow extends CanvasWindow {
 		repaint();
 	};
 	private static Timer clickTimer = new Timer(); // Shared timer
-	private static final int DOUBLE_CLICK_DELAY = 200; // Delay in milliseconds
+	private static final int DOUBLE_CLICK_DELAY = 500; // Delay in milliseconds
 
-	private ViewManager uiComponentManager;
+	private ViewManager viewManager;
 
 	/**
 	 * Constructor for creating a MyCanvasWindow with a specified title and an associated view.
@@ -35,7 +35,7 @@ public class MyCanvasWindow extends CanvasWindow {
 	 */
 	public MyCanvasWindow(String title, ViewManager view) {
 		super(title);
-		this.uiComponentManager = view;
+		this.viewManager = view;
 
 	}
 
@@ -46,7 +46,7 @@ public class MyCanvasWindow extends CanvasWindow {
 	 *             components and interactions within the window.
 	 */
 	private void changeMode(ViewManager view) {
-		this.uiComponentManager = view;
+		this.viewManager = view;
 		System.out.println("painting" + view.getTitle());
 		this.repaint();
 	}
@@ -60,8 +60,8 @@ public class MyCanvasWindow extends CanvasWindow {
 	 */
 	@Override
 	protected void paint(Graphics g) {
-		super.setTitle(uiComponentManager.getTitle());
-		uiComponentManager.paint(g);
+		super.setTitle(viewManager.getTitle());
+		viewManager.paint(g);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class MyCanvasWindow extends CanvasWindow {
 					@Override
 					public void run() {
 
-						uiComponentManager.handleDoubleClick(x, y);
+						viewManager.handleDoubleClick(x, y);
 					}
 
 				};
@@ -100,7 +100,7 @@ public class MyCanvasWindow extends CanvasWindow {
 
 							@Override
 							public void run() {
-								uiComponentManager.handleSingleClick(x, y);
+								viewManager.handleSingleClick(x, y);
 							}
 
 						};
@@ -131,31 +131,31 @@ public class MyCanvasWindow extends CanvasWindow {
 
 		switch (keyCode) {
 			case KeyEvent.VK_ESCAPE:
-				action = () -> uiComponentManager.handleEscape();
+				action = () -> viewManager.handleEscape();
 				break;
 
 			case KeyEvent.VK_ENTER:
 				if (modifiers == KeyEvent.CTRL_DOWN_MASK) {
 					// Ctrl + Enter detected
-					action = () -> uiComponentManager.handleCtrlEnter();
+					action = () -> viewManager.handleCtrlEnter();
 				} else {
 					// Normal Enter detected
-					action = () -> uiComponentManager.handleEnter();
+					action = () -> viewManager.handleEnter();
 				}
 				break;
 
 			case KeyEvent.VK_BACK_SPACE:
-				action = () -> uiComponentManager.handleBackSpace();
+				action = () -> viewManager.handleBackSpace();
 				break;
 
 			case KeyEvent.VK_DELETE:
-				action = () -> uiComponentManager.handleDelete();
+				action = () -> viewManager.handleDelete();
 				break;
 
 			default:
 				if (Character.isDefined(keyChar)) {
 					// Handle character input
-					action = () -> uiComponentManager.handleCharTyped(keyChar);
+					action = () -> viewManager.handleCharTyped(keyChar);
 				}
 				break;
 		}
