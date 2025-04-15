@@ -10,9 +10,9 @@ import java.util.ArrayList;
  */
 public class ViewManager implements ViewList {
 	private paintListener paintListener;
-	private int defaultWidth = 1000;
-	private int defaultHeight = 1000;
-	private int newWindowOffset = 100;
+	private int defaultWidth = 300;
+	private int defaultHeight = 300;
+	private int newWindowOffset = 10;
 	private ArrayList<MetaView> metaViews;
 	private TablrManager tablrManager;
 	private LayoutInfo layoutInfo;
@@ -32,6 +32,14 @@ public class ViewManager implements ViewList {
 			this.width = defaultWidth;
 			this.height = defaultHeight;
 		}
+
+		int translateX(int x) {
+			return x - this.x;
+		}
+
+		int translateY(int y) {
+			return y - this.y;
+		}
 	}
 
 	public void addListener(paintListener paintListener) {
@@ -50,7 +58,10 @@ public class ViewManager implements ViewList {
 	 */
 	@Override
 	public void openView(AbstractView view) {
-
+		int offset = newWindowOffset;
+		if (hasActiveView())
+			offset = getActiveView().x + 10;
+		metaViews.add(new MetaView(view, offset, offset));
 	}
 
 	/**
@@ -58,7 +69,8 @@ public class ViewManager implements ViewList {
 	 */
 	@Override
 	public void closeView(AbstractView view) {
-
+		metaViews.remove(getMetaView(view));
+		paintListener.contentsChanged();
 	}
 
 	/**
@@ -67,65 +79,88 @@ public class ViewManager implements ViewList {
 	 */
 	@Override
 	public void substituteView(AbstractView oldView, AbstractView newView) {
-
+		getMetaView(oldView).view = newView;
 	}
 
 	private MetaView getMetaView(AbstractView view) {
 		return metaViews.stream().filter(v -> v.view == view).findFirst().orElse(null);
 	}
 
-	private void setActiveWindow(AbstractView view) {
-		metaViews.remove(getMetaView(view));
+	private void setActiveView(AbstractView view) {
 		metaViews.add(getMetaView(view));
 	}
 
-	private Window getActiveWindow() {
-//		return metaViews.getLast();
-		return null;
+	private boolean hasActiveView() {
+		return getActiveView() != null;
 	}
 
-	public void addView(AbstractView newView) {
-	}
-
-	public void removeView(AbstractView view) {
+	private MetaView getActiveView() {
+		try {
+			return metaViews.getLast();
+		} catch (Exception noSuchElementException) {
+			return null;
+		}
 	}
 
 	public String getTitle() {
-		return getActiveWindow().view.getTitle();
+		return "Tablr";
 	}
 
-	public void paint(Graphics g) {
-		getActiveWindow().view.paint(g);
-	}
 
 	public void handleDoubleClick(int x, int y) {
+		System.out.println("double click");
+		if (hasActiveView())
+			getActiveView().view.handleDoubleClick(
+					getActiveView().translateX(x), getActiveView().translateY(y));
+		paintListener.contentsChanged();
 	}
 
 	public void handleSingleClick(int x, int y) {
+		System.out.println("single click");
+		if (hasActiveView())
+			getActiveView().view.handleSingleClick(
+					getActiveView().translateX(x), getActiveView().translateY(y));
 	}
 
 	public void handleEscape() {
-		getActiveWindow().view.handleEscape();
+		if (hasActiveView())
+			getActiveView().view.handleEscape();
 	}
 
 	public void handleCtrlEnter() {
-		getActiveWindow().view.handleCtrlEnter();
+		System.out.println("ctrl enter");
+		if (hasActiveView())
+			getActiveView().view.handleCtrlEnter();
 	}
 
 	public void handleEnter() {
-		getActiveWindow().view.handleEnter();
+		if (hasActiveView())
+			getActiveView().view.handleEnter();
 	}
 
 	public void handleBackSpace() {
-		getActiveWindow().view.handleBackSpace();
+		if (hasActiveView())
+			getActiveView().view.handleBackSpace();
 	}
 
 	public void handleDelete() {
-		getActiveWindow().view.handleDelete();
+		if (hasActiveView())
+			getActiveView().view.handleDelete();
 	}
 
 	public void handleCharTyped(char keyChar) {
-		getActiveWindow().view.handleCharTyped(keyChar);
+		if (keyChar == '\u0014')
+			// CTRL+T opens new default view
+			openView(viewAssembler.getDefaultView(this.tablrManager, this.layoutInfo, this));
+		else if (hasActiveView())
+			getActiveView().view.handleCharTyped(keyChar);
+		paintListener.contentsChanged();
+	}
+
+	public void paint(Graphics g) {
+		for (MetaView metaView : metaViews)
+			metaView.view.paint(
+					g.create(metaView.x, metaView.y, metaView.width, metaView.height));
 	}
 
 }
