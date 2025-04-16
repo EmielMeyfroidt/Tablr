@@ -52,11 +52,12 @@ class Window extends AbstractView implements ViewList {
 
 	}
 
-	public void handleMouseDrag(int x, int y) {
-		if (y > titleOffset) {
-			view.handleSingleClick(x, y - titleOffset);
-		} else if (x > closeButtonX) {
-			closeView(view);
+	@Override
+	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
+		if (startY > titleOffset) {
+			view.handleMouseDrag(startX, startY, endX, endY);
+		} else {
+			getViewList().moveViewLocation(this, endX - startX, endY - startY);
 		}
 	}
 
@@ -133,6 +134,18 @@ class Window extends AbstractView implements ViewList {
 	@Override
 	public void substituteView(AbstractView oldView, AbstractView newView) {
 		this.view = newView;
+	}
+
+	/**
+	 * view is stationary in window, nothing happens
+	 *
+	 * @param view
+	 * @param x
+	 * @param y
+	 */
+	@Override
+	public void moveViewLocation(AbstractView view, int x, int y) {
+		//do nothing
 	}
 
 	/**

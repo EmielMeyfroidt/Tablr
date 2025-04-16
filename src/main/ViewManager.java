@@ -85,6 +85,18 @@ public class ViewManager implements ViewList {
 
 	}
 
+	/**
+	 * @param view
+	 * @param x
+	 * @param y
+	 */
+	@Override
+	public void moveViewLocation(AbstractView view, int x, int y) {
+		getMetaView(view).x += x;
+		getMetaView(view).y += y;
+		paintListener.contentsChanged();
+	}
+
 	private MetaView getMetaView(AbstractView view) {
 		return metaViews.stream().filter(v -> v.view == view).findFirst().orElse(null);
 	}
@@ -122,15 +134,17 @@ public class ViewManager implements ViewList {
 		return null;
 	}
 
+	private void setViewActiveAt(int x, int y) {
+		MetaView metaViewClicked = getViewClicked(x, y);
+		if (metaViewClicked != getActiveView()) {
+			setActiveView(metaViewClicked);
+		}
+	}
 
 	public void handleDoubleClick(int x, int y) {
 
 		if (hasActiveView()) {
-			MetaView metaViewClicked = getViewClicked(x, y);
-			if (metaViewClicked == getActiveView()) {
-				setActiveView(metaViewClicked);
-			}
-
+			setViewActiveAt(x, y);
 			getActiveView().view.handleDoubleClick(
 					getActiveView().translateX(x), getActiveView().translateY(y));
 		}
@@ -151,8 +165,14 @@ public class ViewManager implements ViewList {
 	}
 
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
-		if (hasActiveView())
-			getActiveView().view.handleMouseDrag(startX, startY, endX, endY);
+		if (hasActiveView()) {
+			setViewActiveAt(startX, startY);
+			getActiveView().view.handleMouseDrag(
+					getActiveView().translateX(startX),
+					getActiveView().translateY(startY),
+					getActiveView().translateX(endX),
+					getActiveView().translateY(endY));
+		}
 		paintListener.contentsChanged();
 		//System.out.println(startX + ", " + startY + " to " + endX + ", " + endY);
 	}
