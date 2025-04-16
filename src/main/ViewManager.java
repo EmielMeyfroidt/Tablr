@@ -71,6 +71,9 @@ public class ViewManager implements ViewList {
 	@Override
 	public void closeView(AbstractView view) {
 		metaViews.remove(getMetaView(view));
+		for (MetaView metaView : metaViews) {
+			metaView.view.handleDeadView(view);
+		}
 		paintListener.contentsChanged();
 	}
 

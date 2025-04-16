@@ -110,21 +110,40 @@ class Window extends AbstractView implements ViewList {
 		view.handleCharTyped(keyChar);
 	}
 
+	/**
+	 * this method is invoked if view is killed and should be disposed.
+	 * Returns true if this object is also irrelevant as a result.
+	 *
+	 * @param view
+	 * @return
+	 */
+	@Override
+	public boolean handleDeadView(AbstractView view) {
+		if (this.view == view) {
+			this.view = null;
+			return true;
+		}
+		return false;
+	}
 
 	/**
+	 * wraps underlying view and forwards to getviewlist()
+	 *
 	 * @param view
 	 */
 	@Override
 	public void openView(AbstractView view) {
-		getViewList().openView(view);
+		getViewList().openView(new Window(view, getMgr(), getLayoutInfo(), getViewList()));
 	}
 
 	/**
+	 * forwards to getviewlist()
+	 *
 	 * @param view
 	 */
 	@Override
 	public void closeView(AbstractView view) {
-		getViewList().closeView(this);
+		getViewList().closeView(view);
 	}
 
 	/**
@@ -147,6 +166,7 @@ class Window extends AbstractView implements ViewList {
 	public void moveViewLocation(AbstractView view, int x, int y) {
 		//do nothing
 	}
+
 
 	/**
 	 * Renders the Window on the bounds of g, then translates and bounds g before invoking paint on the underlying view

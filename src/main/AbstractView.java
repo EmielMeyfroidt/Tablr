@@ -103,6 +103,16 @@ public abstract class AbstractView {
 		return viewList;
 	}
 
+	/**
+	 * this method is invoked if view is killed and should be disposed.
+	 * Returns true if this object is also irrelevant as a result.
+	 *
+	 * @param view
+	 */
+	public boolean handleDeadView(AbstractView view) {
+		return false;
+	}
+
 	protected void setViewList(ViewList viewList) {
 		this.viewList = viewList;
 	}
