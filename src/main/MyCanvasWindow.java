@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -76,6 +77,9 @@ public class MyCanvasWindow extends CanvasWindow {
 	 */
 	@Override
 	protected void handleMouseEvent(int id, int x, int y, int clickCount) {
+		if (id == MouseEvent.MOUSE_DRAGGED) {
+			viewManager.handleMouseDrag(x, y);
+		}
 		if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
 			clickTimer.cancel();
 			clickTimer = new Timer();

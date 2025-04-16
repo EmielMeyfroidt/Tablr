@@ -112,4 +112,13 @@ public abstract class AbstractView {
 
 	public void handleSingleClickOutside() {
 	}
+
+	/**
+	 * is called when a left pressed mouse changes position to x, y
+	 *
+	 * @param x
+	 * @param y
+	 */
+	public void handleMouseDrag(int x, int y) {
+	}
 }

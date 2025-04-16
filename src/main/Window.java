@@ -31,7 +31,7 @@ class Window extends AbstractView implements ViewList {
 	public void handleDoubleClick(int x, int y) {
 		if (y > titleOffset) {
 			view.handleDoubleClick(x, y - titleOffset);
-		} else if (x > closeButtonX) {
+		} else {
 			//nothing
 		}
 
@@ -46,14 +46,18 @@ class Window extends AbstractView implements ViewList {
 	public void handleSingleClick(int x, int y) {
 		if (y > titleOffset) {
 			view.handleSingleClick(x, y - titleOffset);
-			//TODO translate point
+		} else {
+			//TODO drag Window
+		}
+
+	}
+
+	public void handleMouseDrag(int x, int y) {
+		if (y > titleOffset) {
+			view.handleSingleClick(x, y - titleOffset);
 		} else if (x > closeButtonX) {
 			closeView(view);
 		}
-
-
-		//TODO detect click on close button
-
 	}
 
 	/**
@@ -142,7 +146,7 @@ class Window extends AbstractView implements ViewList {
 
 		//clear window
 		g.clearRect(0, 0, bounds.width, bounds.height);
-		
+
 		//paint title
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, bounds.width, titleOffset);
