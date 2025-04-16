@@ -23,6 +23,9 @@ public class MyCanvasWindow extends CanvasWindow {
 	private static Timer clickTimer = new Timer(); // Shared timer
 	private static final int DOUBLE_CLICK_DELAY = 500; // Delay in milliseconds
 
+	private boolean dragging = false;
+	private int dragStartX, dragStartY;
+	private int dragEndX, dragEndY;
 	private ViewManager viewManager;
 
 	/**
@@ -108,6 +111,19 @@ public class MyCanvasWindow extends CanvasWindow {
 					}
 
 				}, DOUBLE_CLICK_DELAY);
+			}
+		} else if (id == java.awt.event.MouseEvent.MOUSE_PRESSED) {
+			dragStartX = x;
+			dragStartY = y;
+			dragging = true;
+		} else if (id == java.awt.event.MouseEvent.MOUSE_RELEASED) {
+			if (dragging) {
+				dragEndX = x;
+				dragEndY = y;
+				dragging = false;
+				if (dragStartX != dragEndX && dragStartY != dragEndY) {
+					viewManager.handleMouseDrag(dragStartX, dragStartY, dragEndX, dragEndY);
+				}
 			}
 		}
 	}

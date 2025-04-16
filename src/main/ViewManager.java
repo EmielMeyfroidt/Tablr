@@ -163,4 +163,16 @@ public class ViewManager implements ViewList {
 					g.create(metaView.x, metaView.y, metaView.width, metaView.height));
 	}
 
+
+	/**
+	 * @param lastX
+	 * @param lastY
+	 * @param x
+	 * @param y
+	 */
+	public void handleMouseDrag(int lastX, int lastY, int x, int y) {
+		// TODO Auto-generated method stub
+		System.out.println("I dragged from " + lastX + ", " + lastY + " to " + x + ", " + y +".");
+	}
+
 }
