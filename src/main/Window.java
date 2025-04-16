@@ -139,6 +139,11 @@ class Window extends AbstractView implements ViewList {
 	@Override
 	public void paint(Graphics g) {
 		Rectangle bounds = g.getClipBounds();
+
+		//clear window
+		g.clearRect(0, 0, bounds.width, bounds.height);
+		
+		//paint title
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, bounds.width, titleOffset);
 
@@ -146,11 +151,12 @@ class Window extends AbstractView implements ViewList {
 		this.closeButtonX = bounds.width - closeButtonWidth;
 		g.fillRect(this.closeButtonX, 0, bounds.width, titleOffset);
 
+		//paint window border
 		g.setColor(Color.black);
 		g.drawRect(0, titleOffset, bounds.width - 2, bounds.height - 12);
 		g.translate(0, titleOffset);
 
-		//remove title from bounds of underlying view
+		//crop g and pass to underlying view
 		this.view.paint(g.create(0, 0, bounds.width, bounds.height - titleOffset));
 	}
 
