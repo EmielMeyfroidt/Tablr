@@ -55,8 +55,8 @@ public class EditRowView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		//TODO: check for validity
-//		fireModeChanged(underlyingMode);
-		//TODO
+		this.getViewList().substituteView(this, underlyingMode);
+
 	}
 
 	/**
@@ -64,8 +64,8 @@ public class EditRowView extends AbstractView {
 	 */
 	@Override
 	public void handleEscape() {
-//		fireModeChanged(underlyingMode);
-		//TODO
+		this.getViewList().substituteView(this, underlyingMode);
+
 	}
 
 	/**
@@ -96,8 +96,8 @@ public class EditRowView extends AbstractView {
 	@Override
 	public void handleEnter() {
 		//TODO: check for validity
-//		fireModeChanged(underlyingMode);
-		//TODO
+		this.getViewList().substituteView(this, underlyingMode);
+
 	}
 
 	/**

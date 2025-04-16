@@ -67,15 +67,12 @@ public class DesignView extends AbstractView {
 			if (x < stepX) {
 				// Left margin of table, indicate that selected
 				selectedColumns.add(getMgr().getColumnNames(tableId).get(elementNumber));
-//				fireModeChanged(this);
-//				TODO
 			} else {
 				String column = this.getMgr().getColumnNames(tableId).get(elementNumber);
 				if (x < runningMargin.get(0)) {
 					// Click on table name, edit name
-//					fireModeChanged(new EditColumnCharacteristicsView(this.getMgr(), this,
-//							column, table));
-//					TODO
+					EditColumnCharacteristicsView newView = new EditColumnCharacteristicsView(this.getMgr(), this.getLayoutInfo(), this.getViewList(), this, column, tableId);
+					this.getViewList().substituteView(this, newView);
 				} else if (x < runningMargin.get(1)) {
 					// Click on type
 					this.getMgr().changeType(tableId, column);
@@ -87,8 +84,8 @@ public class DesignView extends AbstractView {
 					if (getMgr().getClass(tableId, column) == "boolean") {
 						getMgr().setDefaultValue(tableId, column, String.valueOf(!(boolean) getMgr().getDefaultValue(tableId, column)));
 					} else {
-//						fireModeChanged(new EditDefaultValueView(this.getMgr(), this, column, table));
-//						TODO
+						EditDefaultValueView newView = new EditDefaultValueView(this.getMgr(), this.getLayoutInfo(), this.getViewList(), this, column, tableId);
+						this.getViewList().substituteView(this, newView);
 					}
 				}
 			}
@@ -104,9 +101,7 @@ public class DesignView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		TablesView newView = new TablesView(getMgr(), getLayoutInfo(), getViewList());
-//		newView.setChangeModeListeners(getChangeModeListeners());
-//		fireModeChanged(newView);
-//		TODO
+		this.getViewList().substituteView(this, newView);
 	}
 
 	/**
@@ -129,9 +124,7 @@ public class DesignView extends AbstractView {
 	public void handleCtrlEnter() {
 		System.out.println("ctrl enter");
 		RowsView newView = new RowsView(getMgr(), getLayoutInfo(), getViewList(), tableId);
-//		newView.setChangeModeListeners(getChangeModeListeners());
-//		fireModeChanged(newView);
-//		TODO
+		this.getViewList().substituteView(this, newView);
 	}
 
 	/**

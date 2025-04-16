@@ -60,8 +60,6 @@ public class RowsView extends AbstractView {
 			if (x < leftMargin) {
 				// Left margin of table, indicate that selected
 				selectedRows.add(rowIndex);
-//				fireModeChanged(this);
-				//TODO
 			} else {
 				// Click on table, edit cell
 				String column = this.getMgr().getColumnNames(tableId).get(locateColumn(x));
@@ -71,8 +69,8 @@ public class RowsView extends AbstractView {
 							String.valueOf(!Boolean.valueOf(getMgr().getCell(tableId, column, rowIndex))));
 				} else {
 					// edit string or integer value
-//					fireModeChanged(new EditRowView(this.getMgr(), this, table, column, rowIndex));
-					//TODO
+					EditRowView newView = new EditRowView(this.getMgr(), this.getLayoutInfo(), this.getViewList(), this, tableId, column, rowIndex);
+					this.getViewList().substituteView(this, newView);
 				}
 			}
 		}
@@ -102,9 +100,7 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		TablesView newView = new TablesView(getMgr(), getLayoutInfo(), getViewList());
-//		newView.setChangeModeListeners(getChangeModeListeners());
-//		fireModeChanged(newView);
-		//TODO
+		this.getViewList().substituteView(this, newView);
 	}
 
 	/**
@@ -123,9 +119,7 @@ public class RowsView extends AbstractView {
 	public void handleCtrlEnter() {
 		System.out.println("switch to design");
 		DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), tableId);
-//		newView.setChangeModeListeners(getChangeModeListeners());
-//		fireModeChanged(newView);
-		//TODO
+		this.getViewList().substituteView(this, newView);
 	}
 
 	/**
@@ -134,7 +128,7 @@ public class RowsView extends AbstractView {
 	 */
 	@Override
 	public void handleEnter() {
-		// TODO Auto-generated method stub
+		// nothing
 	}
 
 	/**
@@ -154,7 +148,7 @@ public class RowsView extends AbstractView {
 	 */
 	@Override
 	public void handleCharTyped(char keyChar) {
-		// TODO Auto-generated method stub
+		// nothing
 	}
 
 	/**

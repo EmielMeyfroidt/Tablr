@@ -62,7 +62,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 */
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		// TODO Auto-generated method stub
+		// nothing
 
 	}
 
@@ -74,8 +74,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
-//		fireModeChanged(underlyingView);
-//		TODO
+		this.getViewList().substituteView(this, underlyingView);
 	}
 
 	/**
@@ -85,8 +84,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		getMgr().changeNameColumn(tableId, name, originalName);
-//		fireModeChanged(underlyingView);
-//		TODO
+		this.getViewList().substituteView(this, underlyingView);
 	}
 
 	/**
@@ -112,7 +110,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 */
 	@Override
 	public void handleCtrlEnter() {
-		// TODO Auto-generated method stub
+		// nothing
 
 	}
 
@@ -123,8 +121,8 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 */
 	@Override
 	public void handleEnter() {
-//		TODO
-//		fireModeChanged(underlyingView);
+		this.getViewList().substituteView(this, underlyingView);
+
 	}
 
 	/**
@@ -134,7 +132,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 */
 	@Override
 	public void handleDelete() {
-		// TODO Auto-generated method stub
+		// nothing
 
 	}
 

@@ -49,7 +49,6 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		// TODO: check for validity
-//		fireModeChanged(underlyingMode);
 		getViewList().substituteView(this, underlyingMode);
 	}
 
@@ -60,7 +59,6 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		getMgr().changeName(tableId, originalName);
-//		fireModeChanged(underlyingMode);
 		getViewList().substituteView(this, underlyingMode);
 
 	}
@@ -96,7 +94,6 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleEnter() {
 		// TODO: check for validity
-//		fireModeChanged(underlyingMode);
 		getViewList().substituteView(this, underlyingMode);
 
 	}

@@ -63,7 +63,7 @@ public class EditDefaultValueView extends AbstractView {
 	 */
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		// TODO Auto-generated method stub
+		// nothing
 
 	}
 
@@ -76,7 +76,6 @@ public class EditDefaultValueView extends AbstractView {
 	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
-//		fireModeChanged(underlyingView);
 		getViewList().substituteView(this, underlyingView);
 	}
 
@@ -86,7 +85,6 @@ public class EditDefaultValueView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		getMgr().setDefaultValue(tableId, column, originalValue);
-//		fireModeChanged(underlyingView);
 		getViewList().substituteView(this, underlyingView);
 	}
 
@@ -123,7 +121,6 @@ public class EditDefaultValueView extends AbstractView {
 	@Override
 	public void handleEnter() {
 		getViewList().substituteView(this, underlyingView);
-//		fireModeChanged(underlyingView);
 	}
 
 	/**
@@ -131,7 +128,7 @@ public class EditDefaultValueView extends AbstractView {
 	 */
 	@Override
 	public void handleDelete() {
-		// TODO Auto-generated method stub
+		// nothing
 
 	}
 
