@@ -40,9 +40,7 @@ public class TablesView extends AbstractView {
 		try {
 			UUID tableClicked = getMgr().getTableIds().get(elementNumber);
 			DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), tableClicked);
-//			newView.setChangeModeListeners(getChangeModeListeners());
-//			this.fireModeChanged(newView);
-			//TODO
+			getViewList().substituteView(this, newView);
 		} catch (Exception e) {
 			layoutInfo.addTable(getMgr().addTable());
 		}
@@ -66,13 +64,11 @@ public class TablesView extends AbstractView {
 				//Left margin of table, indicate that selected
 				selectedTables.add(getMgr().getTableIds().get(elementNumber));
 				System.out.println(elementNumber);
-//				fireModeChanged(this);
-//				TODO
 			} else {
 				//Click on table, edit name
 				UUID tableId = this.getMgr().getTableIds().get(elementNumber);
-//				fireModeChanged(new EditTableNameView(this.getMgr(), this, tableName));
-//				TODO
+				EditTableNameView newView = new EditTableNameView(this.getMgr(), this.layoutInfo, this.getViewList(), this, tableId);
+				this.getViewList().substituteView(this, newView);
 			}
 		}
 	}
