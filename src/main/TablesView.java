@@ -10,9 +10,8 @@ import java.util.UUID;
  */
 public class TablesView extends AbstractView {
 
-	private final int stepX = 20;
-	private final int stepY = 20;
 	private List<UUID> selectedTables;
+	private LayoutInfo layoutInfo;
 
 	/**
 	 * Constructs a new TablesView instance to manage and display a list of tables.
@@ -22,6 +21,7 @@ public class TablesView extends AbstractView {
 	public TablesView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList) {
 		super(mgr, layoutInfo, viewList);
 		this.selectedTables = new ArrayList<UUID>();
+		this.layoutInfo = layoutInfo;
 	}
 
 	/**
@@ -35,7 +35,8 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		int elementNumber = (int) Math.floor(y / this.stepY);
+		List<Integer> offsets = layoutInfo.getHeightsTable();
+		int elementNumber = layoutInfo.calculateElementIndex(offsets, y);
 		try {
 			UUID tableClicked = getMgr().getTableIds().get(elementNumber);
 			DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), tableClicked);
@@ -43,7 +44,7 @@ public class TablesView extends AbstractView {
 //			this.fireModeChanged(newView);
 			//TODO
 		} catch (Exception e) {
-			getMgr().addTable();
+			layoutInfo.addTable(getMgr().addTable());
 		}
 	}
 
@@ -58,11 +59,13 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
-		int elementNumber = (int) Math.floor(y / this.stepY);
+		List<Integer> offsets = layoutInfo.getHeightsTable();
+		int elementNumber = layoutInfo.calculateElementIndex(offsets, y);
 		if (elementNumber <= getMgr().getTableNames().size()) {
-			if (x < stepX) {
+			if (x < layoutInfo.getWidthTable()) {
 				//Left margin of table, indicate that selected
 				selectedTables.add(getMgr().getTableIds().get(elementNumber));
+				System.out.println(elementNumber);
 //				fireModeChanged(this);
 //				TODO
 			} else {
@@ -142,13 +145,14 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void paint(Graphics g) {
-		int y = stepY;
+		int y = 0;
+		int elementNumber = 0;
 		for (UUID table : getMgr().getTableIds()) {
+			y += layoutInfo.getHeightsTable().get(elementNumber++);
 			if (selectedTables.contains(table)) {
 				g.drawString("*", 0, y);
 			}
-			g.drawString(this.getMgr().getTableName(table), stepX, y);
-			y += stepY;
+			g.drawString(this.getMgr().getTableName(table), layoutInfo.getWidthTable(), y);
 		}
 	}
 
@@ -161,4 +165,5 @@ public class TablesView extends AbstractView {
 	public String getTitle() {
 		return "Tables Mode";
 	}
+	
 }

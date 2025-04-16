@@ -62,11 +62,12 @@ public class TablrManager {
 	/**
 	 * Adds a table, generates a unique name.
 	 */
-	public void addTable() {
+	public UUID addTable() {
 		String uniqueName = generateUniqueName();
 		Table newTable = new Table(uniqueName);
 		tables.add(newTable);
 		fireContentsChanged();
+		return newTable.getId();
 	}
 
 	/**
