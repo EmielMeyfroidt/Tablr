@@ -96,7 +96,8 @@ public class TablrManager {
 	}
 	
 	public String getTableName(UUID id) {
-		return findTable(id).getName();
+		Table table = findTable(id);
+		return table != null ? table.getName() : null;
 	}
 
 	/**

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
+import javax.swing.SwingUtilities;
+
 public class DesignView extends AbstractView {
 
 	private final int stepX = 20;
@@ -177,6 +179,11 @@ public class DesignView extends AbstractView {
 	 */
 	@Override
 	public void paint(Graphics g) {
+		
+		if (this.getMgr().getTableName(tableId) == null) {
+			this.getViewList().closeView(this);
+			return;
+		}
 		List<List<String>> splitList = new ArrayList<>();
 		for (String s : getMgr().getColumnsInfo(tableId)) {
 			List<String> columnData = Arrays.asList(s.split(" "));

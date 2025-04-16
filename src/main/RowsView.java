@@ -168,6 +168,10 @@ public class RowsView extends AbstractView {
 	 */
 	@Override
 	public void paint(Graphics g) {
+		if (this.getMgr().getTableName(tableId) == null) {
+			this.getViewList().closeView(this);
+			return;
+		}
 		int charSize = 10;
 
 		List<List<String>> columns = getMgr().getColumns(tableId);
