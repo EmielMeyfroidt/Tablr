@@ -62,6 +62,7 @@ public class ViewManager implements ViewList {
 		if (hasActiveView())
 			offset = getActiveView().x + 10;
 		metaViews.add(new MetaView(view, offset, offset));
+		paintListener.contentsChanged();
 	}
 
 	/**
@@ -80,14 +81,18 @@ public class ViewManager implements ViewList {
 	@Override
 	public void substituteView(AbstractView oldView, AbstractView newView) {
 		getMetaView(oldView).view = newView;
+		paintListener.contentsChanged();
+
 	}
 
 	private MetaView getMetaView(AbstractView view) {
 		return metaViews.stream().filter(v -> v.view == view).findFirst().orElse(null);
 	}
 
-	private void setActiveView(AbstractView view) {
-		metaViews.add(getMetaView(view));
+	private void setActiveView(MetaView view) {
+		if (metaViews.contains(view))
+			metaViews.remove(view);
+		metaViews.add(view);
 	}
 
 	private boolean hasActiveView() {
@@ -106,46 +111,85 @@ public class ViewManager implements ViewList {
 		return "Tablr";
 	}
 
+	private MetaView getViewClicked(int x, int y) {
+		for (int i = metaViews.size() - 1; i >= 0; i--) {
+			MetaView metaView = metaViews.get(i);
+			if (x >= metaView.x && x <= metaView.x + metaView.width &&
+					y >= metaView.y && y <= metaView.y + metaView.height) {
+				return metaView;
+			}
+		}
+		return null;
+	}
+
 
 	public void handleDoubleClick(int x, int y) {
-		System.out.println("double click");
-		if (hasActiveView())
+
+		if (hasActiveView()) {
+			MetaView metaViewClicked = getViewClicked(x, y);
+			if (metaViewClicked == getActiveView()) {
+				setActiveView(metaViewClicked);
+			}
+
 			getActiveView().view.handleDoubleClick(
 					getActiveView().translateX(x), getActiveView().translateY(y));
+		}
 		paintListener.contentsChanged();
 	}
 
 	public void handleSingleClick(int x, int y) {
-		System.out.println("single click");
-		if (hasActiveView())
+		if (hasActiveView()) {
+			MetaView metaViewClicked = getViewClicked(x, y);
+			if (metaViewClicked != getActiveView()) {
+				setActiveView(metaViewClicked);
+			}
 			getActiveView().view.handleSingleClick(
 					getActiveView().translateX(x), getActiveView().translateY(y));
+		}
+		paintListener.contentsChanged();
+
+	}
+
+	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
+		if (hasActiveView())
+			getActiveView().view.handleMouseDrag(startX, startY, endX, endY);
+		paintListener.contentsChanged();
 	}
 
 	public void handleEscape() {
 		if (hasActiveView())
 			getActiveView().view.handleEscape();
+		paintListener.contentsChanged();
+
 	}
 
 	public void handleCtrlEnter() {
 		System.out.println("ctrl enter");
 		if (hasActiveView())
 			getActiveView().view.handleCtrlEnter();
+		paintListener.contentsChanged();
+
 	}
 
 	public void handleEnter() {
 		if (hasActiveView())
 			getActiveView().view.handleEnter();
+		paintListener.contentsChanged();
+
 	}
 
 	public void handleBackSpace() {
 		if (hasActiveView())
 			getActiveView().view.handleBackSpace();
+		paintListener.contentsChanged();
+
 	}
 
 	public void handleDelete() {
 		if (hasActiveView())
 			getActiveView().view.handleDelete();
+		paintListener.contentsChanged();
+
 	}
 
 	public void handleCharTyped(char keyChar) {

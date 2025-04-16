@@ -2,6 +2,7 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +28,7 @@ public class MyCanvasWindow extends CanvasWindow {
 	private int dragStartX, dragStartY;
 	private int dragEndX, dragEndY;
 	private ViewManager viewManager;
+	private int dragFromX = 0, dragFromY = 0;
 
 	/**
 	 * Constructor for creating a MyCanvasWindow with a specified title and an associated view.
@@ -79,6 +81,7 @@ public class MyCanvasWindow extends CanvasWindow {
 	 */
 	@Override
 	protected void handleMouseEvent(int id, int x, int y, int clickCount) {
+
 		if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
 			clickTimer.cancel();
 			clickTimer = new Timer();
