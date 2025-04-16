@@ -112,4 +112,13 @@ public abstract class AbstractView {
 
 	public void handleSingleClickOutside() {
 	}
+
+	/**
+	 * @param startX
+	 * @param startY
+	 * @param endX
+	 * @param endY
+	 */
+	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
+	}
 }
