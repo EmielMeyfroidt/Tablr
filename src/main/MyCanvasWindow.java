@@ -24,7 +24,9 @@ public class MyCanvasWindow extends CanvasWindow {
 	private static Timer clickTimer = new Timer(); // Shared timer
 	private static final int DOUBLE_CLICK_DELAY = 500; // Delay in milliseconds
 
+
 	private ViewManager viewManager;
+	private int dragFromX = 0, dragFromY = 0;
 
 	/**
 	 * Constructor for creating a MyCanvasWindow with a specified title and an associated view.
@@ -77,8 +79,15 @@ public class MyCanvasWindow extends CanvasWindow {
 	 */
 	@Override
 	protected void handleMouseEvent(int id, int x, int y, int clickCount) {
+		if (id == MouseEvent.MOUSE_PRESSED) {
+			this.dragFromX = x;
+			this.dragFromY = y;
+		}
 		if (id == MouseEvent.MOUSE_DRAGGED) {
-			viewManager.handleMouseDrag(x, y);
+			viewManager.handleMouseDrag(dragFromX, dragFromY, x, y);
+			this.dragFromX = x;
+			this.dragFromY = y;
+//			System.out.println("dragging from" + " " + this.dragFromX + " " + this.dragFromY + " to " + x + " " + y);
 		}
 		if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
 			clickTimer.cancel();

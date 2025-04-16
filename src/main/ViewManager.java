@@ -150,9 +150,10 @@ public class ViewManager implements ViewList {
 
 	}
 
-	public void handleMouseDrag(int x, int y) {
+	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 		if (hasActiveView())
-			getActiveView().view.handleMouseDrag(x, y);
+			getActiveView().view.handleMouseDrag(startX, startY, endX, endY);
+		paintListener.contentsChanged();
 	}
 
 	public void handleEscape() {

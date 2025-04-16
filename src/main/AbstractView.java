@@ -114,11 +114,11 @@ public abstract class AbstractView {
 	}
 
 	/**
-	 * is called when a left pressed mouse changes position to x, y
-	 *
-	 * @param x
-	 * @param y
+	 * @param startX
+	 * @param startY
+	 * @param endX
+	 * @param endY
 	 */
-	public void handleMouseDrag(int x, int y) {
+	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 	}
 }
