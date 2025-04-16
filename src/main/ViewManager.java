@@ -153,10 +153,7 @@ public class ViewManager implements ViewList {
 
 	public void handleSingleClick(int x, int y) {
 		if (hasActiveView()) {
-			MetaView metaViewClicked = getViewClicked(x, y);
-			if (metaViewClicked != getActiveView()) {
-				setActiveView(metaViewClicked);
-			}
+			setViewActiveAt(x, y);
 			getActiveView().view.handleSingleClick(
 					getActiveView().translateX(x), getActiveView().translateY(y));
 		}

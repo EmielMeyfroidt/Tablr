@@ -47,7 +47,7 @@ class Window extends AbstractView implements ViewList {
 		if (y > titleOffset) {
 			view.handleSingleClick(x, y - titleOffset);
 		} else {
-			//TODO drag Window
+			getViewList().closeView(this);
 		}
 
 	}
