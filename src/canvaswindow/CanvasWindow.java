@@ -94,13 +94,11 @@ class KeyEventItem extends RecordingItem {
 	int id;
 	int keyCode;
 	char keyChar;
-	int modifiers;
 
-	KeyEventItem(int id, int keyCode, char keyChar, int modifiers) {
+	KeyEventItem(int id, int keyCode, char keyChar) {
 		this.id = id;
 		this.keyCode = keyCode;
 		this.keyChar = keyChar;
-		this.modifiers = modifiers;
 	}
 
 	@Override
@@ -122,7 +120,7 @@ class KeyEventItem extends RecordingItem {
 
 	@Override
 	void replay(int itemIndex, CanvasWindow window) {
-		window.handleKeyEvent(id, keyCode, keyChar, modifiers);
+		window.handleKeyEvent(id, keyCode, keyChar);
 	}
 }
 
@@ -234,8 +232,7 @@ class CanvasWindowRecording {
 					}
 					int keyCode = Integer.parseInt(words[2]);
 					char keyChar = (char) Integer.parseInt(words[3]);
-					int modifiers = Integer.parseInt(words[4]);
-					items.add(new KeyEventItem(id, keyCode, keyChar, modifiers));
+					items.add(new KeyEventItem(id, keyCode, keyChar));
 					break;
 				}
 				case "Paint": {
@@ -312,7 +309,7 @@ public class CanvasWindow {
 	}
 
 	private void handleMouseEvent_(MouseEvent e) {
-		//System.out.println(e);
+		System.out.println(e);
 		if (recording != null)
 			recording.items.add(new MouseEventItem(e.getID(), e.getX(), e.getY(), e.getClickCount()));
 		handleMouseEvent(e.getID(), e.getX(), e.getY(), e.getClickCount());
@@ -325,18 +322,16 @@ public class CanvasWindow {
 	}
 
 	private void handleKeyEvent_(KeyEvent e) {
-		//System.out.println(e);
+		System.out.println(e);
 		if (recording != null)
-			recording.items.add(new KeyEventItem(e.getID(), e.getKeyCode(), e.getKeyChar(), e.getModifiersEx()));
-		handleKeyEvent(e.getID(), e.getKeyCode(), e.getKeyChar(), e.getModifiersEx());
+			recording.items.add(new KeyEventItem(e.getID(), e.getKeyCode(), e.getKeyChar()));
+		handleKeyEvent(e.getID(), e.getKeyCode(), e.getKeyChar());
 	}
 
 	/**
 	 * Called when the user presses a key (id == KeyEvent.KEY_PRESSED) or enters a character (id == KeyEvent.KEY_TYPED).
-	 *
-	 * @param i
 	 */
-	protected void handleKeyEvent(int id, int keyCode, char keyChar, int i) {
+	protected void handleKeyEvent(int id, int keyCode, char keyChar) {
 	}
 
 	BufferedImage captureImage() {
@@ -401,7 +396,7 @@ public class CanvasWindow {
 
 		@Override
 		protected void paintComponent(Graphics g) {
-			//System.out.println("Painting...");
+			System.out.println("Painting...");
 			super.paintComponent(g);
 
 			if (recording != null) {
@@ -426,7 +421,7 @@ public class CanvasWindow {
 				public void windowClosed(WindowEvent e) {
 					if (recording != null)
 						try {
-							//System.out.println(new File(".").getCanonicalPath());
+							System.out.println(new File(".").getCanonicalPath());
 							recording.save(recordingPath);
 						} catch (IOException ex) {
 							throw new RuntimeException(ex);
