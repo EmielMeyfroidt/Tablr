@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
  */
 public class TablrManager {
 	private List<Table> tables;
-	private List<paintListener> listeners;
 
 	/**
 	 * Constructs a new instance of the TablrManager class.
@@ -24,39 +23,6 @@ public class TablrManager {
 	 */
 	public TablrManager() {
 		this.tables = new ArrayList<Table>();
-		listeners = new ArrayList<paintListener>();
-		this.fireContentsChanged();
-	}
-
-	/**
-	 * Registers a new listener to the TablrManager. The listener will be notified
-	 * of content changes in the TablrManager.
-	 *
-	 * @param listener The listener to be added. Must implement the TablrManagerListener interface.
-	 */
-	public void addListener(paintListener listener) {
-		listeners.add(listener);
-	}
-
-	/**
-	 * Removes a listener from the TablrManager. The listener will no longer be notified
-	 * of content changes in the TablrManager.
-	 *
-	 * @param listener The listener to be removed. Must implement the TablrManagerListener interface.
-	 */
-	public void removeListener(paintListener listener) {
-		listeners.remove(listener);
-	}
-
-	/**
-	 * Notifies all registered listeners that the contents of the TablrManager
-	 * have been modified. This method iterates through the list of TablrManagerListener
-	 * instances and invokes their {@link paintListener#contentsChanged()} method.
-	 */
-	private void fireContentsChanged() {
-		for (paintListener listener : listeners) {
-			listener.contentsChanged();
-		}
 	}
 
 	/**
@@ -66,7 +32,6 @@ public class TablrManager {
 		String uniqueName = generateUniqueName();
 		Table newTable = new Table(uniqueName);
 		tables.add(newTable);
-		fireContentsChanged();
 		return newTable.getId();
 	}
 
@@ -79,7 +44,6 @@ public class TablrManager {
 	 */
 	public void removeTable(UUID table) {
 		tables.removeIf(t -> t.getId().equals(table));
-		fireContentsChanged();
 	}
 
 	/**
@@ -129,7 +93,6 @@ public class TablrManager {
 	public void changeName(UUID tableId, String newName) {
 		Table t = findTable(tableId);
 		t.setName(newName);
-		fireContentsChanged();
 	}
 
 	/**
@@ -139,7 +102,6 @@ public class TablrManager {
 	public void changeNameColumn(UUID table, String column, String newName) {
 		Table t = findTable(table);
 		t.renameColumn(column, newName);
-		fireContentsChanged();
 	}
 
 	/**
@@ -148,7 +110,6 @@ public class TablrManager {
 	public void addColumn(UUID table) {
 		Table t = findTable(table);
 		t.addColumn();
-		fireContentsChanged();
 	}
 
 	/**
@@ -167,7 +128,6 @@ public class TablrManager {
 	public void removeColumn(UUID table, String c) {
 		Table t = findTable(table);
 		t.removeColumn(c);
-		fireContentsChanged();
 	}
 
 	/**
@@ -190,7 +150,6 @@ public class TablrManager {
 	public void addRow(UUID table) {
 		Table t = findTable(table);
 		t.addRow();
-		fireContentsChanged();
 	}
 
 	/**
@@ -202,7 +161,6 @@ public class TablrManager {
 	public void removeRow(UUID table, int row) {
 		Table t = findTable(table);
 		t.removeRow(row);
-		fireContentsChanged();
 	}
 
 	/**
@@ -217,7 +175,6 @@ public class TablrManager {
 	public void updateCell(UUID nameTable, String nameColumn, Integer rowIndex, String value) {
 		Table t = findTable(nameTable);
 		t.updateCell(nameColumn, rowIndex, value);
-		fireContentsChanged();
 	}
 
 	/**
@@ -245,7 +202,6 @@ public class TablrManager {
 	public void changeAllowBlanks(UUID tableName, String columnName) {
 		Table t = findTable(tableName);
 		t.changeAllowBlanks(columnName);
-		fireContentsChanged();
 	}
 
 	/**
@@ -275,7 +231,6 @@ public class TablrManager {
 	public void changeType(UUID table, String column) {
 		Table t = findTable(table);
 		t.changeType(column);
-		fireContentsChanged();
 	}
 
 	/**
@@ -314,6 +269,5 @@ public class TablrManager {
 	public void setDefaultValue(UUID table, String column, String value) {
 		Table t = findTable(table);
 		t.setDefaultValue(column, value);
-		fireContentsChanged();
 	}
 }
