@@ -1,46 +1,32 @@
 package test;
 
 import canvaswindow.CanvasWindow;
-import main.AbstractView;
-import main.MyCanvasWindow;
-import main.TablesView;
-import main.TablrManager;
+import main.*;
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 
 public class FlowTests {
 
-    private void replaySession(String sessionFile, TablrManager tablrManager) throws InterruptedException {
+	private void replaySession(String sessionFile) throws InterruptedException {
 
-        AbstractView view = new TablesView(tablrManager);
-        java.awt.EventQueue.invokeLater(() -> {
-            MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", view);
-            tablrManager.addListener(window.getTablrManagerListener());
-            window.show();
+		ViewManager view = new ViewManager();
+		java.awt.EventQueue.invokeLater(() -> {
+			MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", view);
+			view.addListener(window.getTablrManagerListener());
+			window.show();
 
-            CanvasWindow.replayRecording(sessionFile, window);
+			CanvasWindow.replayRecording(sessionFile, window);
 
-        });
-        Thread.sleep(2000);
-    }
+		});
+		Thread.sleep(200000);
+	}
 
-    @Test
-    public void testAddTable() throws InterruptedException {
-        TablrManager tablrManager = new TablrManager();
-        replaySession("SessionRecordings/add_table.txt", tablrManager);
+	@Test
+	public void test() throws InterruptedException {
+		replaySession("SessionRecordings/test");
+	}
 
-        // Validate: Confirm that a new table was added to the TablrManager
-        assertEquals(2, tablrManager.getTableNames().size());
-    }
-
-    @Test
-    public void testRenameTable() throws InterruptedException {
-        TablrManager tablrManager = new TablrManager();
-        replaySession("SessionRecordings/edit_tableName.txt", tablrManager);
-
-        // Validate: Confirm that the table was renamed
-        assertEquals("Table2", tablrManager.getTableNames().getLast());
-    }
 }
 

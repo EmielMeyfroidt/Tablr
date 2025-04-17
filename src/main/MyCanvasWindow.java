@@ -83,39 +83,13 @@ public class MyCanvasWindow extends CanvasWindow {
 	@Override
 	protected void handleMouseEvent(int id, int x, int y, int clickCount) {
 		if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
-			clickTimer.cancel();
-			clickTimer = new Timer();
-
+			System.out.println("mouse clicked times" + clickCount);
 			if (clickCount == 2) {
-				Runnable doubleClickListener = new Runnable() {
-
-					@Override
-					public void run() {
-
-						viewManager.handleDoubleClick(x, y);
-					}
-
-				};
-				doubleClickListener.run();
-			} else {
-				clickTimer.schedule(new TimerTask() {
-
-					@Override
-					public void run() {
-						Runnable singleClickListener = new Runnable() {
-
-							@Override
-							public void run() {
-								viewManager.handleSingleClick(x, y);
-							}
-
-						};
-						singleClickListener.run();
-					}
-
-				}, DOUBLE_CLICK_DELAY);
+				viewManager.handleDoubleClick(x, y);
+			} else if (clickCount == 1) {
+				viewManager.handleSingleClick(x, y);
 			}
-		}else if (id == java.awt.event.MouseEvent.MOUSE_PRESSED) {
+		} else if (id == java.awt.event.MouseEvent.MOUSE_PRESSED) {
 			lastX = x;
 			lastY = y;
 			dragging = true;
@@ -154,34 +128,34 @@ public class MyCanvasWindow extends CanvasWindow {
 		Runnable action = null;
 
 		switch (keyCode) {
-		case KeyEvent.VK_ESCAPE:
-			action = () -> viewManager.handleEscape();
-			break;
+			case KeyEvent.VK_ESCAPE:
+				action = () -> viewManager.handleEscape();
+				break;
 
-		case KeyEvent.VK_ENTER:
-			if (modifiers == KeyEvent.CTRL_DOWN_MASK) {
-				// Ctrl + Enter detected
-				action = () -> viewManager.handleCtrlEnter();
-			} else {
-				// Normal Enter detected
-				action = () -> viewManager.handleEnter();
-			}
-			break;
+			case KeyEvent.VK_ENTER:
+				if (modifiers == KeyEvent.CTRL_DOWN_MASK) {
+					// Ctrl + Enter detected
+					action = () -> viewManager.handleCtrlEnter();
+				} else {
+					// Normal Enter detected
+					action = () -> viewManager.handleEnter();
+				}
+				break;
 
-		case KeyEvent.VK_BACK_SPACE:
-			action = () -> viewManager.handleBackSpace();
-			break;
+			case KeyEvent.VK_BACK_SPACE:
+				action = () -> viewManager.handleBackSpace();
+				break;
 
-		case KeyEvent.VK_DELETE:
-			action = () -> viewManager.handleDelete();
-			break;
+			case KeyEvent.VK_DELETE:
+				action = () -> viewManager.handleDelete();
+				break;
 
-		default:
-			if (Character.isDefined(keyChar)) {
-				// Handle character input
-				action = () -> viewManager.handleCharTyped(keyChar);
-			}
-			break;
+			default:
+				if (Character.isDefined(keyChar)) {
+					// Handle character input
+					action = () -> viewManager.handleCharTyped(keyChar);
+				}
+				break;
 		}
 
 		// Execute the corresponding action if one was set
