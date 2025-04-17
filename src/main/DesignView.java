@@ -3,22 +3,18 @@ package main;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
-
-import javax.swing.SwingUtilities;
 
 public class DesignView extends AbstractView {
 
-	private final int stepX = 20;
-	private final int stepY = 20;
 	private UUID tableId;
 	private List<String> selectedColumns;
-	private List<Integer> margin;
 
 	/**
-	 * Constructs a new DesignView instance with the specified manager and table name.
+	 * Constructs a new DesignView instance with the specified manager and table
+	 * name.
 	 *
 	 * @param mgr   The TablrManager instance managing this view.
 	 * @param table The name of the table associated with this design view.
@@ -27,13 +23,14 @@ public class DesignView extends AbstractView {
 		super(mgr, layoutInfo, viewList);
 		this.tableId = table;
 		this.selectedColumns = new ArrayList<String>();
-		this.margin = new ArrayList<>();
+		getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass())
+				.setWidthsOrHeights(new ArrayList<>(Collections.nCopies(4, 50)));
 	}
 
 	/**
-	 * Handles a double-click event in the design view.
-	 * If below the tables, triggers an action to add a new column
-	 * to the associated table otherwise performs no operation.
+	 * Handles a double-click event in the design view. If below the tables,
+	 * triggers an action to add a new column to the associated table otherwise
+	 * performs no operation.
 	 *
 	 * @param x The x-coordinate of the double-click.
 	 * @param y The y-coordinate of the double-click.
@@ -41,9 +38,9 @@ public class DesignView extends AbstractView {
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		System.out.println("design view");
-		int elementNumber = (int) Math.floor(y / this.stepY);
-		if (elementNumber > getMgr().getColumnNames(tableId).size()) {
+		if (getLayoutInfo().getElementYNumber(y) > getMgr().getColumnNames(tableId).size()) {
 			getMgr().addColumn(tableId);
+			getLayoutInfo().getTableLayout(tableId).getViewLayout(RowsView.class).getWidths().add(50);
 		} else {
 			// nothing
 		}
@@ -57,36 +54,33 @@ public class DesignView extends AbstractView {
 	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
-		int elementNumber = (int) Math.floor(y / this.stepY);
-		if ((elementNumber <= getMgr().getColumnNames(tableId).size())) {
-			List<Integer> runningMargin = new ArrayList<>();
-			int sum = 0;
-			sum += stepX;
-			for (int i = 0; i < margin.size(); i++) {
-				sum += margin.get(i) * 10;
-				runningMargin.add(sum);
-			}
-			if (x < stepX) {
+		if ((getLayoutInfo().getElementYNumber(y) <= getMgr().getColumnNames(tableId).size())) {
+			int elementXNumber = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getElementXNumber(x);
+			System.out.println(elementXNumber);
+			if (x < getLayoutInfo().getOffsetX()) {
 				// Left margin of table, indicate that selected
-				selectedColumns.add(getMgr().getColumnNames(tableId).get(elementNumber));
+				selectedColumns.add(getMgr().getColumnNames(tableId).get(getLayoutInfo().getElementYNumber(y)));
 			} else {
-				String column = this.getMgr().getColumnNames(tableId).get(elementNumber);
-				if (x < runningMargin.get(0)) {
+				String column = this.getMgr().getColumnNames(tableId).get(getLayoutInfo().getElementYNumber(y));
+				if (elementXNumber == 0) {
 					// Click on table name, edit name
-					EditColumnCharacteristicsView newView = new EditColumnCharacteristicsView(this.getMgr(), this.getLayoutInfo(), this.getViewList(), this, column, tableId);
+					EditColumnCharacteristicsView newView = new EditColumnCharacteristicsView(this.getMgr(),
+							this.getLayoutInfo(), this.getViewList(), this, column, tableId);
 					this.getViewList().substituteView(this, newView);
-				} else if (x < runningMargin.get(1)) {
+				} else if (elementXNumber == 1) {
 					// Click on type
 					this.getMgr().changeType(tableId, column);
-				} else if (x < runningMargin.get(2)) {
+				} else if (elementXNumber == 2) {
 					// Click on allowBlanks
 					this.getMgr().changeAllowBlanks(tableId, column);
-				} else if (x < runningMargin.get(3)) {
+				} else if (elementXNumber == 3) {
 					// Click on defaultValue
 					if (getMgr().getClass(tableId, column) == "boolean") {
-						getMgr().setDefaultValue(tableId, column, String.valueOf(!(boolean) getMgr().getDefaultValue(tableId, column)));
+						getMgr().setDefaultValue(tableId, column,
+								String.valueOf(!(boolean) getMgr().getDefaultValue(tableId, column)));
 					} else {
-						EditDefaultValueView newView = new EditDefaultValueView(this.getMgr(), this.getLayoutInfo(), this.getViewList(), this, column, tableId);
+						EditDefaultValueView newView = new EditDefaultValueView(this.getMgr(), this.getLayoutInfo(),
+								this.getViewList(), this, column, tableId);
 						this.getViewList().substituteView(this, newView);
 					}
 				}
@@ -97,8 +91,7 @@ public class DesignView extends AbstractView {
 	/**
 	 * Handles the escape key event in the design view.
 	 * <p>
-	 * This method transitions the current view from the DesignView to a
-	 * TablesView.
+	 * This method transitions the current view from the DesignView to a TablesView.
 	 */
 	@Override
 	public void handleEscape() {
@@ -145,7 +138,10 @@ public class DesignView extends AbstractView {
 	@Override
 	public void handleDelete() {
 		for (String c : selectedColumns) {
+			int elementNumber = getMgr().getColumnNames(tableId).indexOf(c);
 			getMgr().removeColumn(tableId, c);
+			getLayoutInfo().getTableLayout(tableId).getViewLayout(RowsView.class).deleteElement(elementNumber);
+
 		}
 		selectedColumns.clear();
 	}
@@ -172,57 +168,37 @@ public class DesignView extends AbstractView {
 		return "Design Mode";
 	}
 
-	/**
-	 * Paints the DesignView.
-	 *
-	 * @param g The Graphics object used to render the content on the component.
-	 */
 	@Override
 	public void paint(Graphics g) {
-		
 		if (this.getMgr().getTableName(tableId) == null) {
 			this.getViewList().closeView(this);
 			return;
 		}
-		List<List<String>> splitList = new ArrayList<>();
-		for (String s : getMgr().getColumnsInfo(tableId)) {
-			List<String> columnData = Arrays.asList(s.split(" "));
-			splitList.add(columnData);
-		}
-		int y = stepY;
-		int x = stepX;
-		int i = 0;
-		try {
-			// calculate margins
-			margin = new ArrayList<>(splitList.getFirst().stream().map(String::length).toList());
-			for (List<String> l : splitList) {
-				i = 0;
-				for (String s : l) {
-					if (s.length() > margin.get(i)) {
-						margin.set(i, s.length());
-					}
-					i++;
-				}
-			}
-			for (List<String> l : splitList) {
-				if (selectedColumns.contains(l.get(0))) {
-					g.drawString("*", 0, y);
-				}
-				i = 0;
-				for (String s : l) {
-					try {
-						g.drawString(s, x, y);
-					} catch (Exception e) {
-						g.drawString("", x, y);
-					}
-					x += margin.get(i) * 10;
-					i++;
-				}
-				y += stepY;
-				x = stepX;
-			}
-		} catch (NoSuchElementException e) {
-		}
 
+		int heightOffset = this.getLayoutInfo().getOffsetY();
+		int y = 0;
+		for (String column : getMgr().getColumnsInfo(tableId)) {
+			int x = getLayoutInfo().getOffsetX();
+			List<String> columnData = Arrays.asList(column.split(" "));
+			List<Integer> widths = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getWidths();
+
+			y += heightOffset;
+
+			if (selectedColumns.contains(column.split(" ")[0])) {
+				g.drawString("*", 0, y);
+			}
+
+			for (int i = 0; i < columnData.size(); i++) {
+				String value = columnData.get(i);
+				int width = (i < widths.size()) ? widths.get(i) : 50;
+				try {
+					g.drawString(value, x, y);
+				} catch (Exception e) {
+					g.drawString("", x, y);
+				}
+				x += width;
+			}
+		}
 	}
+
 }

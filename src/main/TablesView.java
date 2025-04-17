@@ -11,7 +11,6 @@ import java.util.UUID;
 public class TablesView extends AbstractView {
 
 	private List<UUID> selectedTables;
-	private LayoutInfo layoutInfo;
 
 	/**
 	 * Constructs a new TablesView instance to manage and display a list of tables.
@@ -21,7 +20,6 @@ public class TablesView extends AbstractView {
 	public TablesView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList) {
 		super(mgr, layoutInfo, viewList);
 		this.selectedTables = new ArrayList<UUID>();
-		this.layoutInfo = layoutInfo;
 	}
 
 	/**
@@ -35,14 +33,13 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleDoubleClick(int x, int y) {
-		List<Integer> offsets = layoutInfo.getHeightsTable();
-		int elementNumber = layoutInfo.calculateElementIndex(offsets, y);
+		int elementNumber = getLayoutInfo().getElementYNumber(y);
 		try {
 			UUID tableClicked = getMgr().getTableIds().get(elementNumber);
 			DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), tableClicked);
 			getViewList().substituteView(this, newView);
 		} catch (Exception e) {
-			layoutInfo.addTable(getMgr().addTable());
+			getMgr().addTable();
 		}
 	}
 
@@ -57,17 +54,16 @@ public class TablesView extends AbstractView {
 	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
-		List<Integer> offsets = layoutInfo.getHeightsTable();
-		int elementNumber = layoutInfo.calculateElementIndex(offsets, y);
+		int elementNumber = getLayoutInfo().getElementYNumber(y);
 		if (elementNumber <= getMgr().getTableNames().size()) {
-			if (x < layoutInfo.getWidthTable()) {
+			if (x < getLayoutInfo().getOffsetX()) {
 				//Left margin of table, indicate that selected
 				selectedTables.add(getMgr().getTableIds().get(elementNumber));
 				System.out.println(elementNumber);
 			} else {
 				//Click on table, edit name
 				UUID tableId = this.getMgr().getTableIds().get(elementNumber);
-				EditTableNameView newView = new EditTableNameView(this.getMgr(), this.layoutInfo, this.getViewList(), this, tableId);
+				EditTableNameView newView = new EditTableNameView(this.getMgr(), this.getLayoutInfo(), this.getViewList(), this, tableId);
 				this.getViewList().substituteView(this, newView);
 			}
 		}
@@ -117,6 +113,7 @@ public class TablesView extends AbstractView {
 	public void handleDelete() {
 		for (UUID t : selectedTables) {
 			getMgr().removeTable(t);
+			getLayoutInfo().clear(t);
 		}
 		selectedTables.clear();
 	}
@@ -142,13 +139,12 @@ public class TablesView extends AbstractView {
 	@Override
 	public void paint(Graphics g) {
 		int y = 0;
-		int elementNumber = 0;
 		for (UUID table : getMgr().getTableIds()) {
-			y += layoutInfo.getHeightsTable().get(elementNumber++);
+			y += getLayoutInfo().getOffsetY();
 			if (selectedTables.contains(table)) {
 				g.drawString("*", 0, y);
 			}
-			g.drawString(this.getMgr().getTableName(table), layoutInfo.getWidthTable(), y);
+			g.drawString(this.getMgr().getTableName(table), getLayoutInfo().getOffsetX(), y);
 		}
 	}
 

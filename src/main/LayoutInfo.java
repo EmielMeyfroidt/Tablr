@@ -1,137 +1,91 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class LayoutInfo {
 
-	private LinkedHashMap<UUID, Integer> heightTablesView = new LinkedHashMap<>();
-	private int widthTablesView = 20;
-	private HashMap<UUID, HashMap<String, List<Integer>>> widthsDesignView = new HashMap<>();
-	private HashMap<UUID, HashMap<String, Integer>> heightsDesignView = new HashMap<>();
-	private HashMap<UUID, HashMap<String, Integer>> widthsRowView = new HashMap<>();
-	private HashMap<UUID, List<Integer>> heightsRowView = new HashMap<>();
+	// Store layout information for each table
+	private final Map<UUID, TableLayout> tableLayouts = new HashMap<>();
+	private static int offsetY = 20; //Step in vertical direction
+	private static int offsetX = 20; //Left margin
 
-	public void addTable(UUID id) {
-		heightTablesView.put(id, setDynamicHeight());
-		widthsDesignView.put(id, new HashMap<>());
-		heightsDesignView.put(id, new HashMap<>());
-		widthsRowView.put(id, new HashMap<>());
-		heightsRowView.put(id, new ArrayList<>());
+	// Retrieves or creates a TableLayout for a given table
+	public TableLayout getTableLayout(UUID tableId) {
+		return tableLayouts.computeIfAbsent(tableId, k -> new TableLayout());
 	}
 
-	public void removeTable(UUID id) {
-		heightTablesView.remove(id);
-		widthsDesignView.remove(id);
-		heightsDesignView.remove(id);
-		widthsRowView.remove(id);
-		heightsRowView.remove(id);
+	// Clears layout data for a table
+	public void clear(UUID tableId) {
+		tableLayouts.remove(tableId);
 	}
 
-	public void addColumnToTable(UUID id, String column) {
-		widthsDesignView.get(id).put(column, designViewWidths());
-		heightsDesignView.get(id).put(column, setDynamicHeight());
-		widthsRowView.get(id).put(column, setDynamicWidth());
+	public int getOffsetY() {
+		return offsetY;
 	}
 
-	public void deleteColumnFromTable(UUID id, String column) {
-		widthsDesignView.get(id).remove(column);
-		heightsDesignView.get(id).remove(column);
-		widthsRowView.get(id).remove(column);
+	public int getOffsetX() {
+		return offsetX;
 	}
 
-	public void addRowToTable(UUID id) {
-		heightsRowView.get(id).add(setDynamicHeight());
+	public int getElementYNumber(int y) {
+		return (int) Math.floor(y / offsetY);
 	}
 
-	public void deleteRowFromTable(UUID id) {
-		List<Integer> rowHeights = heightsRowView.get(id);
-		if (!rowHeights.isEmpty()) {
-			rowHeights.remove(rowHeights.size() - 1);
+	public static class TableLayout {
+
+		// Store layouts for all views dynamically using class types as keys
+		private final Map<Class<?>, ViewLayout> viewLayouts = new HashMap<>();
+
+		// Retrieve or create a ViewLayout for a specific view type using its class
+		public ViewLayout getViewLayout(Class<?> viewClass) {
+			return viewLayouts.computeIfAbsent(viewClass, k -> new ViewLayout());
 		}
+
 	}
 
-	public void changeHeightTableView(UUID id, int newHeight) {
-		heightTablesView.put(id, newHeight);
-	}
+	// Layout specific to each view (TablesView, DesignView, RowView, etc.)
+	public static class ViewLayout {
+		private int offsetY; // Vertical offset for this view (DesignView, RowView, NewView)
+		private List<Integer> widths = new ArrayList<>();
 
-	public void changeWidthDesignView(UUID id, String column, int fieldIndex, int newWidth) {
-		List<Integer> widths = widthsDesignView.get(id).get(column);
-		if (widths != null && fieldIndex < widths.size()) {
-			widths.set(fieldIndex, newWidth);
+		public int getOffsetY() {
+			return offsetY;
 		}
-	}
 
-	public void changeHeightDesignView(UUID id, String column, int newHeight) {
-		heightsDesignView.get(id).put(column, newHeight);
-	}
-
-	public void changeWidthRowView(UUID id, String column, int newWidth) {
-		widthsRowView.get(id).put(column, newWidth);
-	}
-
-	public void changeHeightRowView(UUID id, int rowIndex, int newHeight) {
-		List<Integer> heights = heightsRowView.get(id);
-		if (rowIndex < heights.size()) {
-			heights.set(rowIndex, newHeight);
+		public void setOffsetY(int offsetY) {
+			this.offsetY = offsetY;
 		}
-	}
-	
-	public int calculateElementIndex(List<Integer> sizes, int offset) {
-		int position = 0;
-		for (int i = 0; i < sizes.size(); i++) {
-			int size = sizes.get(i);
-			if (offset < position + size) {
-				return i; // Found the element containing the offset
-			}
-			position += size;
+
+		public List<Integer> getWidths() {
+			return widths;
 		}
-		return -1; // Not found (e.g., offset is outside all elements)
-	}
 
-	// === Getters ===
+		public void setWidthsOrHeights(List<Integer> widths) {
+			this.widths = widths;
+		}
+		
+		public int getElementXNumber(int x) {
+		    int runningSum = offsetX;
 
-	public List<Integer> getHeightsTable() {
-		return new ArrayList<>(heightTablesView.values());
-	}
-	
-	public int getWidthTable() {
-		return widthTablesView;
-	}
-
-	public Map<String, List<Integer>> getWidthsDesignView(UUID id) {
-		return widthsDesignView.get(id);
-	}
-
-	public Map<String, Integer> getHeightsDesignView(UUID id) {
-		return heightsDesignView.get(id);
-	}
-
-	public Map<String, Integer> getWidthsRowView(UUID id) {
-		return widthsRowView.get(id);
-	}
-
-	public List<Integer> getHeightsRowView(UUID id) {
-		return heightsRowView.get(id);
-	}
-
-	// === Helpers ===
-
-	private int setDynamicHeight() {
-		return 20;
-	}
-
-	private int setDynamicWidth() {
-		return 60;
-	}
-
-	private List<Integer> designViewWidths() {
-		// name, type, blanks allowed, default value
-		return new ArrayList<>(Arrays.asList(20, 20, 20, 20, 20));
+		    for (int i = 0; i < widths.size(); i++) {
+		        runningSum += widths.get(i);
+		        if (x < runningSum) {
+		            return i;
+		        }
+		    }
+		    return -1; // x is beyond all elements
+		}
+		
+		public void deleteElement(int elementNumber) {
+			widths.remove(elementNumber);
+		}
+		
+		public void addElement(int size) {
+			widths.add(size);
+		}
 	}
 }
