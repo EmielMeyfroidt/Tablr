@@ -55,8 +55,8 @@ public class RowsView extends AbstractView {
 	 */
 	@Override
 	public void handleSingleClick(int x, int y) {
-		int rowIndex = getLayoutInfo().getElementYNumber(y);
-		if ((rowIndex <= getMgr().getColumnNames(tableId).size())) {
+		int rowIndex = getLayoutInfo().getElementYNumber(y) - 1;
+		if (rowIndex <= getMgr().getColumnNames(tableId).size()) {
 			if (x < getLayoutInfo().getOffsetX()) {
 				// Left margin of table, indicate that selected
 				selectedRows.add(rowIndex);
@@ -122,6 +122,7 @@ public class RowsView extends AbstractView {
 		for (int row : selectedRows) {
 			getMgr().removeRow(tableId, row);
 		}
+		selectedRows.clear();
 	}
 
 	/**
