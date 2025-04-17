@@ -203,6 +203,9 @@ public class DesignView extends AbstractView {
 		}
 	}
 
+	/**
+	 * Handles the dragging of column width. 
+	 */
 	@Override
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 		int elementNumber = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getElementXNumber(startX)
