@@ -183,6 +183,8 @@ class Window extends AbstractView implements ViewList {
 		//paint title
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, bounds.width, titleOffset);
+		g.setColor(Color.black);
+		g.drawString(view.getTitle(), 10, titleOffset);
 
 		g.setColor(Color.red);
 		this.closeButtonX = bounds.width - closeButtonWidth;
