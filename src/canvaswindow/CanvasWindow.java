@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -94,11 +96,13 @@ class KeyEventItem extends RecordingItem {
 	int id;
 	int keyCode;
 	char keyChar;
+	int modifiers;
 
-	KeyEventItem(int id, int keyCode, char keyChar) {
+	KeyEventItem(int id, int keyCode, char keyChar, int modifiers) {
 		this.id = id;
 		this.keyCode = keyCode;
 		this.keyChar = keyChar;
+		this.modifiers = modifiers;
 	}
 
 	@Override
@@ -115,12 +119,12 @@ class KeyEventItem extends RecordingItem {
 				id = "unknown";
 				break;
 		}
-		writer.println("KeyEvent " + id + " " + keyCode + " " + (int) keyChar);
+		writer.println("KeyEvent " + id + " " + keyCode + " " + (int) keyChar + " " + modifiers);
 	}
 
 	@Override
 	void replay(int itemIndex, CanvasWindow window) {
-		window.handleKeyEvent(id, keyCode, keyChar);
+		window.handleKeyEvent(id, keyCode, keyChar, modifiers);
 	}
 }
 
@@ -232,7 +236,8 @@ class CanvasWindowRecording {
 					}
 					int keyCode = Integer.parseInt(words[2]);
 					char keyChar = (char) Integer.parseInt(words[3]);
-					items.add(new KeyEventItem(id, keyCode, keyChar));
+					int modifiers = Integer.parseInt(words[4]);
+					items.add(new KeyEventItem(id, keyCode, keyChar, modifiers));
 					break;
 				}
 				case "Paint": {
@@ -265,6 +270,9 @@ public class CanvasWindow {
 
 	private String recordingPath;
 	private CanvasWindowRecording recording;
+
+	private static Timer clickTimer = new Timer(); // Shared timer
+	private static final int DOUBLE_CLICK_DELAY = 500; // Delay in milliseconds
 
 	void updateFrameTitle() {
 		frame.setTitle(recording == null ? title : title + " - Recording: " + recording.items.size() + " items recorded");
@@ -309,10 +317,49 @@ public class CanvasWindow {
 	}
 
 	private void handleMouseEvent_(MouseEvent e) {
-		System.out.println(e);
-		if (recording != null)
-			recording.items.add(new MouseEventItem(e.getID(), e.getX(), e.getY(), e.getClickCount()));
+		//System.out.println(e);
+		if (e.getID() == java.awt.event.MouseEvent.MOUSE_CLICKED) {
+			clickTimer.cancel();
+			clickTimer = new Timer();
+
+			if (e.getClickCount() == 2) {
+				Runnable doubleClickListener = new Runnable() {
+
+					@Override
+					public void run() {
+						sendMouseEvent(e, 2);
+					}
+
+				};
+				doubleClickListener.run();
+			} else {
+				clickTimer.schedule(new TimerTask() {
+
+					@Override
+					public void run() {
+						Runnable singleClickListener = new Runnable() {
+
+							@Override
+							public void run() {
+								sendMouseEvent(e, 1);
+							}
+						};
+						singleClickListener.run();
+					}
+
+				}, DOUBLE_CLICK_DELAY);
+			}
+
+		} else {
+			sendMouseEvent(e, e.getClickCount());
+		}
+
+	}
+
+	private void sendMouseEvent(MouseEvent e, int clickCount) {
 		handleMouseEvent(e.getID(), e.getX(), e.getY(), e.getClickCount());
+		if (recording != null)
+			recording.items.add(new MouseEventItem(e.getID(), e.getX(), e.getY(), clickCount));
 	}
 
 	/**
@@ -322,16 +369,18 @@ public class CanvasWindow {
 	}
 
 	private void handleKeyEvent_(KeyEvent e) {
-		System.out.println(e);
+		//System.out.println(e);
 		if (recording != null)
-			recording.items.add(new KeyEventItem(e.getID(), e.getKeyCode(), e.getKeyChar()));
-		handleKeyEvent(e.getID(), e.getKeyCode(), e.getKeyChar());
+			recording.items.add(new KeyEventItem(e.getID(), e.getKeyCode(), e.getKeyChar(), e.getModifiersEx()));
+		handleKeyEvent(e.getID(), e.getKeyCode(), e.getKeyChar(), e.getModifiersEx());
 	}
 
 	/**
 	 * Called when the user presses a key (id == KeyEvent.KEY_PRESSED) or enters a character (id == KeyEvent.KEY_TYPED).
+	 *
+	 * @param i
 	 */
-	protected void handleKeyEvent(int id, int keyCode, char keyChar) {
+	protected void handleKeyEvent(int id, int keyCode, char keyChar, int i) {
 	}
 
 	BufferedImage captureImage() {
@@ -396,7 +445,7 @@ public class CanvasWindow {
 
 		@Override
 		protected void paintComponent(Graphics g) {
-			System.out.println("Painting...");
+			//System.out.println("Painting...");
 			super.paintComponent(g);
 
 			if (recording != null) {
@@ -421,7 +470,7 @@ public class CanvasWindow {
 				public void windowClosed(WindowEvent e) {
 					if (recording != null)
 						try {
-							System.out.println(new File(".").getCanonicalPath());
+							//System.out.println(new File(".").getCanonicalPath());
 							recording.save(recordingPath);
 						} catch (IOException ex) {
 							throw new RuntimeException(ex);
