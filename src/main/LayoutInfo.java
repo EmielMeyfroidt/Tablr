@@ -64,7 +64,7 @@ public class LayoutInfo {
 			return widths;
 		}
 
-		public void setWidthsOrHeights(List<Integer> widths) {
+		public void setWidths(List<Integer> widths) {
 			this.widths = widths;
 		}
 		

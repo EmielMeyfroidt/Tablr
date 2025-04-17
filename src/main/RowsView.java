@@ -180,4 +180,12 @@ public class RowsView extends AbstractView {
 			}
 		}
 	}
+	
+	@Override
+	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
+		int elementNumber = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getElementXNumber(startX) - 1;
+		List<Integer> widths = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getWidths();
+		int newWidth = widths.get(elementNumber) + (endX - startX);
+		widths.set(elementNumber, newWidth);
+	}
 }

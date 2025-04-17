@@ -23,8 +23,10 @@ public class DesignView extends AbstractView {
 		super(mgr, layoutInfo, viewList);
 		this.tableId = table;
 		this.selectedColumns = new ArrayList<String>();
-		getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass())
-				.setWidthsOrHeights(new ArrayList<>(Collections.nCopies(4, 50)));
+		if (getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getWidths().isEmpty()) {
+			getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass())
+			.setWidths(new ArrayList<>(Collections.nCopies(4, 50)));
+		}
 	}
 
 	/**
@@ -199,6 +201,14 @@ public class DesignView extends AbstractView {
 				x += width;
 			}
 		}
+	}
+
+	@Override
+	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
+		int elementNumber = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getElementXNumber(startX) - 1;
+		List<Integer> widths = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getWidths();
+		int newWidth = widths.get(elementNumber) + (endX - startX);
+		widths.set(elementNumber, newWidth);
 	}
 
 }
