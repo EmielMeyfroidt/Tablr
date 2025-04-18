@@ -2,10 +2,15 @@ package main;
 
 import java.awt.*;
 
+/**
+ * Represents a resizable and draggable window in a graphical user interface.
+ * The Window acts as a wrapper for an underlying AbstractView and adds
+ * functionality such as title bar rendering and close button functionality.
+ */
 class Window extends AbstractView implements ViewList {
 	private AbstractView view;
-	private int titleOffset = 10;
-	private int closeButtonWidth = 10;
+	private final int titleOffset = 10;
+	private final int closeButtonWidth = 10;
 	private int closeButtonX = 0;
 
 	Window(AbstractView view, TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList) {
@@ -16,7 +21,7 @@ class Window extends AbstractView implements ViewList {
 
 
 	/**
-	 * @return
+	 * @return underlying views title
 	 */
 	@Override
 	public String getTitle() {
@@ -24,6 +29,8 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
+	 * If the click is not on the title bar forward to underlying view
+	 *
 	 * @param x The x-coordinate for the mouse click.
 	 * @param y The y-coordinate for the mouse click.
 	 */
@@ -31,14 +38,13 @@ class Window extends AbstractView implements ViewList {
 	public void handleDoubleClick(int x, int y) {
 		if (y > titleOffset) {
 			view.handleDoubleClick(x, y - titleOffset);
-		} else {
-			//nothing
 		}
-
-		//TODO translate point
 	}
 
 	/**
+	 * If the click is not on the title bar forward to underlying view
+	 * if the click is in the title bar and on the  close button, close this view in getViewList().
+	 *
 	 * @param x The x-coordinate for the mouse click.
 	 * @param y The y-coordinate for the mouse click.
 	 */
@@ -46,12 +52,21 @@ class Window extends AbstractView implements ViewList {
 	public void handleSingleClick(int x, int y) {
 		if (y > titleOffset) {
 			view.handleSingleClick(x, y - titleOffset);
-		} else {
+		} else if (x >= closeButtonX && x <= closeButtonX + closeButtonWidth) {
 			getViewList().closeView(this);
 		}
 
 	}
 
+	/**
+	 * Handles the dragging of the mouse within the window. If the drag starts on the title bar,
+	 * it moves the window position; otherwise, it forwards the drag event to the underlying view.
+	 *
+	 * @param startX The x-coordinate where the drag starts.
+	 * @param startY The y-coordinate where the drag starts.
+	 * @param endX   The x-coordinate where the drag ends.
+	 * @param endY   The y-coordinate where the drag ends.
+	 */
 	@Override
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 		if (startY > titleOffset) {
@@ -62,7 +77,7 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 *
+	 * Forwards the handleEscape() event to the underlying view.
 	 */
 	@Override
 	public void handleEscape() {
@@ -71,7 +86,7 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 *
+	 * Forwards the handleBackSpace() event to the underlying view.
 	 */
 	@Override
 	public void handleBackSpace() {
@@ -79,7 +94,7 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 *
+	 * Forwards the handleCtrlEnter() event to the underlying view.
 	 */
 	@Override
 	public void handleCtrlEnter() {
@@ -87,7 +102,7 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 *
+	 * Forwards the handleEnter() event to the underlying view.
 	 */
 	@Override
 	public void handleEnter() {
@@ -95,7 +110,7 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 *
+	 * Forwards the handleDelete() event to the underlying view.
 	 */
 	@Override
 	public void handleDelete() {
@@ -103,6 +118,8 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
+	 * Forwards the handleCharTyped() event to the underlying view.
+	 *
 	 * @param keyChar The character that was typed.
 	 */
 	@Override
@@ -114,8 +131,8 @@ class Window extends AbstractView implements ViewList {
 	 * this method is invoked if view is killed and should be disposed.
 	 * Returns true if this object is also irrelevant as a result.
 	 *
-	 * @param view
-	 * @return
+	 * @param view that is to be disposed
+	 * @return True if this object is to be disposed also
 	 */
 	@Override
 	public boolean handleDeadView(AbstractView view) {
@@ -127,9 +144,9 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 * wraps underlying view and forwards to getviewlist()
+	 * wraps view in a window and adds it to getviewlist()
 	 *
-	 * @param view
+	 * @param view view to be opened
 	 */
 	@Override
 	public void openView(AbstractView view) {
@@ -137,7 +154,7 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 * forwards to getviewlist()
+	 * removes view from getviewlist()
 	 *
 	 * @param view
 	 */
@@ -147,8 +164,10 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 * @param oldView
-	 * @param newView
+	 * substitutes view in getViewList()
+	 *
+	 * @param oldView The existing AbstractView instance that is to be replaced.
+	 * @param newView The new AbstractView instance that will replace the old view.
 	 */
 	@Override
 	public void substituteView(AbstractView oldView, AbstractView newView) {
@@ -156,11 +175,12 @@ class Window extends AbstractView implements ViewList {
 	}
 
 	/**
-	 * view is stationary in window, nothing happens
+	 * moves the underlying view.
+	 * has no effect in Window.
 	 *
-	 * @param view
-	 * @param x
-	 * @param y
+	 * @param view The AbstractView instance to move.
+	 * @param x    horizontal increment.
+	 * @param y    verical increment.
 	 */
 	@Override
 	public void moveViewLocation(AbstractView view, int x, int y) {
