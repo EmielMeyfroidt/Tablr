@@ -53,6 +53,12 @@ public class ViewManager implements ViewList {
 		layoutInfo = new LayoutInfo();
 	}
 
+	public ViewManager(TablrManager tablrManager) {
+		metaViews = new ArrayList<MetaView>();
+		this.tablrManager = tablrManager;
+		layoutInfo = new LayoutInfo();
+	}
+
 	/**
 	 * @param view
 	 */

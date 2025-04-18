@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -54,11 +55,11 @@ public class TablrManager {
 	public List<String> getTableNames() {
 		return tables.stream().map(t -> t.getName()).collect(Collectors.toList());
 	}
-	
-	public List<UUID> getTableIds(){
-		return tables.stream().map(t->t.getId()).collect(Collectors.toList());
+
+	public List<UUID> getTableIds() {
+		return tables.stream().map(t -> t.getId()).collect(Collectors.toList());
 	}
-	
+
 	public String getTableName(UUID id) {
 		Table table = findTable(id);
 		return table != null ? table.getName() : null;
@@ -269,5 +270,17 @@ public class TablrManager {
 	public void setDefaultValue(UUID table, String column, String value) {
 		Table t = findTable(table);
 		t.setDefaultValue(column, value);
+	}
+
+	/**
+	 * for testing flows
+	 * returns a map of table names to a map of columns
+	 */
+	public HashMap<String, HashMap<String, List<String>>> getData() {
+		HashMap<String, HashMap<String, List<String>>> data = new HashMap<>();
+		for (Table table : tables) {
+			data.put(table.getName(), table.getData());
+		}
+		return data;
 	}
 }

@@ -83,10 +83,11 @@ public class MyCanvasWindow extends CanvasWindow {
 	@Override
 	protected void handleMouseEvent(int id, int x, int y, int clickCount) {
 		if (id == java.awt.event.MouseEvent.MOUSE_CLICKED) {
-			System.out.println("mouse clicked times" + clickCount);
 			if (clickCount == 2) {
+//				System.out.println("double click");
 				viewManager.handleDoubleClick(x, y);
 			} else if (clickCount == 1) {
+//				System.out.println("single click");
 				viewManager.handleSingleClick(x, y);
 			}
 		} else if (id == java.awt.event.MouseEvent.MOUSE_PRESSED) {

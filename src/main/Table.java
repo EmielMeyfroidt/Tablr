@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ public class Table {
 	 * initialized with a default value, and configured to allow blank values.
 	 * If the table already contains columns with cells, the new column is
 	 * populated with the same number of cells, each initialized with the default value.
-	 *
+	 * <p>
 	 * Throws:
 	 * - Exception: If any part of column creation or manipulation fails.
 	 */
@@ -37,7 +38,7 @@ public class Table {
 		String name = generateUniqueName();
 		Column column;
 		try {
-			column = new Column(name, "string", true, "x"); 
+			column = new Column(name, "string", true, "x");
 			columns.add(column);
 			if (columns.getFirst().getSize() > 0) {
 				for (int i = 0; i < columns.getFirst().getSize(); i++) {
@@ -53,7 +54,7 @@ public class Table {
 	/**
 	 * Renames an existing column in the table.
 	 *
-	 * @param name The current name of the column to be renamed.
+	 * @param name    The current name of the column to be renamed.
 	 * @param newName The new name to be assigned to the column. It must be non-null
 	 *                and unique among all column names in the table.
 	 */
@@ -71,10 +72,9 @@ public class Table {
 	/**
 	 * Replaces an existing column in the table with a new column.
 	 *
-	 * @param <T> The type of the values in the new column.
-	 * @param name The name of the column to be replaced. It must match the name of an existing column in the table.
+	 * @param <T>       The type of the values in the new column.
+	 * @param name      The name of the column to be replaced. It must match the name of an existing column in the table.
 	 * @param newColumn The new column to replace the existing one. It must be compatible with the table structure.
-	 *
 	 * @throws IllegalArgumentException if no column with the specified name is found.
 	 */
 	public void changeColumn(String name, Column newColumn) {
@@ -126,7 +126,7 @@ public class Table {
 	 * Retrieves information about all columns in the table.
 	 *
 	 * @return A list of strings: column's name, type,
-	 * 	 whether it allows blank values, and the default value.
+	 * whether it allows blank values, and the default value.
 	 */
 	// TODO: split in different getters.
 	public List<String> getColumnsInfo() {
@@ -138,7 +138,6 @@ public class Table {
 	}
 
 	/**
-	 * 
 	 * @return A list of all column names.
 	 */
 	public List<String> getColumnNames() {
@@ -171,7 +170,7 @@ public class Table {
 	 * Retrieves the data of all columns in the table.
 	 *
 	 * @return A list of lists, where each inner list represents the data
-	 *         of a single column in the table.
+	 * of a single column in the table.
 	 */
 	public List<List<String>> getColumns() {
 		return columns.stream().map(Column::getColumn).toList();
@@ -182,9 +181,9 @@ public class Table {
 	 *
 	 * @param nameColumn The name of the column containing the cell to update.
 	 *                   Must correspond to an existing column in the table.
-	 * @param rowIndex The zero-based index of the row containing the cell to update.
-	 *                 Must be within the valid range of row indices for the column.
-	 * @param value The new value to set in the specified cell. Must be compatible with the column's data type.
+	 * @param rowIndex   The zero-based index of the row containing the cell to update.
+	 *                   Must be within the valid range of row indices for the column.
+	 * @param value      The new value to set in the specified cell. Must be compatible with the column's data type.
 	 */
 	public void updateCell(String nameColumn, Integer rowIndex, String value) {
 		Column col = findColumn(nameColumn);
@@ -227,15 +226,15 @@ public class Table {
 	public void changeType(String columnName) {
 		Column col = findColumn(columnName);
 		if (col.getType() == "string") {
-	        Column newCol = new Column(columnName, "boolean", true, "true");
-	        changeColumn(columnName, newCol);
-	    }else if (col.getType() == "boolean") {
-	    	Column newCol = new Column(columnName, "int", true, "0");
-	    	changeColumn(columnName, newCol);
-	    }else if (col.getType() == "int") {
-	    	Column newCol = new Column(columnName, "string", true, "");
-	    	changeColumn(columnName, newCol);
-	    }
+			Column newCol = new Column(columnName, "boolean", true, "true");
+			changeColumn(columnName, newCol);
+		} else if (col.getType() == "boolean") {
+			Column newCol = new Column(columnName, "int", true, "0");
+			changeColumn(columnName, newCol);
+		} else if (col.getType() == "int") {
+			Column newCol = new Column(columnName, "string", true, "");
+			changeColumn(columnName, newCol);
+		}
 	}
 
 	/**
@@ -294,5 +293,13 @@ public class Table {
 
 	public UUID getId() {
 		return id;
+	}
+
+	public HashMap<String, List<String>> getData() {
+		HashMap<String, List<String>> dataMap = new HashMap<>();
+		for (Column column : columns) {
+			dataMap.put(column.getName(), column.getColumn());
+		}
+		return dataMap;
 	}
 }

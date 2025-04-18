@@ -119,7 +119,7 @@ class Window extends AbstractView implements ViewList {
 	 */
 	@Override
 	public boolean handleDeadView(AbstractView view) {
-		if (this.view == view) {
+		if (this.view == view || this.view.handleDeadView(view)) {
 			this.view = null;
 			return true;
 		}
@@ -182,7 +182,8 @@ class Window extends AbstractView implements ViewList {
 
 		//clear window
 		g.clearRect(0, 0, bounds.width, bounds.height);
-
+		g.setColor(Color.white);
+		g.fillRect(0, 0, bounds.width, bounds.height);
 		//paint title
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, bounds.width, titleOffset);
