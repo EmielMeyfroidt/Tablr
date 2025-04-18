@@ -37,7 +37,7 @@ public class TablesView extends AbstractView {
 		try {
 			UUID tableClicked = getMgr().getTableIds().get(elementNumber);
 			DesignView newView = new DesignView(getMgr(), getLayoutInfo(), getViewList(), tableClicked);
-			getViewList().substituteView(this, newView);
+			getViewList().openView(newView);
 		} catch (Exception e) {
 			getMgr().addTable();
 		}
