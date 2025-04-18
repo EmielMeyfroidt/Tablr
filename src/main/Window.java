@@ -175,6 +175,9 @@ class Window extends AbstractView implements ViewList {
 	 */
 	@Override
 	public void paint(Graphics g) {
+		if (view == null) {
+			getViewList().closeView(this);
+		}
 		Rectangle bounds = g.getClipBounds();
 
 		//clear window
