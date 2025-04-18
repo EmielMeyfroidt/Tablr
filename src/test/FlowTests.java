@@ -7,10 +7,10 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.*;
-
 
 public class FlowTests {
 
@@ -101,7 +101,7 @@ public class FlowTests {
 		TablrManager mgr = new TablrManager();
 		replaySession(mgr, "SessionRecordings/addMultipleColumns/addMultipleColumns");
 		Set<String> columns = mgr.getData().get("Table0").keySet();
-		//delete column index 1 and 4
+		// delete column index 1 and 4
 		columns.remove("Column0");
 		columns.remove("Column3");
 		mgr = new TablrManager();
@@ -122,7 +122,8 @@ public class FlowTests {
 		assertNotNull("The data for Table0 should not be null", tableData);
 
 		for (Map.Entry<String, List<String>> column : tableData.entrySet()) {
-			assertTrue("row of" + column.getKey() + " should not be empty after adding a row", !column.getValue().isEmpty());
+			assertTrue("row of" + column.getKey() + " should not be empty after adding a row",
+					!column.getValue().isEmpty());
 		}
 
 	}
@@ -162,5 +163,23 @@ public class FlowTests {
 
 	}
 
-}
+	@Test
+	public void editDefaultValue() {
+		TablrManager mgr = new TablrManager();
+		replaySession(mgr, "SessionRecordings/editDefaultValue/editDefaultValue");
 
+		// Get the data map for "Table0"
+		Map<String, List<String>> tableData = mgr.getData().get("Table0");
+
+		// Assert that "Table0" exists and contains column(s)
+		assertTrue("Table0 should exist in the data map", mgr.getData().containsKey("Table0"));
+		assertNotNull("The data for Table0 should not be null", tableData);
+		
+		System.out.println(mgr.getData().get("Table0"));
+		UUID tableId = mgr.getTableIds().get(0);
+		String defaultValue = mgr.getDefaultValue(tableId, "Column0").toString();
+		assertEquals(defaultValue, "abc");
+
+	}
+
+}
