@@ -131,4 +131,12 @@ public abstract class AbstractView {
 	 */
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 	}
+
+	public void handleCtrlZ() {
+		getMgr().undo();
+	}
+
+	public void handleCtrlShiftZ() {
+		getMgr().redo();
+	}
 }

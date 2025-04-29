@@ -151,12 +151,22 @@ public class MyCanvasWindow extends CanvasWindow {
 				action = () -> viewManager.handleDelete();
 				break;
 
+			case KeyEvent.VK_Z:
+				if (modifiers == KeyEvent.CTRL_DOWN_MASK) {
+					// Ctrl + Z detected
+					action = () -> viewManager.handleCtrlZ();
+				}else if (modifiers == 192){
+					action = () -> viewManager.handleCtrlShiftZ();
+				}
+				break;
+			
 			default:
 				if (Character.isDefined(keyChar)) {
 					// Handle character input
 					action = () -> viewManager.handleCharTyped(keyChar);
 				}
 				break;
+
 		}
 
 		// Execute the corresponding action if one was set

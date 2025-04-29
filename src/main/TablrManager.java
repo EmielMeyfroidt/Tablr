@@ -14,6 +14,27 @@ import java.util.stream.Collectors;
  */
 public class TablrManager {
 	private List<Table> tables;
+	private ArrayList<Command> undoStack = new ArrayList<>();
+	private int nbCommandsUndone;
+	
+	public void undo() {
+		if (undoStack.size() > nbCommandsUndone) {
+			undoStack.get(undoStack.size() - ++nbCommandsUndone).undo();
+		}
+	}
+	
+	public void redo() {
+		if (nbCommandsUndone > 0)
+		undoStack.get(undoStack.size() - nbCommandsUndone--).execute();
+	}
+	
+	private void execute(Command command) {
+		for (; nbCommandsUndone > 0; nbCommandsUndone--) {
+			undoStack.remove(undoStack.size() - 1);
+		}
+		undoStack.add(command);
+		command.execute();
+	}
 
 	/**
 	 * Constructs a new instance of the TablrManager class.
@@ -32,8 +53,20 @@ public class TablrManager {
 	public UUID addTable() {
 		String uniqueName = generateUniqueName();
 		Table newTable = new Table(uniqueName);
-		tables.add(newTable);
-		return newTable.getId();
+		UUID uuid = newTable.getId();
+		execute(new Command() {
+			@Override
+			public void execute() {
+				tables.add(newTable);
+			}
+
+			@Override
+			public void undo() {
+				tables.remove(newTable);
+			}
+			
+		});
+		return uuid;
 	}
 
 	/**

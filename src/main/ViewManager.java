@@ -341,4 +341,26 @@ public class ViewManager implements ViewList {
 					g.create(metaView.x, metaView.y, metaView.width, metaView.height));
 	}
 
+
+	/**
+	 * @return
+	 */
+	public void handleCtrlZ() {
+		if (hasActiveView()) {
+			getActiveView().view.handleCtrlZ();
+		}
+		paintListener.contentsChanged();
+	}
+
+
+	/**
+	 * @return
+	 */
+	public void handleCtrlShiftZ() {
+		if (hasActiveView()) {
+			getActiveView().view.handleCtrlShiftZ();
+		}
+		paintListener.contentsChanged();
+	}
+
 }
