@@ -5,7 +5,6 @@ package test;
 
 import static org.junit.Assert.*;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import main.Column;
@@ -19,10 +18,10 @@ public class TableTest {
 	public void addColumnTest() {
 		Table t = new Table("name");
 		assertEquals(t.getName(), "name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		assertEquals(t.getColumns().size(), 1);
 		for (int i = 0; i < 9; i++) {
-			t.addColumn();
+			t.addColumn(t.newColumn());
 		}
 		assertEquals(t.getColumnNames().size(), 10);
 		assertTrue(t.getColumnNames().stream().distinct().count() == t.getColumnNames().size());
@@ -32,7 +31,7 @@ public class TableTest {
 	public void removeColumnTest() {
 		Table t = new Table("name");
 		for (int i = 0; i < 2; i++) {
-			t.addColumn();
+			t.addColumn(t.newColumn());
 		}
 		assertEquals(t.getColumnNames().size(), 2);
 		assertTrue(t.getColumnNames().contains("Column0"));
@@ -47,10 +46,10 @@ public class TableTest {
 	@Test
 	public void renameColumnTest() {
 		Table t = new Table("name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		t.renameColumn(t.getColumnNames().get(0), "newName");
 		assertEquals(t.getColumnNames().get(0), "newName");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		t.renameColumn(t.getColumnNames().get(1), "newName");
 		assertEquals(t.getColumnNames().get(1), "Column0");
 		t.renameColumn(t.getColumnNames().get(1), null);
@@ -60,7 +59,7 @@ public class TableTest {
 	@Test
 	public void changeColumnTest() {
 		Table t = new Table("name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		Column col = new Column("newCol", "string", false, "default");
 		assertEquals(t.getColumnNames().get(0), "Column0");
 		t.changeColumn("Column0", col);
@@ -70,10 +69,10 @@ public class TableTest {
 	@Test
 	public void addRowTest() {
 		Table t = new Table("name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		t.addRow();
 		assertEquals(t.getCell("Column0", 0), t.getDefaultValue("Column0"));
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		t.addRow();
 		assertEquals(t.getCell("Column0", 0), t.getDefaultValue("Column0"));
 		assertEquals(t.getCell("Column1", 0), t.getDefaultValue("Column1"));
@@ -85,9 +84,9 @@ public class TableTest {
 	@Test
 	public void removeRowTest() {
 		Table t = new Table("name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		t.addRow();
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		t.addRow();
 		t.removeRow(1);
 		assertThrows(IndexOutOfBoundsException.class, () -> t.getCell("Column0", 1));
@@ -97,7 +96,7 @@ public class TableTest {
 	@Test
 	public void updateCellTest() {
 		Table t = new Table("name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		t.addRow();
 		String cell = t.getCell("Column0", 0);
 		t.updateCell("Column0", 0, "newValue");
@@ -108,7 +107,7 @@ public class TableTest {
 	@Test
 	public void changeAllowBlanksTest() {
 		Table t = new Table("name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		String[] parts = t.getColumnsInfo().get(0).split(" ");
 		String allowBlanks = parts[2];
 		assertEquals(allowBlanks, String.valueOf(true));
@@ -121,7 +120,7 @@ public class TableTest {
 	@Test
 	public void changeTypeTest() {
 		Table t = new Table("name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		assertEquals(t.getClass("Column0"), "string");
 		t.changeType("Column0");
 		assertEquals(t.getClass("Column0"), "boolean");
@@ -134,7 +133,7 @@ public class TableTest {
 	@Test
 	public void setDefaultValueTest() {
 		Table t = new Table("name");
-		t.addColumn();
+		t.addColumn(t.newColumn());
 		assertEquals(t.getDefaultValue("Column0"), "x");
 		t.setDefaultValue("Column0", "Default");
 		assertEquals(t.getDefaultValue("Column0"), "Default");

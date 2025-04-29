@@ -34,11 +34,8 @@ public class Table {
 	 * Throws:
 	 * - Exception: If any part of column creation or manipulation fails.
 	 */
-	public void addColumn() {
-		String name = generateUniqueName();
-		Column column;
+	public void addColumn(Column column) {
 		try {
-			column = new Column(name, "string", true, "x");
 			columns.add(column);
 			if (columns.getFirst().getSize() > 0) {
 				for (int i = 0; i < columns.getFirst().getSize(); i++) {
@@ -49,6 +46,12 @@ public class Table {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public Column newColumn() {
+		String name = generateUniqueName();
+		Column column = new Column(name, "string", true, "x");
+		return column;
 	}
 
 	/**
@@ -244,7 +247,7 @@ public class Table {
 	 *               Must correspond to a valid column name in the table.
 	 * @return The default value of the specified column as an Object.
 	 */
-	public Object getDefaultValue(String column) {
+	public String getDefaultValue(String column) {
 		Column col = findColumn(column);
 		return col.getDefaultValue();
 	}
@@ -255,7 +258,7 @@ public class Table {
 	 * @param columnName The name of the column to find. Must correspond to an existing column in the table.
 	 * @return The column with the specified name, or null if no column with the given name exists.
 	 */
-	private Column findColumn(String columnName) {
+	public Column findColumn(String columnName) {
 		for (Column col : columns) {
 			if (col.getName().equals(columnName)) {
 				return col;
@@ -301,5 +304,12 @@ public class Table {
 			dataMap.put(column.getName(), column.getColumn());
 		}
 		return dataMap;
+	}
+	
+	public int getNumberOfRows() {
+		if (columns.get(0) != null) {
+			return columns.get(0).getSize();
+		}
+		return 0;
 	}
 }

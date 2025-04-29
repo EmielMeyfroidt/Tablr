@@ -9,25 +9,26 @@ import java.util.stream.Collectors;
 //Manage tables and their contents
 
 /**
- * TablrManager is responsible for managing a collection of tables and their corresponding operations.
- * It provides methods to manipulate tables, columns, and rows, as well as notifying listeners about changes.
+ * TablrManager is responsible for managing a collection of tables and their
+ * corresponding operations. It provides methods to manipulate tables, columns,
+ * and rows, as well as notifying listeners about changes.
  */
 public class TablrManager {
 	private List<Table> tables;
 	private ArrayList<Command> undoStack = new ArrayList<>();
 	private int nbCommandsUndone;
-	
+
 	public void undo() {
 		if (undoStack.size() > nbCommandsUndone) {
 			undoStack.get(undoStack.size() - ++nbCommandsUndone).undo();
 		}
 	}
-	
+
 	public void redo() {
 		if (nbCommandsUndone > 0)
-		undoStack.get(undoStack.size() - nbCommandsUndone--).execute();
+			undoStack.get(undoStack.size() - nbCommandsUndone--).execute();
 	}
-	
+
 	private void execute(Command command) {
 		for (; nbCommandsUndone > 0; nbCommandsUndone--) {
 			undoStack.remove(undoStack.size() - 1);
@@ -40,8 +41,8 @@ public class TablrManager {
 	 * Constructs a new instance of the TablrManager class.
 	 * <p>
 	 * This constructor initializes the TablrManager with an empty list of tables
-	 * and listeners. It also notifies registered listeners of a change in the
-	 * state by invoking the `fireContentsChanged` method.
+	 * and listeners. It also notifies registered listeners of a change in the state
+	 * by invoking the `fireContentsChanged` method.
 	 */
 	public TablrManager() {
 		this.tables = new ArrayList<Table>();
@@ -64,20 +65,35 @@ public class TablrManager {
 			public void undo() {
 				tables.remove(newTable);
 			}
-			
+
 		});
 		return uuid;
 	}
 
 	/**
-	 * Removes a table with the specified name from the list of tables managed by the TablrManager.
-	 * If a table with the specified name exists, it is removed, and all registered listeners
-	 * are notified of the content change.
+	 * Removes a table with the specified name from the list of tables managed by
+	 * the TablrManager. If a table with the specified name exists, it is removed,
+	 * and all registered listeners are notified of the content change.
 	 *
 	 * @param table The name of the table to be removed.
 	 */
-	public void removeTable(UUID table) {
-		tables.removeIf(t -> t.getId().equals(table));
+	public void removeTable(UUID tableId) {
+		Table table = findTable(tableId);
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				tables.remove(table);
+
+			}
+
+			@Override
+			public void undo() {
+				tables.add(table);
+
+			}
+
+		});
 	}
 
 	/**
@@ -126,7 +142,21 @@ public class TablrManager {
 	 */
 	public void changeName(UUID tableId, String newName) {
 		Table t = findTable(tableId);
-		t.setName(newName);
+		final String oldName = t.getName();
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.setName(newName);
+			}
+
+			@Override
+			public void undo() {
+				t.setName(oldName);
+			}
+
+		});
+
 	}
 
 	/**
@@ -135,7 +165,23 @@ public class TablrManager {
 	 */
 	public void changeNameColumn(UUID table, String column, String newName) {
 		Table t = findTable(table);
-		t.renameColumn(column, newName);
+		final String oldName = t.findColumn(column).getName();
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.renameColumn(column, newName);
+
+			}
+
+			@Override
+			public void undo() {
+				t.renameColumn(column, oldName);
+
+			}
+
+		});
+
 	}
 
 	/**
@@ -143,7 +189,22 @@ public class TablrManager {
 	 */
 	public void addColumn(UUID table) {
 		Table t = findTable(table);
-		t.addColumn();
+		Column column = t.newColumn();
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.addColumn(column);
+
+			}
+
+			@Override
+			public void undo() {
+				t.removeColumn(column.getName());
+			}
+
+		});
+
 	}
 
 	/**
@@ -161,14 +222,28 @@ public class TablrManager {
 	 */
 	public void removeColumn(UUID table, String c) {
 		Table t = findTable(table);
-		t.removeColumn(c);
+		Column column = t.findColumn(c);
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.removeColumn(c);
+			}
+
+			@Override
+			public void undo() {
+				t.addColumn(column);
+			}
+		});
 	}
 
 	/**
 	 * Retrieves all columns of the specified table.
 	 *
-	 * @param table The name of the table from which the columns are to be retrieved.
-	 * @return A list of lists where each inner list contains the values of a single column.
+	 * @param table The name of the table from which the columns are to be
+	 *              retrieved.
+	 * @return A list of lists where each inner list contains the values of a single
+	 *         column.
 	 */
 	public List<List<String>> getColumns(UUID table) {
 		Table t = findTable(table);
@@ -183,7 +258,18 @@ public class TablrManager {
 	 */
 	public void addRow(UUID table) {
 		Table t = findTable(table);
-		t.addRow();
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.addRow();
+			}
+
+			@Override
+			public void undo() {
+				// TODO
+			}
+		});
 	}
 
 	/**
@@ -194,21 +280,49 @@ public class TablrManager {
 	 */
 	public void removeRow(UUID table, int row) {
 		Table t = findTable(table);
-		t.removeRow(row);
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.removeRow(row);
+			}
+
+			@Override
+			public void undo() {
+				// TODO
+			}
+
+		});
+
 	}
 
 	/**
-	 * Updates the value of a cell in a specified table and column at the given row index.
-	 * After updating the cell, this method notifies all registered listeners about the change.
+	 * Updates the value of a cell in a specified table and column at the given row
+	 * index. After updating the cell, this method notifies all registered listeners
+	 * about the change.
 	 *
 	 * @param nameTable  The name of the table containing the cell to update.
 	 * @param nameColumn The name of the column containing the cell to update.
 	 * @param rowIndex   The index of the row containing the cell to update.
 	 * @param value      The new value to set in the specified cell.
 	 */
-	public void updateCell(UUID nameTable, String nameColumn, Integer rowIndex, String value) {
+	public void updateCell(UUID nameTable, String nameColumn, Integer rowIndex, String newValue) {
 		Table t = findTable(nameTable);
-		t.updateCell(nameColumn, rowIndex, value);
+		final String oldValue = t.getCell(nameColumn, rowIndex);
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.updateCell(nameColumn, rowIndex, newValue);
+			}
+
+			@Override
+			public void undo() {
+				t.updateCell(nameColumn, rowIndex, oldValue);
+			}
+			
+		});
+		
 	}
 
 	/**
@@ -226,24 +340,40 @@ public class TablrManager {
 	}
 
 	/**
-	 * Toggles the ability to allow blank values in a specific column of a specified table.
-	 * This method updates the blank allowance setting for the given column and notifies
-	 * all registered listeners about the change.
+	 * Toggles the ability to allow blank values in a specific column of a specified
+	 * table. This method updates the blank allowance setting for the given column
+	 * and notifies all registered listeners about the change.
 	 *
 	 * @param tableName  The name of the table containing the column to update.
-	 * @param columnName The name of the column whose blank allowance setting will be changed.
+	 * @param columnName The name of the column whose blank allowance setting will
+	 *                   be changed.
 	 */
 	public void changeAllowBlanks(UUID tableName, String columnName) {
 		Table t = findTable(tableName);
-		t.changeAllowBlanks(columnName);
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.changeAllowBlanks(columnName);
+				
+			}
+
+			@Override
+			public void undo() {
+				t.changeAllowBlanks(columnName);
+				
+			}
+			
+		});
+		
 	}
 
 	/**
 	 * Searches for a table with the specified name in the list of managed tables.
 	 *
 	 * @param tableName The name of the table to search for.
-	 * @return The Table object that matches the specified name,
-	 * or null if no table with the given name is found.
+	 * @return The Table object that matches the specified name, or null if no table
+	 *         with the given name is found.
 	 */
 	private Table findTable(UUID tableId) {
 		for (Table t : tables) {
@@ -255,24 +385,39 @@ public class TablrManager {
 	}
 
 	/**
-	 * Changes the type of the specified column in the specified table.
-	 * This method locates the table by its name, updates the type of the given column,
-	 * and notifies all registered listeners of the change.
+	 * Changes the type of the specified column in the specified table. This method
+	 * locates the table by its name, updates the type of the given column, and
+	 * notifies all registered listeners of the change.
 	 *
-	 * @param table  The name of the table containing the column whose type is to be changed.
+	 * @param table  The name of the table containing the column whose type is to be
+	 *               changed.
 	 * @param column The name of the column whose type will be modified.
 	 */
 	public void changeType(UUID table, String column) {
 		Table t = findTable(table);
-		t.changeType(column);
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.changeType(column);
+			}
+
+			@Override
+			public void undo() {
+				// TODO	
+			}
+			
+		});
 	}
 
 	/**
 	 * Retrieves the default value of a specific column in a specified table.
 	 *
 	 * @param table  The name of the table containing the column.
-	 * @param column The name of the column for which the default value is to be retrieved.
-	 * @return The default value of the specified column in the table, or null if no default value is set.
+	 * @param column The name of the column for which the default value is to be
+	 *               retrieved.
+	 * @return The default value of the specified column in the table, or null if no
+	 *         default value is set.
 	 */
 	public Object getDefaultValue(UUID table, String column) {
 		Table t = findTable(table);
@@ -284,7 +429,8 @@ public class TablrManager {
 	 *
 	 * @param table  The name of the table containing the column.
 	 * @param column The name of the column whose class type is to be retrieved.
-	 * @return The Class object representing the type of the specified column in the table.
+	 * @return The Class object representing the type of the specified column in the
+	 *         table.
 	 */
 	public String getClass(UUID table, String column) {
 		Table t = findTable(table);
@@ -292,22 +438,37 @@ public class TablrManager {
 	}
 
 	/**
-	 * Sets the default value for a specified column in a specified table.
-	 * This method locates the table by its name, updates the default value
-	 * of the given column, and notifies all registered listeners of the change.
+	 * Sets the default value for a specified column in a specified table. This
+	 * method locates the table by its name, updates the default value of the given
+	 * column, and notifies all registered listeners of the change.
 	 *
 	 * @param table  The name of the table containing the column.
-	 * @param column The name of the column for which the default value is to be set.
+	 * @param column The name of the column for which the default value is to be
+	 *               set.
 	 * @param value  The default value to assign to the specified column.
 	 */
-	public void setDefaultValue(UUID table, String column, String value) {
+	public void setDefaultValue(UUID table, String column, String newValue) {
 		Table t = findTable(table);
-		t.setDefaultValue(column, value);
+		final String oldValue = t.getDefaultValue(column);
+		execute(new Command() {
+
+			@Override
+			public void execute() {
+				t.setDefaultValue(column, newValue);
+				
+			}
+
+			@Override
+			public void undo() {
+				t.setDefaultValue(column, oldValue);
+				
+			}
+			
+		});
 	}
 
 	/**
-	 * for testing flows
-	 * returns a map of table names to a map of columns
+	 * for testing flows returns a map of table names to a map of columns
 	 */
 	public HashMap<String, HashMap<String, List<String>>> getData() {
 		HashMap<String, HashMap<String, List<String>>> data = new HashMap<>();
