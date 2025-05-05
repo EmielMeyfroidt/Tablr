@@ -204,7 +204,7 @@ public class DesignView extends AbstractView {
 	}
 
 	/**
-	 * Handles the dragging of column width. 
+	 * Handles the dragging of column width.
 	 */
 	@Override
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {

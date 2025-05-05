@@ -21,8 +21,6 @@ public class MyCanvasWindow extends CanvasWindow {
 	private final paintListener paintListener = () -> {
 		repaint();
 	};
-	private static Timer clickTimer = new Timer(); // Shared timer
-	private static final int DOUBLE_CLICK_DELAY = 500; // Delay in milliseconds
 
 	private ViewManager viewManager;
 	private boolean dragging = false;

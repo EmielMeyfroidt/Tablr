@@ -8,7 +8,7 @@ import java.util.UUID;
  */
 public class EditTableNameView extends AbstractView {
 
-	private TablesView underlyingMode;
+	private TablesView underlyingView;
 	private UUID tableId;
 	private String name;
 	private final String originalName;
@@ -22,7 +22,7 @@ public class EditTableNameView extends AbstractView {
 	 */
 	public EditTableNameView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, TablesView underlyingMode, UUID tableId) {
 		super(mgr, layoutInfo, viewList);
-		this.underlyingMode = underlyingMode;
+		this.underlyingView = underlyingMode;
 		this.tableId = tableId;
 		this.originalName = mgr.getTableName(tableId);
 		this.name = mgr.getTableName(tableId);
@@ -49,7 +49,7 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		// TODO: check for validity
-		getViewList().substituteView(this, underlyingMode);
+		getViewList().substituteView(this, underlyingView);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleEscape() {
 		getMgr().changeName(tableId, originalName);
-		getViewList().substituteView(this, underlyingMode);
+		getViewList().substituteView(this, underlyingView);
 
 	}
 
@@ -94,7 +94,7 @@ public class EditTableNameView extends AbstractView {
 	@Override
 	public void handleEnter() {
 		// TODO: check for validity
-		getViewList().substituteView(this, underlyingMode);
+		getViewList().substituteView(this, underlyingView);
 
 	}
 
@@ -136,6 +136,22 @@ public class EditTableNameView extends AbstractView {
 	 */
 	@Override
 	public void paint(Graphics g) {
-		underlyingMode.paint(g);
+		underlyingView.paint(g);
+	}
+
+	/**
+	 * this method is invoked if underlyingView is killed and should be disposed.
+	 * Returns true
+	 *
+	 * @param view that is to be disposed
+	 * @return True if this object is to be disposed also
+	 */
+	@Override
+	public boolean handleDeadView(AbstractView view) {
+		if (this.underlyingView == view || this.underlyingView.handleDeadView(view)) {
+			this.underlyingView = null;
+			return true;
+		}
+		return false;
 	}
 }

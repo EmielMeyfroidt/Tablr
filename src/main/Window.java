@@ -136,9 +136,10 @@ class Window extends AbstractView implements ViewList {
 	 */
 	@Override
 	public boolean handleDeadView(AbstractView view) {
+		boolean closeEmptyWindow = false;
 		if (this.view == view || this.view.handleDeadView(view)) {
 			this.view = null;
-			return true;
+			return closeEmptyWindow;
 		}
 		return false;
 	}
@@ -208,7 +209,7 @@ class Window extends AbstractView implements ViewList {
 		g.setColor(Color.lightGray);
 		g.fillRect(0, 0, bounds.width, titleOffset);
 		g.setColor(Color.black);
-		g.drawString(view.getTitle(), 10, titleOffset);
+
 
 		g.setColor(Color.red);
 		this.closeButtonX = bounds.width - closeButtonWidth;
@@ -217,10 +218,15 @@ class Window extends AbstractView implements ViewList {
 		//paint window border
 		g.setColor(Color.black);
 		g.drawRect(0, titleOffset, bounds.width - 2, bounds.height - 12);
-		g.translate(0, titleOffset);
 
-		//crop g and pass to underlying view
-		this.view.paint(g.create(0, 0, bounds.width, bounds.height - titleOffset));
+
+		if (view != null) {
+			g.drawString(view.getTitle(), 10, titleOffset);
+			g.translate(0, titleOffset);
+			//crop g and pass to underlying view
+			this.view.paint(g.create(0, 0, bounds.width, bounds.height - titleOffset));
+		}
+
 	}
 
 }

@@ -18,9 +18,9 @@ public class RowsView extends AbstractView {
 	 * Constructs a RowsView instance for managing the view of rows in a specific
 	 * table.
 	 *
-	 * @param mgr   the TablrManager instance responsible for managing views and
-	 *              data models
-	 * @param table the name of the table whose rows are to be displayed and managed
+	 * @param mgr     the TablrManager instance responsible for managing views and
+	 *                data models
+	 * @param tableId the name of the table whose rows are to be displayed and managed
 	 */
 	public RowsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, UUID tableId) {
 		super(mgr, layoutInfo, viewList);
@@ -181,7 +181,7 @@ public class RowsView extends AbstractView {
 			}
 		}
 	}
-	
+
 	@Override
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 		int elementNumber = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getElementXNumber(startX) - 1;

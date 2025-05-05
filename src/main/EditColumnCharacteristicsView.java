@@ -147,4 +147,20 @@ public class EditColumnCharacteristicsView extends AbstractView {
 		getMgr().changeNameColumn(tableId, name, name + keyChar);
 		name += keyChar;
 	}
+
+	/**
+	 * this method is invoked if underlyingView is killed and should be disposed.
+	 * Returns true
+	 *
+	 * @param view that is to be disposed
+	 * @return True if this object is to be disposed also
+	 */
+	@Override
+	public boolean handleDeadView(AbstractView view) {
+		if (this.underlyingView == view || this.underlyingView.handleDeadView(view)) {
+			this.underlyingView = null;
+			return true;
+		}
+		return false;
+	}
 }

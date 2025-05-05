@@ -9,7 +9,7 @@ import java.util.UUID;
  */
 public class EditRowView extends AbstractView {
 
-	private RowsView underlyingMode;
+	private RowsView underlyingView;
 	private String nameColumn;
 	private UUID tableId;
 	private Integer rowIndex;
@@ -26,7 +26,7 @@ public class EditRowView extends AbstractView {
 	 */
 	public EditRowView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, RowsView underlyingMode, UUID tableId, String nameColumn, Integer rowIndex) {
 		super(mgr, layoutInfo, viewList);
-		this.underlyingMode = underlyingMode;
+		this.underlyingView = underlyingMode;
 		this.tableId = tableId;
 		this.nameColumn = nameColumn;
 		this.rowIndex = rowIndex;
@@ -55,7 +55,7 @@ public class EditRowView extends AbstractView {
 	@Override
 	public void handleSingleClick(int x, int y) {
 		//TODO: check for validity
-		this.getViewList().substituteView(this, underlyingMode);
+		this.getViewList().substituteView(this, underlyingView);
 
 	}
 
@@ -64,7 +64,7 @@ public class EditRowView extends AbstractView {
 	 */
 	@Override
 	public void handleEscape() {
-		this.getViewList().substituteView(this, underlyingMode);
+		this.getViewList().substituteView(this, underlyingView);
 
 	}
 
@@ -96,7 +96,7 @@ public class EditRowView extends AbstractView {
 	@Override
 	public void handleEnter() {
 		//TODO: check for validity
-		this.getViewList().substituteView(this, underlyingMode);
+		this.getViewList().substituteView(this, underlyingView);
 
 	}
 
@@ -138,7 +138,23 @@ public class EditRowView extends AbstractView {
 	 */
 	@Override
 	public void paint(Graphics g) {
-		underlyingMode.paint(g);
+		underlyingView.paint(g);
+	}
+
+	/**
+	 * this method is invoked if underlyingView is killed and should be disposed.
+	 * Returns true
+	 *
+	 * @param view that is to be disposed
+	 * @return True if this object is to be disposed also
+	 */
+	@Override
+	public boolean handleDeadView(AbstractView view) {
+		if (this.underlyingView == view || this.underlyingView.handleDeadView(view)) {
+			this.underlyingView = null;
+			return true;
+		}
+		return false;
 	}
 
 }

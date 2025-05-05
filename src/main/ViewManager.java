@@ -187,9 +187,15 @@ public class ViewManager implements ViewList {
 		return null;
 	}
 
+	/**
+	 * set view at x, y to the activeview, else do nothing
+	 *
+	 * @param x
+	 * @param y
+	 */
 	private void setViewActiveAt(int x, int y) {
 		MetaView metaViewClicked = getViewClicked(x, y);
-		if (metaViewClicked != getActiveView()) {
+		if (metaViewClicked != null && metaViewClicked != getActiveView()) {
 			setActiveView(metaViewClicked);
 		}
 	}
@@ -203,11 +209,12 @@ public class ViewManager implements ViewList {
 	 * @param y The y-coordinate where the double-click occurred.
 	 */
 	public void handleDoubleClick(int x, int y) {
-
 		if (hasActiveView()) {
-			setViewActiveAt(x, y);
-			getActiveView().view.handleDoubleClick(
-					getActiveView().translateX(x), getActiveView().translateY(y));
+			if (getViewClicked(x, y) != null) {
+				setViewActiveAt(x, y);
+				getActiveView().view.handleDoubleClick(
+						getActiveView().translateX(x), getActiveView().translateY(y));
+			}
 		}
 		paintListener.contentsChanged();
 	}
@@ -223,9 +230,11 @@ public class ViewManager implements ViewList {
 	 */
 	public void handleSingleClick(int x, int y) {
 		if (hasActiveView()) {
-			setViewActiveAt(x, y);
-			getActiveView().view.handleSingleClick(
-					getActiveView().translateX(x), getActiveView().translateY(y));
+			if (getViewClicked(x, y) != null) {
+				setViewActiveAt(x, y);
+				getActiveView().view.handleSingleClick(
+						getActiveView().translateX(x), getActiveView().translateY(y));
+			}
 		}
 		paintListener.contentsChanged();
 
@@ -243,12 +252,14 @@ public class ViewManager implements ViewList {
 	 */
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 		if (hasActiveView()) {
-			setViewActiveAt(startX, startY);
-			getActiveView().view.handleMouseDrag(
-					getActiveView().translateX(startX),
-					getActiveView().translateY(startY),
-					getActiveView().translateX(endX),
-					getActiveView().translateY(endY));
+			if (getViewClicked(startX, startY) != null) {
+				setViewActiveAt(startX, startY);
+				getActiveView().view.handleMouseDrag(
+						getActiveView().translateX(startX),
+						getActiveView().translateY(startY),
+						getActiveView().translateX(endX),
+						getActiveView().translateY(endY));
+			}
 		}
 		paintListener.contentsChanged();
 		//System.out.println(startX + ", " + startY + " to " + endX + ", " + endY);
