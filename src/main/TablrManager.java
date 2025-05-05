@@ -243,7 +243,7 @@ public class TablrManager {
 	 * @param table The name of the table from which the columns are to be
 	 *              retrieved.
 	 * @return A list of lists where each inner list contains the values of a single
-	 *         column.
+	 * column.
 	 */
 	public List<List<String>> getColumns(UUID table) {
 		Table t = findTable(table);
@@ -267,7 +267,7 @@ public class TablrManager {
 
 			@Override
 			public void undo() {
-				// TODO
+				t.removeRow(t.getNumberOfRows() - 1);
 			}
 		});
 	}
@@ -275,21 +275,23 @@ public class TablrManager {
 	/**
 	 * Removes a row from the specified table and notifies listeners of the change.
 	 *
-	 * @param table The name of the table from which to remove the row.
-	 * @param row   The index of the row to be removed.
+	 * @param table   The name of the table from which to remove the row.
+	 * @param rowIndx The index of the row to be removed.
 	 */
-	public void removeRow(UUID table, int row) {
+	public void removeRow(UUID table, int rowIndx) {
 		Table t = findTable(table);
+		List<String> row = t.getRow(rowIndx);
 		execute(new Command() {
 
 			@Override
 			public void execute() {
-				t.removeRow(row);
+				t.removeRow(rowIndx);
 			}
 
 			@Override
 			public void undo() {
-				// TODO
+				t.insertRow(rowIndx);
+				t.updateRow(rowIndx, row);
 			}
 
 		});
@@ -320,9 +322,9 @@ public class TablrManager {
 			public void undo() {
 				t.updateCell(nameColumn, rowIndex, oldValue);
 			}
-			
+
 		});
-		
+
 	}
 
 	/**
@@ -355,17 +357,17 @@ public class TablrManager {
 			@Override
 			public void execute() {
 				t.changeAllowBlanks(columnName);
-				
+
 			}
 
 			@Override
 			public void undo() {
 				t.changeAllowBlanks(columnName);
-				
+
 			}
-			
+
 		});
-		
+
 	}
 
 	/**
@@ -373,7 +375,7 @@ public class TablrManager {
 	 *
 	 * @param tableName The name of the table to search for.
 	 * @return The Table object that matches the specified name, or null if no table
-	 *         with the given name is found.
+	 * with the given name is found.
 	 */
 	private Table findTable(UUID tableId) {
 		for (Table t : tables) {
@@ -404,9 +406,10 @@ public class TablrManager {
 
 			@Override
 			public void undo() {
-				// TODO	
+				// TODO
+
 			}
-			
+
 		});
 	}
 
@@ -417,7 +420,7 @@ public class TablrManager {
 	 * @param column The name of the column for which the default value is to be
 	 *               retrieved.
 	 * @return The default value of the specified column in the table, or null if no
-	 *         default value is set.
+	 * default value is set.
 	 */
 	public Object getDefaultValue(UUID table, String column) {
 		Table t = findTable(table);
@@ -430,7 +433,7 @@ public class TablrManager {
 	 * @param table  The name of the table containing the column.
 	 * @param column The name of the column whose class type is to be retrieved.
 	 * @return The Class object representing the type of the specified column in the
-	 *         table.
+	 * table.
 	 */
 	public String getClass(UUID table, String column) {
 		Table t = findTable(table);
@@ -455,15 +458,15 @@ public class TablrManager {
 			@Override
 			public void execute() {
 				t.setDefaultValue(column, newValue);
-				
+
 			}
 
 			@Override
 			public void undo() {
 				t.setDefaultValue(column, oldValue);
-				
+
 			}
-			
+
 		});
 	}
 

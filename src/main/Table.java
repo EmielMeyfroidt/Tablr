@@ -47,7 +47,7 @@ public class Table {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Column newColumn() {
 		String name = generateUniqueName();
 		Column column = new Column(name, "string", true, "x");
@@ -93,6 +93,37 @@ public class Table {
 		for (Column col : columns) {
 			col.addCell();
 		}
+	}
+
+	public void insertRow(int index) {
+		for (Column col : columns) {
+			col.insertCell(index);
+		}
+	}
+
+	public void addRow(List<String> row) {
+		if (row.size() != columns.size()) {
+			return;
+		}
+		addRow();
+		updateRow(getNumberOfRows() - 1, row);
+	}
+
+	public void updateRow(int index, List<String> row) {
+		if (row.size() != columns.size()) {
+			return;
+		}
+		for (int i = 0; i < columns.size(); i++) {
+			updateCell(columns.get(i).getName(), index, row.get(i));
+		}
+	}
+
+	public List<String> getRow(int index) {
+		List<String> row = new ArrayList<>();
+		for (Column col : columns) {
+			row.add(col.getCell(index));
+		}
+		return row;
 	}
 
 	/**
@@ -192,6 +223,7 @@ public class Table {
 		Column col = findColumn(nameColumn);
 		col.updateCell(rowIndex, value);
 	}
+
 
 	/**
 	 * Retrieves the value of a specific cell in the table.
@@ -305,7 +337,7 @@ public class Table {
 		}
 		return dataMap;
 	}
-	
+
 	public int getNumberOfRows() {
 		if (columns.get(0) != null) {
 			return columns.get(0).getSize();

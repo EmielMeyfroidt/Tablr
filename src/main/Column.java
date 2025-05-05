@@ -38,7 +38,7 @@ public class Column {
 	 * Retrieves a string containing information about the column.
 	 *
 	 * @return A string representing the column's name, type, blank permission, and
-	 *         default value.
+	 * default value.
 	 */
 	public String getInfo() {
 		return name + " " + type + " " + allowsBlanks + " " + defaultValue;
@@ -73,6 +73,10 @@ public class Column {
 		cells.add(new Cell(parseInput(defaultValue)));
 	}
 
+	public void insertCell(int index) {
+		cells.add(index, new Cell(parseInput(defaultValue)));
+	}
+
 	/**
 	 * Returns the number of cells in the column.
 	 *
@@ -95,14 +99,12 @@ public class Column {
 	/**
 	 * Updates the value of a cell at a specified row index within the column.
 	 *
-	 * @pre the value is compatible with the type of the column
-	 *
-	 * @pre column is of type String, Boolean or Integer
-	 *
 	 * @param rowIndex The index of the row whose cell value needs to be updated. It
 	 *                 must be within the valid bounds of the column's cells list.
 	 * @param value    The new value to be set for the cell. The value must be a
 	 *                 string representation compatible with the column's data type.
+	 * @pre the value is compatible with the type of the column
+	 * @pre column is of type String, Boolean or Integer
 	 */
 	public void updateCell(Integer rowIndex, String value) {
 		if (!isValidInput(value)) {
@@ -111,13 +113,12 @@ public class Column {
 		cells.get(rowIndex).setValue(parseInput(value));
 	}
 
+
 	/**
 	 * Retrieves the value of a cell at the specified row index as a string.
 	 *
 	 * @param rowIndex The index of the row from which to retrieve the cell value.
-	 *
 	 * @return A string representation of the value of the specified cell.
-	 *
 	 * @throws IndexOutOfBoundsException – if the index is out of range
 	 */
 	public String getCell(Integer rowIndex) {
@@ -152,11 +153,9 @@ public class Column {
 	/**
 	 * Sets the default value for the column.
 	 *
-	 * @pre the value is compatible with the type of the column
-	 *
-	 * @pre column is of type String, Boolean or Integer
-	 *
 	 * @param value The default value to be set for the column as a string.
+	 * @pre the value is compatible with the type of the column
+	 * @pre column is of type String, Boolean or Integer
 	 */
 	public void setDefaultValue(String value) {
 		this.defaultValue = value;
@@ -164,24 +163,28 @@ public class Column {
 
 	public boolean isValidInput(String input) {
 		switch (type) {
-		case "string":
-			return StringValue.isValid(input);
-		case "int":
-			return IntValue.isValid(input);
-		case "bool":
-			return BoolValue.isValid(input);
-		default:
-			return false;
+			case "string":
+				return StringValue.isValid(input);
+			case "int":
+				return IntValue.isValid(input);
+			case "bool":
+				return BoolValue.isValid(input);
+			default:
+				return false;
 		}
 	}
-	
+
 	public CellValue parseInput(String input) {
 		switch (type) {
-        case "string": return new StringValue(input);
-        case "int": return new IntValue(input);
-        case "bool": return new BoolValue(input);
-        default: throw new IllegalArgumentException("Unknown type: " + type);
-    }
+			case "string":
+				return new StringValue(input);
+			case "int":
+				return new IntValue(input);
+			case "bool":
+				return new BoolValue(input);
+			default:
+				throw new IllegalArgumentException("Unknown type: " + type);
+		}
 	}
 
 }
