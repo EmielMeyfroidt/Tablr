@@ -2,13 +2,14 @@ package main;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Manages the set of open AbstractViews in TablrApp
  */
 public class ViewManager implements ViewList {
 	private paintListener paintListener;
-	private final ArrayList<MetaView> metaViews;
+	private final CopyOnWriteArrayList<MetaView> metaViews;
 	private final TablrManager tablrManager;
 	private final LayoutInfo layoutInfo;
 	private final int newWindowOffset = 10;
@@ -70,13 +71,13 @@ public class ViewManager implements ViewList {
 
 
 	public ViewManager() {
-		metaViews = new ArrayList<MetaView>();
+		metaViews = new CopyOnWriteArrayList<MetaView>();
 		tablrManager = new TablrManager();
 		layoutInfo = new LayoutInfo();
 	}
 
 	public ViewManager(TablrManager tablrManager) {
-		metaViews = new ArrayList<MetaView>();
+		metaViews = new CopyOnWriteArrayList<MetaView>();
 		this.tablrManager = tablrManager;
 		layoutInfo = new LayoutInfo();
 	}
