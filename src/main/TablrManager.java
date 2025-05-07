@@ -397,6 +397,8 @@ public class TablrManager {
 	 */
 	public void changeType(UUID table, String column) {
 		Table t = findTable(table);
+		final String oldType = t.findColumn(column).getType();
+
 		execute(new Command() {
 
 			@Override
@@ -406,8 +408,9 @@ public class TablrManager {
 
 			@Override
 			public void undo() {
-				// TODO
-
+				while (oldType != t.findColumn(column).getType()) {
+					t.changeType(column);
+				}
 			}
 
 		});
