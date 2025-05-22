@@ -16,7 +16,7 @@ public class LayoutInfo {
 	private static int offsetX = 20;
 
 	/***
-	 * 
+	 *
 	 * @param tableId The unique id for the table.
 	 * @return The TableLayout for the table.
 	 */
@@ -24,17 +24,17 @@ public class LayoutInfo {
 		return tableLayouts.computeIfAbsent(tableId, k -> new TableLayout());
 	}
 
-	/***
-	 * Clears layout data for a table
-	 * 
-	 * @param tableId
+	/**
+	 * Removes the layout associated with the specified table.
+	 *
+	 * @param tableId The unique identifier for the table whose layout is to be removed.
 	 */
 	public void clear(UUID tableId) {
 		tableLayouts.remove(tableId);
 	}
 
 	/***
-	 * 
+	 *
 	 * @return The step size in vertical direction.
 	 */
 	public int getOffsetY() {
@@ -42,7 +42,7 @@ public class LayoutInfo {
 	}
 
 	/***
-	 * 
+	 *
 	 * @return The left margin.
 	 */
 	public int getOffsetX() {
@@ -50,7 +50,7 @@ public class LayoutInfo {
 	}
 
 	/***
-	 * 
+	 *
 	 * @param y The vertical pixel position
 	 * @return The index of the element above the pixel position.
 	 */
@@ -67,11 +67,11 @@ public class LayoutInfo {
 
 		/***
 		 * Returns the ViewLayout associated with the given view class.
-		 * 
+		 *
 		 * If a layout does not yet exist for the specified view class, it is created
 		 * and stored. This ensures that each view type has a dedicated layout
 		 * configuration for this table.
-		 * 
+		 *
 		 * @param viewClass The class of the view.
 		 * @return The ViewLayout associated with the given view class.
 		 */
@@ -87,24 +87,26 @@ public class LayoutInfo {
 	public static class ViewLayout {
 		private List<Integer> widths = new ArrayList<>();
 
-		/***
-		 * 
-		 * @return The widths.
+		/**
+		 * Retrieves the list of widths associated with the layout.
+		 *
+		 * @return A list of integers representing the widths.
 		 */
 		public List<Integer> getWidths() {
 			return widths;
 		}
 
-		/***
-		 * 
-		 * @param widths
+		/**
+		 * Sets the list of widths for the layout.
+		 *
+		 * @param widths A list of integers representing the widths to be assigned.
 		 */
 		public void setWidths(List<Integer> widths) {
 			this.widths = widths;
 		}
 
 		/***
-		 * 
+		 *
 		 * @param x The horizontal pixel position.
 		 * @return The number of the element to the left the pixel x position.
 		 */
@@ -122,7 +124,7 @@ public class LayoutInfo {
 
 		/***
 		 * Removes the width of an element.
-		 * 
+		 *
 		 * @param elementNumber The index of the element to delete.
 		 */
 		public void deleteElement(int elementNumber) {
@@ -131,7 +133,7 @@ public class LayoutInfo {
 
 		/***
 		 * Adds the width to the width list for all elements.
-		 * 
+		 *
 		 * @param size The width.
 		 */
 		public void addElement(int size) {

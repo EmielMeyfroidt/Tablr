@@ -4,8 +4,6 @@ import java.util.List;
 
 /**
  * Represents a column in a table structure with a generic value type.
- *
- * @param <T> The type of the values this column holds.
  */
 public class Column {
 
@@ -161,6 +159,12 @@ public class Column {
 		this.defaultValue = value;
 	}
 
+	/**
+	 * Validates the input string based on the column's type.
+	 *
+	 * @param input The input string to be validated. It should represent a value
+	 *              compatible with the column's type (e.g., string, integer, or boolean).
+	 */
 	public boolean isValidInput(String input) {
 		switch (type) {
 			case "string":
@@ -174,6 +178,17 @@ public class Column {
 		}
 	}
 
+	/**
+	 * Parses the input string into a specific type of {@code CellValue} based on the column's data type.
+	 *
+	 * @param input The input string that will be converted into a {@code CellValue}.
+	 *              The format and validity of the input depend on the type of the column:
+	 *              - For a string type, any input is valid.
+	 *              - For an integer type, the input must represent a valid integer.
+	 *              - For a boolean type, the input must be "true" or "false" (case insensitive).
+	 * @return A {@code CellValue} object representing the parsed input.
+	 * @throws IllegalArgumentException If the column's type is unknown or the input is invalid for the specified type.
+	 */
 	public CellValue parseInput(String input) {
 		switch (type) {
 			case "string":

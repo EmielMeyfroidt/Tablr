@@ -22,7 +22,7 @@ public class EditColumnCharacteristicsView extends AbstractView {
 	 * @param mgr            the TablrManager instance responsible for managing the application's data and views
 	 * @param underlyingMode the underlying DesignView providing the base visual representation and functionality
 	 * @param name           the initial name of the column being edited
-	 * @param nameTable      the name of the table containing the column
+	 * @param tableId        the UUID of the table containing the column
 	 */
 	public EditColumnCharacteristicsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, DesignView underlyingMode, String name, UUID tableId) {
 		super(mgr, layoutInfo, viewList);

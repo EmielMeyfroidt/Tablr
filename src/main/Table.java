@@ -75,7 +75,6 @@ public class Table {
 	/**
 	 * Replaces an existing column in the table with a new column.
 	 *
-	 * @param <T>       The type of the values in the new column.
 	 * @param name      The name of the column to be replaced. It must match the name of an existing column in the table.
 	 * @param newColumn The new column to replace the existing one. It must be compatible with the table structure.
 	 * @throws IllegalArgumentException if no column with the specified name is found.
@@ -95,12 +94,26 @@ public class Table {
 		}
 	}
 
+	/**
+	 * Inserts a new row at the specified index by adding a cell to each column
+	 * in the table at the given position.
+	 *
+	 * @param index The zero-based index at which the new row should be inserted.
+	 *              Must be within the valid range of row indices in the table.
+	 */
 	public void insertRow(int index) {
 		for (Column col : columns) {
 			col.insertCell(index);
 		}
 	}
 
+	/**
+	 * Adds a new row to the table using the specified list of values.
+	 * The number of values in the provided list must match the number of columns in the table.
+	 * If the sizes do not match, the row is not added.
+	 *
+	 * @param row A list of strings representing the values for the new row.
+	 */
 	public void addRow(List<String> row) {
 		if (row.size() != columns.size()) {
 			return;
@@ -109,6 +122,15 @@ public class Table {
 		updateRow(getNumberOfRows() - 1, row);
 	}
 
+	/**
+	 * Updates the values of a specific row in the table at the specified index.
+	 * The row values provided must match the size of the table's columns.
+	 * If the size of the provided row values does not match the number of columns,
+	 * the method will return without making any changes.
+	 *
+	 * @param index The zero-based index of the row to update. Must be within the valid range of row indices in the table.
+	 * @param row   A list of strings representing the new values to update the row with.
+	 */
 	public void updateRow(int index, List<String> row) {
 		if (row.size() != columns.size()) {
 			return;
@@ -118,6 +140,12 @@ public class Table {
 		}
 	}
 
+	/**
+	 * Retrieves a row of data from the table at the specified index.
+	 *
+	 * @param index The zero-based index of the row to retrieve. Must be within the valid range of row indices.
+	 * @return A list of strings representing the values of the row at the specified index.
+	 */
 	public List<String> getRow(int index) {
 		List<String> row = new ArrayList<>();
 		for (Column col : columns) {

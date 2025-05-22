@@ -17,7 +17,7 @@ public class DesignView extends AbstractView {
 	 * name.
 	 *
 	 * @param mgr   The TablrManager instance managing this view.
-	 * @param table The name of the table associated with this design view.
+	 * @param table The UUID of the table associated with this design view.
 	 */
 	public DesignView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, UUID table) {
 		super(mgr, layoutInfo, viewList);

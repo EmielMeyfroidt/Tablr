@@ -124,18 +124,30 @@ public abstract class AbstractView {
 	}
 
 	/**
-	 * @param startX
-	 * @param startY
-	 * @param endX
-	 * @param endY
+	 * Handles the mouse drag event.
+	 *
+	 * @param startX The x-coordinate where the mouse drag started.
+	 * @param startY The y-coordinate where the mouse drag started.
+	 * @param endX   The x-coordinate where the mouse drag ended.
+	 * @param endY   The y-coordinate where the mouse drag ended.
 	 */
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 	}
 
+	/**
+	 * Handles the action triggered by the Ctrl+Z key combination.
+	 * <p>
+	 * This method invokes the undo operation.
+	 */
 	public void handleCtrlZ() {
 		getMgr().undo();
 	}
 
+	/**
+	 * Handles the action triggered by the Ctrl+Shift+Z key combination.
+	 * <p>
+	 * This method triggers the redo operation.
+	 */
 	public void handleCtrlShiftZ() {
 		getMgr().redo();
 	}

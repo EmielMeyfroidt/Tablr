@@ -20,7 +20,7 @@ public class EditRowView extends AbstractView {
 	 *
 	 * @param mgr            the TablrManager instance responsible for managing the table data
 	 * @param underlyingMode the underlying RowsView used to provide the basis of this view
-	 * @param nameTable      the name of the table containing the cell being edited
+	 * @param tableId        the UUID of the table containing the cell being edited
 	 * @param nameColumn     the name of the column containing the cell being edited
 	 * @param rowIndex       the index of the row containing the cell being edited
 	 */

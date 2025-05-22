@@ -23,7 +23,7 @@ public class EditDefaultValueView extends AbstractView {
 	 * @param mgr            The TablrManager used to manage and manipulate table data.
 	 * @param underlyingView The underlying DesignView associated with this EditDefaultValueView.
 	 * @param column         The name of the column whose default value is being edited.
-	 * @param table          The name of the table containing the specified column.
+	 * @param tableId        The UUID of the table containing the specified column.
 	 */
 	public EditDefaultValueView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, DesignView underlyingView, String column, UUID tableId) {
 		super(mgr, layoutInfo, viewList);

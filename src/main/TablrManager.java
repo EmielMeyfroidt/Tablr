@@ -75,7 +75,7 @@ public class TablrManager {
 	 * the TablrManager. If a table with the specified name exists, it is removed,
 	 * and all registered listeners are notified of the content change.
 	 *
-	 * @param table The name of the table to be removed.
+	 * @param tableId The UUID of the table to be removed.
 	 */
 	public void removeTable(UUID tableId) {
 		Table table = findTable(tableId);
@@ -128,7 +128,7 @@ public class TablrManager {
 	}
 
 	/**
-	 * @param tableName The name of the table.
+	 * @param tableId The UUID of the table.
 	 * @return A list with the info of the columns.
 	 */
 	public List<String> getColumnsInfo(UUID tableId) {
@@ -137,7 +137,7 @@ public class TablrManager {
 	}
 
 	/**
-	 * @param table   The old name of the table.
+	 * @param tableId The UUID of the table.
 	 * @param newName The new name of the table.
 	 */
 	public void changeName(UUID tableId, String newName) {
@@ -303,10 +303,10 @@ public class TablrManager {
 	 * index. After updating the cell, this method notifies all registered listeners
 	 * about the change.
 	 *
-	 * @param nameTable  The name of the table containing the cell to update.
+	 * @param nameTable  The UUID of the table containing the cell to update.
 	 * @param nameColumn The name of the column containing the cell to update.
 	 * @param rowIndex   The index of the row containing the cell to update.
-	 * @param value      The new value to set in the specified cell.
+	 * @param newValue   The new value to set in the specified cell.
 	 */
 	public void updateCell(UUID nameTable, String nameColumn, Integer rowIndex, String newValue) {
 		Table t = findTable(nameTable);
@@ -373,7 +373,7 @@ public class TablrManager {
 	/**
 	 * Searches for a table with the specified name in the list of managed tables.
 	 *
-	 * @param tableName The name of the table to search for.
+	 * @param tableId The UUID of the table to search for.
 	 * @return The Table object that matches the specified name, or null if no table
 	 * with the given name is found.
 	 */
@@ -448,10 +448,10 @@ public class TablrManager {
 	 * method locates the table by its name, updates the default value of the given
 	 * column, and notifies all registered listeners of the change.
 	 *
-	 * @param table  The name of the table containing the column.
-	 * @param column The name of the column for which the default value is to be
-	 *               set.
-	 * @param value  The default value to assign to the specified column.
+	 * @param table    The name of the table containing the column.
+	 * @param column   The name of the column for which the default value is to be
+	 *                 set.
+	 * @param newValue The default value to assign to the specified column.
 	 */
 	public void setDefaultValue(UUID table, String column, String newValue) {
 		Table t = findTable(table);

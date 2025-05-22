@@ -18,7 +18,7 @@ public class EditTableNameView extends AbstractView {
 	 *
 	 * @param mgr            The manager responsible for handling application operations.
 	 * @param underlyingMode The underlying view mode associated with this table.
-	 * @param name           The initial name of the table being edited.
+	 * @param tableId        The initial UUID of the table being edited.
 	 */
 	public EditTableNameView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, TablesView underlyingMode, UUID tableId) {
 		super(mgr, layoutInfo, viewList);
