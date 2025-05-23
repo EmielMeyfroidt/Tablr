@@ -1,8 +1,6 @@
 package main;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Abstract base class for creating various view components in a graphical user interface
@@ -15,7 +13,10 @@ public abstract class AbstractView {
 	private ViewList viewList;
 
 	/**
-	 * @param mgr The tablrManager.
+	 * Initializes the common state for subclasses of AbstractView.
+	 * @param mgr The TablrManager.
+	 * @param layoutInfo The LayoutInfo.
+	 * @param viewList The ViewList.
 	 */
 	public AbstractView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList) {
 		this.setMgr(mgr);
@@ -23,22 +24,27 @@ public abstract class AbstractView {
 		this.viewList = viewList;
 	}
 
+	/**
+	 * Returns the title of a view.
+	 * @return The title.
+	 */
 	public abstract String getTitle();
 
 	/**
+	 * Paints the view.
 	 * @param g The Graphics object.
 	 */
-	public void paint(Graphics g) {
-		//TODO paint empty Window
-	}
+	public abstract void paint(Graphics g);
 
 	/**
+	 * Handles the action triggered by a Double Click.
 	 * @param x The x-coordinate for the mouse click.
 	 * @param y The y-coordinate for the mouse click.
 	 */
 	public abstract void handleDoubleClick(int x, int y);
 
 	/**
+	 * Handles the action triggered by a Single CLick.
 	 * @param x The x-coordinate for the mouse click.
 	 * @param y The y-coordinate for the mouse click.
 	 */
@@ -94,32 +100,38 @@ public abstract class AbstractView {
 		this.mgr = mgr;
 	}
 
+	/**
+	 * Retrieves the associated LayoutInfo instance.
+	 * @return The LayoutInfo instance this view uses.
+	 */
 	protected LayoutInfo getLayoutInfo() {
 		return layoutInfo;
 	}
 
+	/**
+	 * Retrieves the associated ViewList instance.
+	 * @return The ViewList instance for this view to handle closing and substituting views.
+	 */
 	protected ViewList getViewList() {
 		return viewList;
 	}
 
 	/**
 	 * this method is invoked if view is killed and should be disposed.
-	 * Returns true if this object is also irrelevant as a result.
-	 *
-	 * @param view
+	 * 
+	 * @param view The dead view.
+	 * @return Returns true if this object is also irrelevant as a result.
 	 */
 	public boolean handleDeadView(AbstractView view) {
 		return false;
 	}
 
+	/**
+	 * Sets the associated ViewList instance.
+	 * @param viewList The ViewList instance for this view to handle closing and substituting views. 
+	 */
 	protected void setViewList(ViewList viewList) {
 		this.viewList = viewList;
-	}
-
-	public void handleDoubleClickOutside() {
-	}
-
-	public void handleSingleClickOutside() {
 	}
 
 	/**
