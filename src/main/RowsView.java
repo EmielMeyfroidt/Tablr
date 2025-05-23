@@ -38,6 +38,9 @@ public class RowsView extends AbstractView {
 	@Override
 	public void handleDoubleClick(int x, int y) {
 		int elementNumber = getLayoutInfo().getElementYNumber(y);
+		if (getMgr().getColumns(tableId).isEmpty()) {
+			return;
+		}
 		if (elementNumber > getMgr().getColumns(tableId).getFirst().size()) {
 			this.getMgr().addRow(tableId);
 		}
