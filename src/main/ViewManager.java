@@ -74,7 +74,6 @@ public class ViewManager implements ViewList {
 	/**
 	 * Opens a new view and adds it to the list of managed MetaViews. Positions the new view
 	 * at an offset relative to the currently active view.
-	 * Notifies the paint listener of the update to ensure the UI is refreshed.
 	 *
 	 * @param view The AbstractView instance to be added to the list of views managed by this class.
 	 * @post view = getActiveView()
@@ -90,7 +89,6 @@ public class ViewManager implements ViewList {
 	/**
 	 * Closes the specified view and removes it from the list of managed views.
 	 * Also invokes handleDeadView(view) on each view.
-	 * Notifies the paint listener of the update to ensure the UI is refreshed.
 	 *
 	 * @param view The AbstractView instance to be closed and removed.
 	 */
@@ -104,8 +102,6 @@ public class ViewManager implements ViewList {
 
 	/**
 	 * Substitutes an existing view with a new view in the list of managed views.
-	 * Notifies the paint listener
-	 * to refresh the UI.
 	 *
 	 * @param oldView The existing AbstractView instance to be replaced.
 	 * @param newView The new AbstractView instance to replace the old view.
@@ -118,8 +114,7 @@ public class ViewManager implements ViewList {
 
 	/**
 	 * Updates the location of the specified view by modifying its x and y coordinates
-	 * based on the provided offset values. The paint listener is notified to refresh the UI
-	 * to reflect the location change.
+	 * based on the provided offset values.
 	 *
 	 * @param view The AbstractView instance whose location is to be updated.
 	 * @param x    The horizontal offset by which to move the view's location.
@@ -208,7 +203,7 @@ public class ViewManager implements ViewList {
 	 * Handles a single-click event at the specified coordinates.
 	 * If there is an active view, the method activates the corresponding view at the given coordinates,
 	 * translates the coordinates relative to the active view, and triggers a single-click action
-	 * on that view. The UI is then refreshed by notifying the paint listener that the contents have changed.
+	 * on that view.
 	 *
 	 * @param x The x-coordinate where the single-click occurred.
 	 * @param y The y-coordinate where the single-click occurred.
@@ -249,8 +244,6 @@ public class ViewManager implements ViewList {
 
 	/**
 	 * invokes handleEscape() on the activeView.
-	 * <p>
-	 * Invokes the paintListener
 	 */
 	public void handleEscape() {
 		if (hasActiveView())
@@ -260,8 +253,6 @@ public class ViewManager implements ViewList {
 
 	/**
 	 * invokes handleCtrlEnter() on the activeView.
-	 * <p>
-	 * Invokes the paintListener
 	 */
 	public void handleCtrlEnter() {
 		System.out.println("ctrl enter");
@@ -272,8 +263,6 @@ public class ViewManager implements ViewList {
 
 	/**
 	 * invokes handleEnter() on the activeView.
-	 * <p>
-	 * Invokes the paintListener
 	 */
 	public void handleEnter() {
 		if (hasActiveView())
@@ -283,8 +272,6 @@ public class ViewManager implements ViewList {
 
 	/**
 	 * invokes handleBackSpace() on the activeView.
-	 * <p>
-	 * Invokes the paintListener
 	 */
 	public void handleBackSpace() {
 		if (hasActiveView())
@@ -294,8 +281,6 @@ public class ViewManager implements ViewList {
 
 	/**
 	 * invokes handleDelete() on the activeView.
-	 * <p>
-	 * Invokes the paintListener
 	 */
 	public void handleDelete() {
 		if (hasActiveView())
@@ -305,8 +290,6 @@ public class ViewManager implements ViewList {
 
 	/**
 	 * invokes handleCharTyped() on the activeView.
-	 * <p>
-	 * Invokes the paintListener
 	 */
 	public void handleCharTyped(char keyChar) {
 		if (keyChar == '\u0014')

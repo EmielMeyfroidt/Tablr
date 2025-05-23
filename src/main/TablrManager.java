@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * TablrManager is responsible for managing a collection of tables and their
  * corresponding operations. It provides methods to manipulate tables, columns,
- * and rows, as well as notifying listeners about changes.
+ * and rows.
  */
 public class TablrManager {
 	private List<Table> tables;
@@ -40,10 +40,6 @@ public class TablrManager {
 
 	/**
 	 * Constructs a new instance of the TablrManager class.
-	 * <p>
-	 * This constructor initializes the TablrManager with an empty list of tables
-	 * and listeners. It also notifies registered listeners of a change in the state
-	 * by invoking the `fireContentsChanged` method.
 	 */
 	public TablrManager() {
 		this.tables = new ArrayList<Table>();
@@ -73,8 +69,7 @@ public class TablrManager {
 
 	/**
 	 * Removes a table with the specified name from the list of tables managed by
-	 * the TablrManager. If a table with the specified name exists, it is removed,
-	 * and all registered listeners are notified of the content change.
+	 * the TablrManager. If a table with the specified name exists, it is removed.
 	 *
 	 * @param tableId The UUID of the table to be removed.
 	 */
@@ -252,8 +247,7 @@ public class TablrManager {
 	}
 
 	/**
-	 * Adds a new row to the specified table, identified by its name. Once the row
-	 * is added, all registered listeners are notified of the change.
+	 * Adds a new row to the specified table, identified by its name.
 	 *
 	 * @param table The name of the table where a new row will be added.
 	 */
@@ -274,7 +268,7 @@ public class TablrManager {
 	}
 
 	/**
-	 * Removes a row from the specified table and notifies listeners of the change.
+	 * Removes a row from the specified table
 	 *
 	 * @param table   The name of the table from which to remove the row.
 	 * @param rowIndx The index of the row to be removed.
@@ -301,8 +295,7 @@ public class TablrManager {
 
 	/**
 	 * Updates the value of a cell in a specified table and column at the given row
-	 * index. After updating the cell, this method notifies all registered listeners
-	 * about the change.
+	 * index.
 	 *
 	 * @param nameTable  The UUID of the table containing the cell to update.
 	 * @param nameColumn The name of the column containing the cell to update.
@@ -345,7 +338,6 @@ public class TablrManager {
 	/**
 	 * Toggles the ability to allow blank values in a specific column of a specified
 	 * table. This method updates the blank allowance setting for the given column
-	 * and notifies all registered listeners about the change.
 	 *
 	 * @param tableName  The name of the table containing the column to update.
 	 * @param columnName The name of the column whose blank allowance setting will
@@ -389,8 +381,7 @@ public class TablrManager {
 
 	/**
 	 * Changes the type of the specified column in the specified table. This method
-	 * locates the table by its name, updates the type of the given column, and
-	 * notifies all registered listeners of the change.
+	 * locates the table by its name, updates the type of the given column.
 	 *
 	 * @param table  The name of the table containing the column whose type is to be
 	 *               changed.
@@ -447,7 +438,7 @@ public class TablrManager {
 	/**
 	 * Sets the default value for a specified column in a specified table. This
 	 * method locates the table by its name, updates the default value of the given
-	 * column, and notifies all registered listeners of the change.
+	 * column.
 	 *
 	 * @param table    The name of the table containing the column.
 	 * @param column   The name of the column for which the default value is to be

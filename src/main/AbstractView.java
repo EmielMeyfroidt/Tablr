@@ -6,8 +6,7 @@ import java.util.List;
 
 /**
  * Abstract base class for creating various view components in a graphical user interface
- * that interact with a TablrManager instance. Provides a mechanism to manage change mode listeners
- * and handle events such as mouse clicks, keyboard inputs, and painting the view.
+ * that interact with a TablrManager instance. Provides a mechanism to handle events such as mouse clicks, keyboard inputs, and painting the view.
  */
 public abstract class AbstractView {
 

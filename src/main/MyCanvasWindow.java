@@ -19,8 +19,7 @@ public class MyCanvasWindow extends CanvasWindow {
 
 	/**
 	 * Constructor for creating a MyCanvasWindow with a specified title and an
-	 * associated view. The view is initialized with a listener for handling mode
-	 * changes.
+	 * associated view.
 	 *
 	 * @param title The title of the canvas window.
 	 * @param view  The WindowManager associated with the canvas window, which
@@ -145,11 +144,11 @@ public class MyCanvasWindow extends CanvasWindow {
 				if (modifiers == KeyEvent.CTRL_DOWN_MASK) {
 					// Ctrl + Z detected
 					action = () -> viewManager.handleCtrlZ();
-				}else if (modifiers == 192){
+				} else if (modifiers == 192) {
 					action = () -> viewManager.handleCtrlShiftZ();
 				}
 				break;
-			
+
 			default:
 				if (Character.isDefined(keyChar)) {
 					// Handle character input
