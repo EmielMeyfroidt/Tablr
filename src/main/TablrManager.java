@@ -18,17 +18,30 @@ public class TablrManager {
 	private ArrayList<Command> undoStack = new ArrayList<>();
 	private int nbCommandsUndone;
 
+	/**
+	 * Undoes the most recently executed command, if any commands remain to be undone.
+	 */
 	public void undo() {
 		if (undoStack.size() > nbCommandsUndone) {
 			undoStack.get(undoStack.size() - ++nbCommandsUndone).undo();
 		}
 	}
 
+	/**
+	 * Redoes the most recently undone command if there are commands available to redo.
+	 */
 	public void redo() {
 		if (nbCommandsUndone > 0)
 			undoStack.get(undoStack.size() - nbCommandsUndone--).execute();
 	}
 
+	/**
+	 * Executes the given command, adds it to the undo stack, and clears any previously undone commands.
+	 * This method ensures that the command is properly executed and maintains the undo/redo state.
+	 *
+	 * @param command The command to be executed. It should implement the Command interface
+	 *                and contain the logic for execution within its execute method.
+	 */
 	private void execute(Command command) {
 		//clearPreviousUndoneCommands()
 		for (; nbCommandsUndone > 0; nbCommandsUndone--) {

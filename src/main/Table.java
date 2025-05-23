@@ -354,10 +354,22 @@ public class Table {
 		col.setDefaultValue(value);
 	}
 
+	/**
+	 * Retrieves the unique identifier of the table.
+	 *
+	 * @return The UUID representing the unique identifier of the table.
+	 */
 	public UUID getId() {
 		return id;
 	}
 
+	/**
+	 * Retrieves the data of the table in a map format where each column name
+	 * is mapped to its corresponding list of values.
+	 *
+	 * @return A HashMap where the keys are column names (Strings),
+	 * and the values are lists of strings representing the data in each column.
+	 */
 	public HashMap<String, List<String>> getData() {
 		HashMap<String, List<String>> dataMap = new HashMap<>();
 		for (Column column : columns) {
@@ -366,6 +378,12 @@ public class Table {
 		return dataMap;
 	}
 
+	/**
+	 * Retrieves the number of rows from the first column of the dataset.
+	 * If the first column is null, it returns 0.
+	 *
+	 * @return the number of rows present in the first column, or 0 if the first column is null
+	 */
 	public int getNumberOfRows() {
 		if (columns.get(0) != null) {
 			return columns.get(0).getSize();

@@ -313,7 +313,8 @@ public class ViewManager implements ViewList {
 
 
 	/**
-	 * @return
+	 * If there is an active view, this method invokes the handleCtrlZ operation
+	 * of the currently active view.
 	 */
 	public void handleCtrlZ() {
 		if (hasActiveView()) {
@@ -323,7 +324,8 @@ public class ViewManager implements ViewList {
 
 
 	/**
-	 * @return
+	 * If there is an active view, this method invokes the handleCtrlShiftZ operation
+	 * of the currently active view.
 	 */
 	public void handleCtrlShiftZ() {
 		if (hasActiveView()) {

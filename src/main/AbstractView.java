@@ -25,8 +25,9 @@ public abstract class AbstractView {
 	}
 
 	/**
-	 * Returns the title of a view.
-	 * @return The title.
+	 * Retrieves the title of the view.
+	 *
+	 * @return The title of the view as a string.
 	 */
 	public abstract String getTitle();
 
@@ -118,7 +119,7 @@ public abstract class AbstractView {
 
 	/**
 	 * this method is invoked if view is killed and should be disposed.
-	 * 
+	 *
 	 * @param view The dead view.
 	 * @return Returns true if this object is also irrelevant as a result.
 	 */
@@ -128,7 +129,7 @@ public abstract class AbstractView {
 
 	/**
 	 * Sets the associated ViewList instance.
-	 * @param viewList The ViewList instance for this view to handle closing and substituting views. 
+	 * @param viewList The ViewList instance for this view to handle closing and substituting views.
 	 */
 	protected void setViewList(ViewList viewList) {
 		this.viewList = viewList;

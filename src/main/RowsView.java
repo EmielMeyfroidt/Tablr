@@ -185,6 +185,14 @@ public class RowsView extends AbstractView {
 		}
 	}
 
+	/**
+	 * Handles the mouse drag operation in the RowsView.
+	 *
+	 * @param startX The starting x-coordinate of the mouse drag.
+	 * @param startY The starting y-coordinate of the mouse drag.
+	 * @param endX   The ending x-coordinate of the mouse drag.
+	 * @param endY   The ending y-coordinate of the mouse drag.
+	 */
 	@Override
 	public void handleMouseDrag(int startX, int startY, int endX, int endY) {
 		int elementNumber = getLayoutInfo().getTableLayout(tableId).getViewLayout(getClass()).getElementXNumber(startX) - 1;

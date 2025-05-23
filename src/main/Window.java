@@ -157,7 +157,7 @@ class Window extends AbstractView implements ViewList {
 	/**
 	 * removes view from getviewlist()
 	 *
-	 * @param view
+	 * @param view view to be removed
 	 */
 	@Override
 	public void closeView(AbstractView view) {

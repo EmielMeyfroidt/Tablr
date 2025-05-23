@@ -9,6 +9,12 @@ package main;
 public class BoolValue extends CellValue {
 	private final boolean value;
 
+	/**
+	 * Constructs a BoolValue instance by parsing the given input string as a boolean value.
+	 *
+	 * @param input The input string to be parsed. Valid values are "true" or "false" (case-insensitive).
+	 *              Any other string will default to false.
+	 */
 	public BoolValue(String input) {
 		this.value = Boolean.parseBoolean(input);
 	}
@@ -24,6 +30,11 @@ public class BoolValue extends CellValue {
 		return input.equalsIgnoreCase("true") || input.equalsIgnoreCase("false");
 	}
 
+	/**
+	 * Returns the string representation of the boolean value.
+	 *
+	 * @return The string "true" if the value is true; otherwise, the string "false".
+	 */
 	@Override
 	public String toString() {
 		return Boolean.toString(value);

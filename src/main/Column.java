@@ -51,6 +51,11 @@ public class Column {
 		return cells.stream().map(cell -> cell.getValue().toString()).toList();
 	}
 
+	/**
+	 * Retrieves the name of the column.
+	 *
+	 * @return The name of the column as a string.
+	 */
 	public String getName() {
 		return name;
 	}

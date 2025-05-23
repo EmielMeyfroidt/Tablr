@@ -23,6 +23,11 @@ public class StringValue extends CellValue {
 		return true;
 	}
 
+	/**
+	 * Returns the string representation of the encapsulated value.
+	 *
+	 * @return The string value stored in this instance.
+	 */
 	@Override
 	public String toString() {
 		return value;

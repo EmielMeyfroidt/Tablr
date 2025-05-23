@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Represents the design view of a table in the application
+ */
 public class DesignView extends AbstractView {
 
 	private UUID tableId;
@@ -170,6 +173,12 @@ public class DesignView extends AbstractView {
 		return "Design Mode";
 	}
 
+	/**
+	 * Renders the design view, displaying table columns and their respective data.
+	 * If the associated table does not exist, this method closes the current view.
+	 *
+	 * @param g The {@code Graphics} object used for rendering the design view.
+	 */
 	@Override
 	public void paint(Graphics g) {
 		if (this.getMgr().getTableName(tableId) == null) {
