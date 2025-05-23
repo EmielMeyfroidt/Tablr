@@ -76,6 +76,13 @@ public class Column {
 		cells.add(new Cell(parseInput(defaultValue)));
 	}
 
+	/**
+	 * Inserts a new {@code Cell} at the specified index within the column. The cell is initialized
+	 * with the column's default value.
+	 *
+	 * @param index The position at which the new cell should be inserted. It must be within
+	 *              the valid bounds of the column's {@code cells} list.
+	 */
 	public void insertCell(int index) {
 		cells.add(index, new Cell(parseInput(defaultValue)));
 	}
@@ -169,6 +176,7 @@ public class Column {
 	 *
 	 * @param input The input string to be validated. It should represent a value
 	 *              compatible with the column's type (e.g., string, integer, or boolean).
+	 * @return {@code true} if the input is valid for the column's type, {@code false} otherwise.'
 	 */
 	public boolean isValidInput(String input) {
 		switch (type) {

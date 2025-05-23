@@ -18,9 +18,11 @@ public class RowsView extends AbstractView {
 	 * Constructs a RowsView instance for managing the view of rows in a specific
 	 * table.
 	 *
-	 * @param mgr     the TablrManager instance responsible for managing views and
-	 *                data models
-	 * @param tableId the name of the table whose rows are to be displayed and managed
+	 * @param mgr        the TablrManager instance responsible for managing views and
+	 *                   data models
+	 * @param layoutInfo the LayoutInfo instance for storing and retrieving layout
+	 * @param viewList   the ViewList instance for managing the views in the application.
+	 * @param tableId    the name of the table whose rows are to be displayed and managed
 	 */
 	public RowsView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList, UUID tableId) {
 		super(mgr, layoutInfo, viewList);

@@ -19,6 +19,8 @@ public class EditRowView extends AbstractView {
 	 * Constructs an EditRowView object.
 	 *
 	 * @param mgr            the TablrManager instance responsible for managing the table data
+	 * @param layoutInfo     the LayoutInfo object used to determine the size and position of the view
+	 * @param viewList       the ViewList object used to store and manage the views associated with the application's data and views'
 	 * @param underlyingMode the underlying RowsView used to provide the basis of this view
 	 * @param tableId        the UUID of the table containing the cell being edited
 	 * @param nameColumn     the name of the column containing the cell being edited

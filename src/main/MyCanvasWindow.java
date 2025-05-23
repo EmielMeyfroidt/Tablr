@@ -31,7 +31,7 @@ public class MyCanvasWindow extends CanvasWindow {
 
 	/**
 	 * Handles the painting logic for the canvas window. Sets the title of the
-	 * canvas window to the title provided by the current view, and delegates the
+	 * canvas window to the title provided by the current view and delegates the
 	 * drawing operations to the view's paint method.
 	 *
 	 * @param g The Graphics object used for rendering on the canvas.

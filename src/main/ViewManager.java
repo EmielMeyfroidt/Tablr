@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -59,12 +58,22 @@ public class ViewManager implements ViewList {
 		}
 	}
 
+	/**
+	 * Constructs a new instance of the ViewManager class.
+	 * Initializes internal data structures and dependencies required for managing views.
+	 */
 	public ViewManager() {
 		metaViews = new CopyOnWriteArrayList<MetaView>();
 		tablrManager = new TablrManager();
 		layoutInfo = new LayoutInfo();
 	}
 
+	/**
+	 * Constructs a new instance of the ViewManager class with a specified TablrManager.
+	 * Initializes internal data structures and dependencies required for managing views.
+	 *
+	 * @param tablrManager The TablrManager instance that this ViewManager will use
+	 */
 	public ViewManager(TablrManager tablrManager) {
 		metaViews = new CopyOnWriteArrayList<MetaView>();
 		this.tablrManager = tablrManager;
@@ -169,10 +178,11 @@ public class ViewManager implements ViewList {
 	}
 
 	/**
-	 * set view at x, y to the activeview, else do nothing
+	 * Sets the view located at the specified coordinates as active. If the view at the given
+	 * coordinates is already active or null, no changes are made.
 	 *
-	 * @param x
-	 * @param y
+	 * @param x The x-coordinate used to identify the view to be activated.
+	 * @param y The y-coordinate used to identify the view to be activated.
 	 */
 	private void setViewActiveAt(int x, int y) {
 		MetaView metaViewClicked = getViewClicked(x, y);
@@ -289,7 +299,9 @@ public class ViewManager implements ViewList {
 	}
 
 	/**
-	 * invokes handleCharTyped() on the activeView.
+	 * Handles a character input event.
+	 *
+	 * @param keyChar The character that was typed.
 	 */
 	public void handleCharTyped(char keyChar) {
 		if (keyChar == '\u0014')

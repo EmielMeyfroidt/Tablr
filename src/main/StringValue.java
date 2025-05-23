@@ -12,12 +12,20 @@ public class StringValue extends CellValue {
 
 	private final String value;
 
+	/**
+	 * Constructs a {@code StringValue} instance with the specified input string.
+	 *
+	 * @param input The string to be encapsulated by this {@code StringValue} instance.
+	 */
 	public StringValue(String input) {
 		this.value = input;
 	}
 
 	/**
-	 * Validates the given input string.
+	 * Validates the given input string to determine if it meets the criteria for being a valid string value.
+	 *
+	 * @param input The string to validate.
+	 * @return {@code true} if the input string is valid; {@code false} otherwise.
 	 */
 	public static boolean isValid(String input) {
 		return true;

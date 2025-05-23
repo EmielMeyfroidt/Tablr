@@ -60,6 +60,8 @@ public class TablrManager {
 
 	/**
 	 * Adds a table, generates a unique name.
+	 *
+	 * @return the UUID of the newly created table.
 	 */
 	public UUID addTable() {
 		String uniqueName = generateUniqueName();
@@ -114,10 +116,21 @@ public class TablrManager {
 		return tables.stream().map(t -> t.getName()).collect(Collectors.toList());
 	}
 
+	/**
+	 * Retrieves a list of unique identifiers for all the tables managed by the system.
+	 *
+	 * @return A list of UUIDs representing the unique identifiers of the tables.
+	 */
 	public List<UUID> getTableIds() {
 		return tables.stream().map(t -> t.getId()).collect(Collectors.toList());
 	}
 
+	/**
+	 * Retrieves the name of the table corresponding to the specified UUID.
+	 *
+	 * @param id The UUID of the table for which the name is to be retrieved.
+	 * @return The name of the table if it exists, or null if no table with the given UUID is found.
+	 */
 	public String getTableName(UUID id) {
 		Table table = findTable(id);
 		return table != null ? table.getName() : null;
@@ -170,6 +183,7 @@ public class TablrManager {
 
 	/**
 	 * @param table   The name of the table.
+	 * @param column  The name of the column.
 	 * @param newName The new name of the table.
 	 */
 	public void changeNameColumn(UUID table, String column, String newName) {
@@ -480,6 +494,8 @@ public class TablrManager {
 
 	/**
 	 * for testing flows returns a map of table names to a map of columns
+	 *
+	 * @return a map of table names to a map of columns
 	 */
 	public HashMap<String, HashMap<String, List<String>>> getData() {
 		HashMap<String, HashMap<String, List<String>>> data = new HashMap<>();

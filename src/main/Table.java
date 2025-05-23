@@ -30,9 +30,10 @@ public class Table {
 	 * initialized with a default value, and configured to allow blank values.
 	 * If the table already contains columns with cells, the new column is
 	 * populated with the same number of cells, each initialized with the default value.
-	 * <p>
-	 * Throws:
-	 * - Exception: If any part of column creation or manipulation fails.
+	 *
+	 * @param column The column to be added to the table.
+	 *               Throws:
+	 *               - Exception: If any part of column creation or manipulation fails.
 	 */
 	public void addColumn(Column column) {
 		try {
@@ -48,6 +49,12 @@ public class Table {
 		}
 	}
 
+	/**
+	 * Creates a new Column instance with a unique name, predefined type, default allowance for null values,
+	 * and an initial value. The generated column has a type of "string" and allows null values by default.
+	 *
+	 * @return a new instance of the Column class with a unique name and predefined properties
+	 */
 	public Column newColumn() {
 		String name = generateUniqueName();
 		Column column = new Column(name, "string", true, "x");

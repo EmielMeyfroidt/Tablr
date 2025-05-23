@@ -13,9 +13,12 @@ public class TablesView extends AbstractView {
 	private List<UUID> selectedTables;
 
 	/**
-	 * Constructs a new TablesView instance to manage and display a list of tables.
+	 * Constructs a TablesView instance. This constructor initializes the view with the specified manager, layout information, and list of views.
+	 * It also sets up a list for managing selected tables.
 	 *
-	 * @param mgr the TablrManager instance used to manage table data and actions
+	 * @param mgr        The TablrManager instance managing the table views.
+	 * @param layoutInfo The LayoutInfo object containing layout configuration for the view.
+	 * @param viewList   The ViewList instance managing the views
 	 */
 	public TablesView(TablrManager mgr, LayoutInfo layoutInfo, ViewList viewList) {
 		super(mgr, layoutInfo, viewList);
@@ -157,5 +160,5 @@ public class TablesView extends AbstractView {
 	public String getTitle() {
 		return "Tables Mode";
 	}
-	
+
 }

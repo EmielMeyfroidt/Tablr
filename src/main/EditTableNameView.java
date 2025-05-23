@@ -17,6 +17,8 @@ public class EditTableNameView extends AbstractView {
 	 * Constructs a view for editing the name of a table.
 	 *
 	 * @param mgr            The manager responsible for handling application operations.
+	 * @param layoutInfo     The LayoutInfo object used to determine the size and position of the view.
+	 * @param viewList       The ViewList object used to store and manage the views in the application.
 	 * @param underlyingMode The underlying view mode associated with this table.
 	 * @param tableId        The initial UUID of the table being edited.
 	 */
