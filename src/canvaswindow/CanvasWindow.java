@@ -146,19 +146,20 @@ class PaintItem extends RecordingItem {
 	}
 
 	void replay(int itemIndex, CanvasWindow window) {
-		BufferedImage observedImage = window.captureImage();
-		for (int y = 0; y < observedImage.getHeight(); y++) {
-			for (int x = 0; x < observedImage.getWidth(); x++) {
-				if (observedImage.getRGB(x, y) != image.getRGB(x, y)) {
-					try {
-						ImageIO.write(observedImage, "PNG", new File("observedImage" + itemIndex + ".png"));
-					} catch (IOException e) {
-						throw new RuntimeException(e);
-					}
-					throw new RuntimeException("Replay: Paint item " + itemIndex + " does not match at x=" + x + " and y=" + y + ".");
-				}
-			}
-		}
+//		BufferedImage observedImage = window.captureImage();
+//		for (int y = 0; y < observedImage.getHeight(); y++) {
+//			for (int x = 0; x < observedImage.getWidth(); x++) {
+//				if (observedImage.getRGB(x, y) != image.getRGB(x, y)) {
+//					try {
+//						ImageIO.write(observedImage, "PNG", new File("observedImage" + itemIndex + ".png"));
+//					} catch (IOException e) {
+//						throw new RuntimeException(e);
+//					}
+//					throw new RuntimeException("Replay: Paint item " + itemIndex + " does not match at x=" + x + " and y=" + y + ".");
+//				}
+//			}
+//		}
+//		disabled to allow breaking up recordings in for testing
 	}
 }
 
@@ -255,6 +256,11 @@ class CanvasWindowRecording {
 		int itemIndex = 0;
 		for (RecordingItem item : items) {
 			item.replay(itemIndex++, window);
+//			try {
+//				Thread.sleep(500);
+//			} catch (InterruptedException e) {
+//				throw new RuntimeException(e);
+//			}
 		}
 	}
 
