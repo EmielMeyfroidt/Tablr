@@ -20,7 +20,6 @@ public class FlowTests {
 		CountDownLatch latch = new CountDownLatch(1);
 		java.awt.EventQueue.invokeLater(() -> {
 			MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", view);
-			view.addListener(window.getTablrManagerListener());
 			window.show();
 
 			CanvasWindow.replayRecording(sessionFile, window);

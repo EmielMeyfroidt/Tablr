@@ -30,6 +30,7 @@ public class TablrManager {
 	}
 
 	private void execute(Command command) {
+		//clearPreviousUndoneCommands()
 		for (; nbCommandsUndone > 0; nbCommandsUndone--) {
 			undoStack.remove(undoStack.size() - 1);
 		}

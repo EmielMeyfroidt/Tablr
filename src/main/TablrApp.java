@@ -17,7 +17,6 @@ public class TablrApp {
 
 		java.awt.EventQueue.invokeLater(() -> {
 			MyCanvasWindow window = new MyCanvasWindow("My Canvas Window", viewManager);
-			viewManager.addListener(window.getTablrManagerListener());
 			window.show();
 		});
 	}

@@ -13,15 +13,6 @@ import canvaswindow.CanvasWindow;
  */
 public class MyCanvasWindow extends CanvasWindow {
 
-	/**
-	 * Listener instance used to respond to changes in the TablrManager model and
-	 * ensure the graphical user interface is updated accordingly by calling
-	 * paint().
-	 */
-	private final paintListener paintListener = () -> {
-		repaint();
-	};
-
 	private ViewManager viewManager;
 	private boolean dragging = false;
 	private int lastX, lastY;
@@ -103,6 +94,7 @@ public class MyCanvasWindow extends CanvasWindow {
 				dragging = false;
 			}
 		}
+		this.repaint();
 	}
 
 	/**
@@ -171,15 +163,6 @@ public class MyCanvasWindow extends CanvasWindow {
 		if (action != null) {
 			action.run();
 		}
+		this.repaint();
 	}
-
-	/**
-	 * Retrieves the TablrManagerListener associated with this instance.
-	 *
-	 * @return The TablrManagerListener.
-	 */
-	public paintListener getTablrManagerListener() {
-		return paintListener;
-	}
-
 }

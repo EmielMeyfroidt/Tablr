@@ -8,7 +8,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Manages the set of open AbstractViews in TablrApp
  */
 public class ViewManager implements ViewList {
-	private paintListener paintListener;
 	private final CopyOnWriteArrayList<MetaView> metaViews;
 	private final TablrManager tablrManager;
 	private final LayoutInfo layoutInfo;
@@ -60,16 +59,6 @@ public class ViewManager implements ViewList {
 		}
 	}
 
-	/**
-	 * Registers a paintListener to be notified of change in UI Context and the need to re invoke paint()
-	 *
-	 * @param paintListener the paintListener instance to be registered
-	 */
-	public void addListener(paintListener paintListener) {
-		this.paintListener = paintListener;
-	}
-
-
 	public ViewManager() {
 		metaViews = new CopyOnWriteArrayList<MetaView>();
 		tablrManager = new TablrManager();
@@ -96,7 +85,6 @@ public class ViewManager implements ViewList {
 		if (hasActiveView())
 			offset = getActiveView().x + 10;
 		metaViews.add(new MetaView(view, offset, offset));
-		paintListener.contentsChanged();
 	}
 
 	/**
@@ -112,7 +100,6 @@ public class ViewManager implements ViewList {
 		for (MetaView metaView : metaViews) {
 			metaView.view.handleDeadView(view);
 		}
-		paintListener.contentsChanged();
 	}
 
 	/**
@@ -126,7 +113,6 @@ public class ViewManager implements ViewList {
 	@Override
 	public void substituteView(AbstractView oldView, AbstractView newView) {
 		getMetaView(oldView).view = newView;
-		paintListener.contentsChanged();
 
 	}
 
@@ -143,7 +129,6 @@ public class ViewManager implements ViewList {
 	public void moveViewLocation(AbstractView view, int x, int y) {
 		getMetaView(view).x += x;
 		getMetaView(view).y += y;
-		paintListener.contentsChanged();
 	}
 
 	private MetaView getMetaView(AbstractView view) {
@@ -217,7 +202,6 @@ public class ViewManager implements ViewList {
 						getActiveView().translateX(x), getActiveView().translateY(y));
 			}
 		}
-		paintListener.contentsChanged();
 	}
 
 	/**
@@ -237,7 +221,6 @@ public class ViewManager implements ViewList {
 						getActiveView().translateX(x), getActiveView().translateY(y));
 			}
 		}
-		paintListener.contentsChanged();
 
 	}
 
@@ -262,8 +245,6 @@ public class ViewManager implements ViewList {
 						getActiveView().translateY(endY));
 			}
 		}
-		paintListener.contentsChanged();
-		//System.out.println(startX + ", " + startY + " to " + endX + ", " + endY);
 	}
 
 	/**
@@ -274,7 +255,6 @@ public class ViewManager implements ViewList {
 	public void handleEscape() {
 		if (hasActiveView())
 			getActiveView().view.handleEscape();
-		paintListener.contentsChanged();
 
 	}
 
@@ -287,7 +267,6 @@ public class ViewManager implements ViewList {
 		System.out.println("ctrl enter");
 		if (hasActiveView())
 			getActiveView().view.handleCtrlEnter();
-		paintListener.contentsChanged();
 
 	}
 
@@ -299,7 +278,6 @@ public class ViewManager implements ViewList {
 	public void handleEnter() {
 		if (hasActiveView())
 			getActiveView().view.handleEnter();
-		paintListener.contentsChanged();
 
 	}
 
@@ -311,7 +289,6 @@ public class ViewManager implements ViewList {
 	public void handleBackSpace() {
 		if (hasActiveView())
 			getActiveView().view.handleBackSpace();
-		paintListener.contentsChanged();
 
 	}
 
@@ -323,7 +300,6 @@ public class ViewManager implements ViewList {
 	public void handleDelete() {
 		if (hasActiveView())
 			getActiveView().view.handleDelete();
-		paintListener.contentsChanged();
 
 	}
 
@@ -338,7 +314,6 @@ public class ViewManager implements ViewList {
 			openView(viewAssembler.getDefaultView(this.tablrManager, this.layoutInfo, this));
 		else if (hasActiveView())
 			getActiveView().view.handleCharTyped(keyChar);
-		paintListener.contentsChanged();
 	}
 
 	/**
@@ -361,7 +336,6 @@ public class ViewManager implements ViewList {
 		if (hasActiveView()) {
 			getActiveView().view.handleCtrlZ();
 		}
-		paintListener.contentsChanged();
 	}
 
 
@@ -372,7 +346,6 @@ public class ViewManager implements ViewList {
 		if (hasActiveView()) {
 			getActiveView().view.handleCtrlShiftZ();
 		}
-		paintListener.contentsChanged();
 	}
 
 }
