@@ -2,8 +2,6 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import canvaswindow.CanvasWindow;
 
@@ -29,20 +27,6 @@ public class MyCanvasWindow extends CanvasWindow {
 		super(title);
 		this.viewManager = view;
 
-	}
-
-	/**
-	 * Changes the current view to the specified WindowManager and triggers a
-	 * repaint of the canvas window.
-	 *
-	 * @param view The new WindowManager to be set for this canvas window, which
-	 *             will manage the graphical components and interactions within the
-	 *             window.
-	 */
-	private void changeMode(ViewManager view) {
-		this.viewManager = view;
-		System.out.println("painting" + view.getTitle());
-		this.repaint();
 	}
 
 	/**
